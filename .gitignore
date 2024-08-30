@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+Dose_finding/output/
+Dose_finding/Dose_finding_resazurin.html
+Dose_finding/Dose_finding_resazurin_files/
+Dose_finding/240528_dose_finding_resazurin_pub.Rproj
+Pathway_comparison_SI.Rproj
+output/plots/.svg

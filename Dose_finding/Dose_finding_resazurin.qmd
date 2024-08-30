@@ -1,0 +1,455 @@
+---
+title: "Dose-finding for Untargeted Metabolomics Studies"
+author: "Yannik Schermer"
+format: 
+  html: 
+    toc: true
+bibliography: "bib.bib"
+---
+
+## Introduction
+
+This document contains the code for the analysis of dose-finding experiments for the following compounds:
+
+-   2-deoxy-d-glucose
+
+-   3-bromopyruvate
+
+-   5-fluorouracil
+
+-   antimycin A
+
+-   FCCP
+
+-   menadione
+
+-   metrizamide
+
+-   mevastatin
+
+-   phenanthrene-9,10-dione
+
+-   simvastatin
+
+-   trifluorothymidine
+
+Data was acquired by Yannik Schermer and Frederic Wagner.
+
+## Data Cleaning and Normalization
+
+Raw data was cleaned and Relative viability was calculated using @eq-normalization-1
+
+$$ Relative\:viability /\%= \frac{E_T-E_B}{E_N-E_B}\cdot100\:\%$$ {#eq-normalization-1} with
+
+$E_T$ Extinction treated well
+
+$E_B$ Extinction blank
+
+$E_N$ Extinction negative control (Medium or DMSO, depending on vehicle)
+
+## Dose-response Curve Fitting and EC~10~ Calculation
+
+### General
+
+A tiered approach was used to estimate EC~10~ values. First, cells were treated with a broad dosage range to determine the region of interest for a later experiment with a narrower range. From this second experiment, final EC~10~ values were calculated. Dose-response modelling is done using the `drc_pipe()` function based on the `drc` package (@ritz_dose-response_2015).
+
+```{r,output=FALSE}
+library(drc)
+library(tidyverse)
+library(scales)
+library(egg)
+```
+
+```{r, warning=FALSE}
+drc_pipe <- function(dataframe, output_list, compound_name ="", lowest_conc_CI, highest_conc_CI, lower_limit_drm = c(NA, NA, NA, NA), upper_limit_drm = c(NA, NA, NA, NA), ec_level = 10, save_plot = F, plot_name = "plot.svg", show = "all", ylim_plot = c(0, NA), y_axis_breaks = seq(0, 150, 25)){
+
+  #model data
+  drc <- dataframe %>%
+    drm(viab_perc ~ c_uM, fct = LL.4(), lowerl = lower_limit_drm, upperl = upper_limit_drm, data = .)
+    
+  #calculate EC
+  calculated_ec <- drc %>%
+    ED(respLev = ec_level, interval = "delta", display = F)
+  
+  # For a prettier plot, data is normalized a second time using the upper and lower plateau of the first fit.
+  # This ensures that upper plateau is always 100 % and the lower is 0 %.
+  # Slope and Hill Coefficient are preserved to ensure that the curve shape does not change.
+  # For reference, see https://www.graphpad.com/support/faq/50-of-what-how-exactly-are-ic50-and-ec50-defined/
+  
+  # Fitting normalized data.
+  
+  
+  #Subtract 0 line
+  upper_plateau <- unname(drc$coefficients[3])
+  lower_plateau <- unname(drc$coefficients[2])
+  hill_coeff <- unname(drc$coefficients[1])
+  ec50 <- unname(drc$coefficients[4])
+  
+  dataframe$viab_perc <- dataframe$viab_perc-lower_plateau
+  
+  drc <- dataframe %>%
+    drm(viab_perc ~ c_uM, fct = LL.4(fixed = c(hill_coeff, NA, NA, ec50)), data = .)
+  
+  
+  #Scale to 100%
+  upper_plateau <- unname(drc$coefficients[2])
+  lower_plateau <- unname(drc$coefficients[1])
+  #hill_coeff <- unname(drc$coefficients[1])
+  #ec50 <- unname(drc$coefficients[4])
+  
+  dataframe$viab_perc <- dataframe$viab_perc/upper_plateau*100
+  
+  drc <- dataframe %>%
+    drm(viab_perc ~ c_uM, fct = LL.4(fixed = c(hill_coeff, NA, NA, ec50)), data = .)
+  
+  #draw DRC with  95 %-CI
+  modeled_df <- expand.grid(conc = exp(seq(log(lowest_conc_CI), log(highest_conc_CI), length = 10000)))
+  modeled_df[,c(2,3,4)] <- drc %>%
+    predict(newdata = modeled_df, interval = "confidence")
+  
+  if (show == "all") {
+    show_df <- dataframe
+  } else if (show == "mean"){
+    show_df<- dataframe %>%
+      group_by(c_uM) %>%
+      summarize(viab_perc = mean(viab_perc, na.rm=TRUE))
+  } else {
+    print("show must be 'mean' or 'all'")
+  }
+  
+  #modeled_df$cpd <- compound_name
+  
+  drc_plot <- ggplot(modeled_df, aes(conc, V2)) +
+    geom_line() +
+    #coord_trans(x = "log") +
+    scale_x_log10(breaks = scales::trans_breaks("log10", function(x) 10^x),
+                  labels = scales::trans_format("log10", scales::math_format(10^.x)))+
+    scale_y_continuous(breaks = y_axis_breaks,
+                       labels = y_axis_breaks,
+                       limits = ylim_plot)+
+    geom_point(data = show_df, aes(c_uM, viab_perc))+
+    geom_line(aes(x = conc, y = V3), alpha = 0.2, linetype = "dashed")+
+    geom_line(aes(x = conc, y = V4), alpha = 0.2, linetype = "dashed")+
+    #geom_ribbon(aes(x = conc, y = V2, ymin = V3, ymax = V4), alpha = 0.2) +
+    theme_bw()+
+    annotation_logticks(sides = "b")+
+    labs(title = compound_name, x = NULL, y = NULL)
+    #labs(title = compound_name, x = expression(italic(c)~'/ µM'), y = "Relative viability / %")
+  
+  output_list$EC.values[nrow(output_list$EC.values)+1,1] <- compound_name
+  output_list$EC.values[nrow(output_list$EC.values),2] <- calculated_ec
+  output_list$EC.values[nrow(output_list$EC.values),3] <- ec_level
+  
+  output_list$plots[[length(output_list$plots)+1]] <- drc_plot
+  
+  #output_list$dfs[[length(output_list$dfs)+1]] <- modeled_df
+  
+  if (save_plot == T) {
+    ggsave(filename = plot_name, plot = drc_plot, width = 75, height = 75, units = "mm", create.dir = T)
+  }
+  return(output_list)
+}
+```
+
+Plots and calculated EC~10~ values are appended to a pre existing list by the above function. This simple helper function creates a list with the correct formatting.
+
+```{r}
+make_output_list <- function() {
+  ec_values <- data.frame(
+    Compound = as.character(c()),
+    EC = as.numeric(c()),
+    EC.level = as.numeric(c())
+  )
+  plots <- list()
+  #dfs <- list()
+  output_list <- list(ec_values, plots)
+  
+  names(output_list) <- c("EC.values", "plots")
+  
+  return(output_list)
+}
+
+output_list_range <- make_output_list()
+
+output_list_range
+
+```
+
+An example for the usage of the function `drc_pipe()` is given below. Data is from menadione 2h range-finder experiment.
+
+```{r}
+menadione_range <- read.csv("files/menadione_range.csv")
+knitr::kable(head(menadione_range), align = "c")
+
+```
+
+```{r, warning=FALSE}
+
+output_list_range <- drc_pipe(dataframe = menadione_range, compound_name ="Menadione", lowest_conc_CI = 0.01, highest_conc_CI = 1000000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = F, plot_name = "output/plots/menadione_range.svg", output_list = output_list_range)
+
+```
+
+Data frames containing EC values can be accessed using the following command:
+
+```{r, warning=FALSE}
+
+output_list_range$EC.values
+
+```
+
+Dose-response can be plotted using the command below. Dose-response curve of menadione is given as an example [@fig-drc-menadione].
+
+```{r, warning=FALSE}
+#| label: fig-drc-menadione
+#| fig-cap: "Dose-response curve of menadione in range finder experiments. Dashed lines represend the 95 % confidence interval."
+#| warning: false
+
+output_list_range$plots[[1]]
+
+```
+
+### Analysis
+
+#### Range finder experiments
+
+```{r, echo=FALSE}
+
+output_list_range <- make_output_list()
+
+```
+
+```{r, warning=FALSE}
+amca_range <- read.csv("files/amca_range.csv")
+
+#br_pyr
+
+doglc_range <- read.csv("files/doglc_range.csv")
+
+#fccp
+
+fu_range <- read.csv("files/fu_range.csv")
+
+menadione_range <- read.csv("files/menadione_range.csv")
+
+metrizamide_range <- read.csv("files/metrizamide_range.csv")
+
+mevast_range <- read.csv("files/mevast_range.csv")
+
+#phenanthr
+
+#simvast
+
+tft_range <- read.csv("files/tft_range.csv")
+
+
+output_list_range <- drc_pipe(dataframe = amca_range, compound_name ="Antimycin A, Range", lowest_conc_CI = 0.01, highest_conc_CI = 1000000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/amca_range.svg", output_list = output_list_range)
+
+
+output_list_range <- drc_pipe(dataframe = menadione_range, compound_name ="Menadione, Range", lowest_conc_CI = 0.01, highest_conc_CI = 1000000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/menadione_range.svg", output_list = output_list_range)
+
+
+##mevastatin pilot 1000 µM was removed -> compound precipitated
+output_list_range <- drc_pipe(dataframe = mevast_range, compound_name ="Mevastatin, Range", lowest_conc_CI = 0.01, highest_conc_CI = 1000000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/mevastatin_range.svg", output_list = output_list_range)
+
+```
+
+Cells treated with 2-deoxy-d-glucose, 5-fluorouracil, metrizamide and trifluorothymidine did not show reduced viability for up to 1 mM. Therefore, for metabolomics experiments, cells were treated with 1 mM of the respective compound.
+
+```{r}
+doglc_range_mean <- doglc_range %>%
+  group_by(c_uM) %>%
+  summarize(viab_perc = mean(viab_perc, na.rm=TRUE))
+
+doglc_range_plot <- ggplot(doglc_range_mean, aes(c_uM, viab_perc))+
+  geom_point()+
+  scale_x_log10()+
+  scale_y_continuous(breaks = seq(0, 150, 25),
+                     labels = seq(0, 150, 25),
+                     limits = c(0, NA))+
+  theme_bw()+
+  annotation_logticks(sides = "b")+
+  labs(title = "2-Deoxy-d-glucose, Range", x = NULL, y = NULL)
+ggsave(filename = "output/plots/doglc_range.svg", plot = doglc_range_plot, width = 75, height = 75, units = "mm")
+
+output_list_range$EC.values[nrow(output_list_range$EC.values)+1,1] <- "2-Deoxy-d-glucose, Range"
+output_list_range$EC.values[nrow(output_list_range$EC.values),2] <- 1000
+output_list_range$EC.values[nrow(output_list_range$EC.values),3] <- NA
+  
+output_list_range$plots[[length(output_list_range$plots)+1]] <- doglc_range_plot
+
+
+
+
+fu_range_mean <- fu_range %>%
+  group_by(c_uM) %>%
+  summarize(viab_perc = mean(viab_perc, na.rm=TRUE))
+
+fu_range_plot <- ggplot(fu_range_mean, aes(c_uM, viab_perc))+
+  geom_point()+
+  scale_x_log10()+
+  scale_y_continuous(breaks = seq(0, 150, 25),
+                     labels = seq(0, 150, 25),
+                     limits = c(0, NA))+
+  theme_bw()+
+  annotation_logticks(sides = "b")+
+  labs(title = "5-Fluorouracil, Range", x = NULL, y = NULL)
+ggsave(filename = "output/plots/fu_range.svg", plot = fu_range_plot, width = 75, height = 75, units = "mm")
+
+output_list_range$EC.values[nrow(output_list_range$EC.values)+1,1] <- "5-Fluorouracil, Range"
+output_list_range$EC.values[nrow(output_list_range$EC.values),2] <- 1000
+output_list_range$EC.values[nrow(output_list_range$EC.values),3] <- NA
+  
+output_list_range$plots[[length(output_list_range$plots)+1]] <- fu_range_plot
+
+
+
+metrizamide_range_mean <- metrizamide_range %>%
+  group_by(c_uM) %>%
+  summarize(viab_perc = mean(viab_perc, na.rm=TRUE))
+
+metrizamide_range_plot <- ggplot(metrizamide_range_mean, aes(c_uM, viab_perc))+
+  geom_point()+
+  scale_x_log10()+
+  scale_y_continuous(breaks = seq(0, 150, 25),
+                     labels = seq(0, 150, 25),
+                     limits = c(0, NA))+
+  theme_bw()+
+  annotation_logticks(sides = "b")+
+  labs(title = "Metrizamide, Range", x = NULL, y = NULL)
+ggsave(filename = "output/plots/metrizamide_range.svg", plot = metrizamide_range_plot, width = 75, height = 75, units = "mm")
+
+output_list_range$EC.values[nrow(output_list_range$EC.values)+1,1] <- "Metrizamide, Range"
+output_list_range$EC.values[nrow(output_list_range$EC.values),2] <- 1000
+output_list_range$EC.values[nrow(output_list_range$EC.values),3] <- NA
+  
+output_list_range$plots[[length(output_list_range$plots)+1]] <- metrizamide_range_plot
+
+
+
+
+tft_range_mean <- tft_range %>%
+  group_by(c_uM) %>%
+  summarize(viab_perc = mean(viab_perc, na.rm=TRUE))
+
+tft_range_plot <- ggplot(tft_range_mean, aes(c_uM, viab_perc))+
+  geom_point()+
+  scale_x_log10()+
+  scale_y_continuous(breaks = seq(0, 150, 25),
+                     labels = seq(0, 150, 25),
+                     limits = c(0, NA))+
+  theme_bw()+
+  annotation_logticks(sides = "b")+
+  labs(title = "Trifluorothymidine, Range", x = NULL, y = NULL)
+ggsave(filename = "output/plots/tft_range.svg", plot = tft_range_plot, width = 75, height = 75, units = "mm")
+
+output_list_range$EC.values[nrow(output_list_range$EC.values)+1,1] <- "Trifluorothymidine, Range"
+output_list_range$EC.values[nrow(output_list_range$EC.values),2] <- 1000
+output_list_range$EC.values[nrow(output_list_range$EC.values),3] <- NA
+  
+output_list_range$plots[[length(output_list_range$plots)+1]] <- tft_range_plot
+```
+
+Calculated EC~10~ values (in µM):
+
+```{r, echo=FALSE}
+output_list_range$EC.values <- output_list_range$EC.values %>%
+  mutate(EC = signif(EC, 3))
+
+knitr::kable(output_list_range$EC.values, align = "c")
+```
+
+Dose-response curves of range finder experiments are shown in [@fig-drc-rangefinder-2h-all].
+
+```{r, warning=FALSE}
+#| label: fig-drc-rangefinder-2h-all
+#| fig-cap: "Dose-response curves of tested compounds in range finder experiments. Dashed lines represend the 95 % confidence interval."
+#| warning: false
+
+
+ggarrange(plots = output_list_range$plots, ncol = 2, left = "Relative viability / %", bottom = "c / µM")
+```
+
+```{r, eval=FALSE}
+output_list_range$dfs %>%
+  bind_rows() %>%
+  ggplot(aes(conc, V2))+
+    geom_point()+
+    facet_grid(~cpd)
+
+```
+
+#### Experiments to estimate the EC~10~ more precisely
+
+After initial range finder experiments, the region of interest was estimated for each compound based on the turning point and the steepness of the curve. Compounds that did not show cytotoxicity for up to 1 mM were not tested again.
+
+```{r, warning=FALSE}
+output_list_precise <- make_output_list()
+
+amca_precise <- read.csv("files/amca_precise.csv")
+
+#remove possible outlier
+amca_precise <- amca_precise %>%
+  filter(c_uM > 0.9)
+
+brpyr_precise <- read.csv("files/brpyr_precise.csv")
+
+menadione_precise <- read.csv("files/menadione_precise.csv")
+
+mevast_precise <- read.csv("files/mevast_precise.csv")
+
+phenanthr_precise <- read.csv("files/phenanthr_precise.csv")
+
+#compound precipitated <= 200 µM
+phenanthr_precise <- phenanthr_precise %>%
+  filter(c_uM < 200)
+
+simvast_precise <- read.csv("files/simvast_precise.csv")
+#compound precipitated <= 1000 µM
+simvast_precise <- simvast_precise %>%
+  filter(c_uM < 1000)
+
+
+
+
+
+
+
+output_list_precise <- drc_pipe(dataframe = amca_precise, compound_name ="Antimycin A, Precise", lowest_conc_CI = 0.9, highest_conc_CI = 10000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/amca_precise.svg", output_list = output_list_precise)
+
+output_list_precise <- drc_pipe(dataframe = brpyr_precise, compound_name ="3-Bromopyrivate, Precise", lowest_conc_CI = 2, highest_conc_CI = 10000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/brpyr_precise.svg", output_list = output_list_precise)
+
+output_list_precise <- drc_pipe(dataframe = menadione_precise, compound_name ="Menadione, Precise", lowest_conc_CI = 9, highest_conc_CI = 10000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/menadione_precise.svg", output_list = output_list_precise)
+
+output_list_precise <- drc_pipe(dataframe = mevast_precise, compound_name ="Mevastatin, Precise", lowest_conc_CI = 0.9, highest_conc_CI = 10000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/mevast_precise.svg", output_list = output_list_precise)
+
+output_list_precise <- drc_pipe(dataframe = phenanthr_precise, compound_name ="Phenanthrene-9,10-dione, Precise", lowest_conc_CI = 1, highest_conc_CI = 10000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/phenanthr_precise.svg", output_list = output_list_precise)
+
+output_list_precise <- drc_pipe(dataframe = simvast_precise, compound_name ="Simvastatin, Precise", lowest_conc_CI = 2, highest_conc_CI = 10000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/simvast_precise.svg", output_list = output_list_precise)
+
+```
+
+Calculated EC~10~ values (in µM):
+
+```{r, echo=FALSE}
+output_list_precise$EC.values <- output_list_precise$EC.values %>%
+  mutate(EC = signif(EC, 3))
+
+knitr::kable(output_list_precise$EC.values, align = "c")
+```
+
+```{r, warning=FALSE}
+#| label: fig-drc-precise-2h-all
+#| fig-cap: "Dose-response curves of more precise estimation experiments. Dashed lines represend the 95 % confidence interval."
+#| warning: false
+ggarrange(plots = output_list_precise$plots, ncol = 2, left = "Relative viability / %", bottom = "c / µM")
+```
+
+## Summary
+
+Estimated EC~10~ values used for metabolomics experiments are summarized in the table below:
+
+```{r}
+
+```
+
+## References
