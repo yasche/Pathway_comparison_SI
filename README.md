@@ -1,7 +1,3 @@
-## About
-
-This repository contains the code and files necessary to recreate the findings published in DOI:XX.XXXX. This includes the dose-finding, the pipeline to prepare the data for the pathway enrichment analyses and the code to reproduce the figures. 
-
 ## How To Use This Repository
 
 There are several folders which contain the files necessary to reproduce the respective part of the work. The analyses are done in [R](https://www.r-project.org/) and require several packages ([see Session Info](#session-info)) as well as [RStudio](https://posit.co/download/rstudio-desktop/) and [Quarto](https://quarto.org/docs/get-started/). 
