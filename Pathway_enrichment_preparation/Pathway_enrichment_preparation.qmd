@@ -1,0 +1,35 @@
+---
+title: "Data preparation for subsequent enrichment analysis"
+author: "Yannik Schermer"
+format: 
+  html: 
+    toc: true
+---
+
+## Introduction
+
+
+
+## Universal data preparation
+
+### Data import
+
+### Filtering
+
+### Missing value imputation
+
+### Normalization
+
+### Collapse technical replicates
+
+### Add HMDB identifier
+
+## Method-specific data preparation
+
+### ORA
+
+### MSEA
+
+### Mummichog
+
+## References
