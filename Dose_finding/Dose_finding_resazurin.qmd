@@ -143,7 +143,9 @@ drc_pipe <- function(dataframe, output_list, compound_name ="", lowest_conc_CI, 
 }
 ```
 
+
 Plots and calculated IC~10~ values are appended to a pre existing list by the above function. This simple helper function creates a list with the correct formatting.
+
 
 ```{r}
 make_output_list <- function() {
@@ -167,7 +169,9 @@ output_list_range
 
 ```
 
+
 An example for the usage of the function `drc_pipe()` is given below. Data is from menadione 2h range-finder experiment.
+
 
 ```{r}
 menadione_range <- read.csv("files/menadione_range.csv")
@@ -176,20 +180,16 @@ knitr::kable(head(menadione_range), align = "c")
 ```
 
 ```{r, warning=FALSE}
-
 output_list_range <- drc_pipe(dataframe = menadione_range, compound_name ="Menadione", lowest_conc_CI = 0.01, highest_conc_CI = 1000000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = F, plot_name = "output/plots/menadione_range.svg", output_list = output_list_range)
-
 ```
 
 Data frames containing EC values can be accessed using the following command:
 
 ```{r, warning=FALSE}
-
 output_list_range$EC.values
-
 ```
 
-Dose-response can be plotted using the command below. Dose-response curve of menadione is given as an example [@fig-drc-menadione].
+Dose-response curves can be plotted using the command below. The dose-response curve of menadione is given as an example in [@fig-drc-menadione].
 
 ```{r, warning=FALSE}
 #| label: fig-drc-menadione
@@ -197,7 +197,6 @@ Dose-response can be plotted using the command below. Dose-response curve of men
 #| warning: false
 
 output_list_range$plots[[1]]
-
 ```
 
 ### Analysis
@@ -205,10 +204,12 @@ output_list_range$plots[[1]]
 #### Range finder experiments
 
 ```{r, echo=FALSE}
-
 output_list_range <- make_output_list()
-
 ```
+
+
+Read data:
+
 
 ```{r, warning=FALSE}
 amca_range <- read.csv("files/amca_range.csv")
@@ -232,8 +233,13 @@ phenanthr_range <- read.csv("files/phenanthr_range.csv")
 simvast_range <- read.csv("files/simvast_range.csv")
 
 tft_range <- read.csv("files/tft_range.csv")
+```
 
 
+Model curves:
+
+
+```{r, warning=FALSE}
 output_list_range <- drc_pipe(dataframe = amca_range, compound_name ="Antimycin A, Range", lowest_conc_CI = 0.01, highest_conc_CI = 1000000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/amca_range.svg", output_list = output_list_range)
 
 
@@ -258,7 +264,9 @@ output_list_range <- drc_pipe(dataframe = simvast_range, compound_name ="Simvast
 
 ```
 
+
 Cells treated with 2-deoxy-d-glucose, 5-fluorouracil, metrizamide and trifluorothymidine did not show reduced viability for up to 1 mM. Therefore, for metabolomics experiments, cells were treated with 1 mM of the respective compound.
+
 
 ```{r}
 doglc_range_mean <- doglc_range %>%
@@ -354,18 +362,10 @@ output_list_range$EC.values[nrow(output_list_range$EC.values),3] <- NA
 output_list_range$plots[[length(output_list_range$plots)+1]] <- tft_range_plot
 ```
 
-Calculated IC~10~ values (in µM):
-
-```{r, echo=FALSE}
-output_list_range$EC.values <- output_list_range$EC.values %>%
-  mutate(EC = signif(EC, 3))
-
-knitr::kable(output_list_range$EC.values, align = "c")
-```
 
 Dose-response curves of range finder experiments are shown in [@fig-drc-rangefinder-2h-all].
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, echo=FALSE}
 #| label: fig-drc-rangefinder-2h-all
 #| fig-cap: "Dose-response curves of tested compounds in range finder experiments. Dashed lines represend the 95 % confidence interval."
 #| warning: false
@@ -375,18 +375,28 @@ Dose-response curves of range finder experiments are shown in [@fig-drc-rangefin
 ggarrange(plots = output_list_range$plots, ncol = 2, left = "Relative viability / %", bottom = "c / µM")
 ```
 
-```{r, eval=FALSE}
-output_list_range$dfs %>%
-  bind_rows() %>%
-  ggplot(aes(conc, V2))+
-    geom_point()+
-    facet_grid(~cpd)
 
+
+```{r, echo=FALSE, eval=FALSE}
+##| label: tbl-range-finder
+##| tbl-cap: "IC~10~ values calculated from the range finder experiments."
+
+
+#Calculated IC~10~ values are given in [@tbl-range-finder].
+output_list_range$EC.values %>%
+  mutate(EC = signif(EC, 3)) %>%
+  as_tibble() %>%
+  select(-EC.level) %>%
+  transmute(Compound = Compound,
+            `IC / µM` = EC) %>%
+  knitr::kable(align = "c")
 ```
 
 #### Experiments to estimate the IC~10~ more precisely
 
 After initial range finder experiments, the region of interest was estimated for each compound based on the turning point and the steepness of the curve. Compounds that did not show cytotoxicity for up to 1 mM were not tested again.
+
+Read data:
 
 ```{r, warning=FALSE}
 output_list_precise <- make_output_list()
@@ -407,21 +417,21 @@ mevast_precise <- read.csv("files/mevast_precise.csv")
 
 phenanthr_precise <- read.csv("files/phenanthr_precise.csv")
 
-#compound precipitated <= 200 µM
+#compound precipitated >= 200 µM
 phenanthr_precise <- phenanthr_precise %>%
   filter(c_uM < 200)
 
 simvast_precise <- read.csv("files/simvast_precise.csv")
-#compound precipitated <= 1000 µM
+#compound precipitated >= 1000 µM
 simvast_precise <- simvast_precise %>%
   filter(c_uM < 1000)
+```
 
 
+Model curves:
 
 
-
-
-
+```{r, warning=FALSE}
 output_list_precise <- drc_pipe(dataframe = amca_precise, compound_name ="Antimycin A, Precise", lowest_conc_CI = 0.9, highest_conc_CI = 10000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/amca_precise.svg", output_list = output_list_precise)
 
 
@@ -443,16 +453,11 @@ output_list_precise <- drc_pipe(dataframe = phenanthr_precise, compound_name ="P
 output_list_precise <- drc_pipe(dataframe = simvast_precise, compound_name ="Simvastatin, Precise", lowest_conc_CI = 2, highest_conc_CI = 10000, show = "mean", lower_limit_drm = c(NA, -10, 90, NA), upper_limit_drm = c(NA, 0, 110, NA), save_plot = T, plot_name = "output/plots/simvast_precise.svg", output_list = output_list_precise)
 ```
 
-Calculated IC~10~ values (in µM):
 
-```{r, echo=FALSE}
-output_list_precise$EC.values <- output_list_precise$EC.values %>%
-  mutate(EC = signif(EC, 3))
+Dose-response curves are given in [@fig-drc-precise-2h-all].
 
-knitr::kable(output_list_precise$EC.values, align = "c")
-```
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, echo=FALSE}
 #| label: fig-drc-precise-2h-all
 #| fig-cap: "Dose-response curves of more precise estimation experiments. Dashed lines represend the 95 % confidence interval."
 #| warning: false
@@ -461,12 +466,45 @@ knitr::kable(output_list_precise$EC.values, align = "c")
 ggarrange(plots = output_list_precise$plots, ncol = 2, left = "Relative viability / %", bottom = "c / µM")
 ```
 
+
+
+```{r, echo=FALSE, eval=FALSE}
+##| label: tbl-precise
+##| tbl-cap: "IC~10~ values calculated from the range finder experiments."
+
+
+#Calculated IC~10~ values are given in [@tbl-precise].
+output_list_precise$EC.values %>%
+  mutate(EC = signif(EC, 3)) %>%
+  as_tibble() %>%
+  transmute(Compound = Compound,
+            `IC / µM` = EC) %>%
+  knitr::kable(align = "c")
+```
+
+
+
 ## Summary
 
-Estimated IC~10~ values used for metabolomics experiments are summarized in the table below:
+Estimated IC~10~ values used for metabolomics experiments are summarized in [@tbl-final].
 
-```{r}
+```{r, echo=FALSE}
+#| label: tbl-final
+#| tbl-cap: "IC~10~ values used for metabolomics experiments."
 
+
+output_list_precise$EC.values %>%
+  rbind(data.frame(Compound = c("2-Deoxy-d-glucose", "5-Fluorouracil", "Metrizamide", "Trifluorothymidine"),
+                   EC = rep(1000, 4),
+                   EC.level = rep(NA, 4))) %>%
+  mutate(EC = signif(EC, 3)) %>%
+  as_tibble() %>%
+  select(-EC.level) %>%
+  mutate(Compound = str_remove(Compound, ", Precise")) %>%
+  transmute(Compound = Compound,
+            `IC / µM` = EC) %>%
+  knitr::kable(align = "c")
+  
 ```
 
 ## Session Info
