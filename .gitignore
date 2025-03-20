@@ -2,6 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+
+
 Dose_finding/output/
 Dose_finding/Dose_finding_resazurin.html
 Dose_finding/Dose_finding_resazurin_files/
@@ -12,3 +14,13 @@ output/plots/.svg
 Pathway_enrichment_preparation/output/
 Pathway_enrichment_preparation/Pathway_enrichment_preparation.html
 Pathway_enrichment_preparation/Pathway_enrichment_preparation_files/
+Pathway_enrichment_preparation/Pathway_enrichment_preparation_cache/
+
+Pathway_enrichment_results/output/
+Pathway_enrichment_preparation/Pathway_enrichment_results.html
+Pathway_enrichment_preparation/Pathway_enrichment_results_files/
+
+.qs
+
+.rds
+
