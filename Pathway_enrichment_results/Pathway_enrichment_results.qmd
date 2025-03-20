@@ -212,7 +212,8 @@ ggplot(combined_tbl, aes(str_wrap(CpdNoWrap, width = 15, whitespace_only = T), s
   scale_y_discrete(limits = rev) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "bottom") +
-  labs(x = "Compound", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+  labs(x = "Compound", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p)))) +
+  scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
 ```
 
 Facet by method, p-value is color, enrichment ratio size but only significant pathways (p <= 0.05):
@@ -230,7 +231,8 @@ combined_tbl %>%
     scale_y_discrete(limits = rev) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           legend.position = "bottom") +
-    labs(x = "Compound", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+    labs(x = "Compound", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p)))) +
+  scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
 ```
 
 Facet by compound, nested by target/mechanism, size is p-value, enrichment ratio color:
@@ -245,7 +247,8 @@ ggplot(combined_tbl, aes(Method, str_wrap(Pathway, width = 40), color = EnrichRa
   scale_y_discrete(limits = rev) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "bottom") +
-  labs(x = "Enrichment Method", y = "Pathway", color = str_wrap("Enrichment Ratio", width = 10), size = expression(-log[10]~(italic(p))))
+  labs(x = "Enrichment Method", y = "Pathway", color = str_wrap("Enrichment Ratio", width = 10), size = expression(-log[10]~(italic(p)))) +
+  scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
 
 ```
 
@@ -261,7 +264,8 @@ ggplot(combined_tbl, aes(Method, str_wrap(Pathway, width = 70), size = EnrichRat
   scale_y_discrete(limits = rev) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "bottom") +
-  labs(x = "Enrichment Method", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+  labs(x = "Enrichment Method", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p)))) +
+  scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
 
 ggsave("output/plots/heat_v3_portrait.png", width = 11, height = 14, dpi = 600)
 ```
@@ -278,7 +282,8 @@ ggplot(combined_tbl, aes(str_wrap(Pathway, width = 1000), Method, size = EnrichR
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "bottom",
         plot.margin = unit(c(0.5, 0.75, 0.5, 0.75), "inches")) +
-  labs(x = "Pathway", y = "Enrichment Method", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+  labs(x = "Pathway", y = "Enrichment Method", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p)))) +
+  scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
 
 ggsave("output/plots/heat_v3_landscape.png", width = 25, height = 13, dpi = 600)
 ```
@@ -299,7 +304,8 @@ combined_tbl %>%
     scale_y_discrete(limits = rev) +
     theme(axis.text.x = element_text(angle = 45, hjust = 1),
           legend.position = "bottom") +
-    labs(x = "Enrichment Method", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+    labs(x = "Enrichment Method", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p)))) +
+    scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
     #scale_fill_scico(palette = "lajolla", aesthetic = c("fill", "color"), direction = -1) 
 ```
 The plot appears to be less convoluted.
@@ -633,7 +639,7 @@ nested_df_to_list <- function(df) {
 
 updata_theme <- function(p, title) {
   p + 
-    scale_fill_scico(palette = "lajolla", 
+    scale_fill_scico(palette = "devon", 
                      aesthetic = c("fill", "color"), 
                      na.value = NA, 
                      direction = -1) +
@@ -679,7 +685,7 @@ scale_bar_helper <- tibble(
 
 legend_p <- ggplot(scale_bar_helper, aes(x, y, fill = count)) +
   geom_tile(alpha = 0.0) +
-  scale_fill_scico(palette = "lajolla", 
+  scale_fill_scico(palette = "devon", 
                    aesthetic = c("fill", "color"), 
                    na.value = NA, 
                    labels = c("low", "high"), 
@@ -1696,7 +1702,7 @@ kegg_targets_lists_extracted <- kegg_targets_lists %>%
 
 The targets data frame is combined with the one containing p-values (nlogp). Only the top n most significantly enriched pathways are considered (p <= 0.05)
 
-```{r combine-tbls}
+```{r combine-tbls-top10}
 combined_tbl_top10 <- combined_tbl %>%
   select(CpdNoWrap, Pathway, Method, nlogp) %>%
   group_by(CpdNoWrap, Method) %>%
@@ -2075,16 +2081,6 @@ ggraph(tft_pyrimidine_pathway, layout = "manual", x = x, y = y) +
                        na.value = NA) +
   theme_void()
 
-#ggraph(tft_pyrimidine_pathway, layout = "manual", x = x, y = y) +
-#  geom_node_rect(aes(fill = -log10(p.value))) +
-#  overlay_raw_map() +
-#  #scale_fill_gradientn(colours = c("#001260", "white", "#590007"),
-#  #                     values = scales::rescale(c(-40,0,5)),
-#  #                     limits=c(-40, 5),
-#  #                     na.value = NA) +
-#  scale_fill_scico(palette = "lajolla", na.value = NA, direction = -1)+
-#  theme_void()
-
 ggsave("output/plots/tft_moa_example.png", width = 11, height = 8, dpi = 600)
 ```
 
@@ -2105,10 +2101,6 @@ ggraph(comp_steroid_pathway, layout = "manual", x = x, y = y) +
 ggraph(comp_steroid_pathway, layout = "manual", x = x, y = y) +
   geom_node_rect(aes(fill = !is.na(p.value))) +
   overlay_raw_map() +
-  #scale_fill_gradientn(colours = c("#001260", "white", "white"),
-  #                     values = scales::rescale(c(-15,0,0.1)),
-  #                     limits=c(-15, 0),
-  #                     na.value = NA) +
   theme_void()
 
 ggsave("output/plots/comp_moa_example.png", width = 11, height = 8, dpi = 600)
@@ -2138,10 +2130,8 @@ rbind(
 ggsave("output/plots/tft_moa_example_chromatograms.png", width = 2.8, height = 2.4)
 ```
 
+## Session Info
 
-
-```{r}
-pyr_pathway <- parseKGML("output/moa_example/pyrimidine_pathway")
-KEGGpathway2reactionGraph(pyr_pathway) %>%
-  plot()
+```{r session-info}
+sessionInfo()
 ```
