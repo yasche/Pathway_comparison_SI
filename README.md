@@ -51,3 +51,119 @@ loaded via a namespace (and not attached):
 [49] knitr_1.48        farver_2.1.2      htmltools_0.5.8.1 svglite_2.1.3    
 [53] rmarkdown_2.27    carData_3.0-5     compiler_4.4.1
 ```
+### Data Preparation for Enrichment Analysis
+
+```
+R version 4.4.2 (2024-10-31 ucrt)
+Platform: x86_64-w64-mingw32/x64
+Running under: Windows 10 x64 (build 19044)
+
+Matrix products: default
+
+
+locale:
+[1] LC_COLLATE=English_United States.utf8 
+[2] LC_CTYPE=English_United States.utf8   
+[3] LC_MONETARY=English_United States.utf8
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.utf8    
+
+time zone: Europe/Berlin
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] PubChemR_2.1.3  broom_1.0.7     lubridate_1.9.4 forcats_1.0.0  
+ [5] stringr_1.5.1   dplyr_1.1.4     purrr_1.0.2     readr_2.1.5    
+ [9] tidyr_1.3.1     tibble_3.2.1    ggplot2_3.5.1   tidyverse_2.0.0
+
+loaded via a namespace (and not attached):
+ [1] generics_0.1.3    bitops_1.0-9      stringi_1.8.4     hms_1.1.3        
+ [5] digest_0.6.37     magrittr_2.0.3    evaluate_1.0.1    grid_4.4.2       
+ [9] timechange_0.3.0  fastmap_1.2.0     jsonlite_1.8.9    backports_1.5.0  
+[13] brio_1.1.5        httr_1.4.7        scales_1.3.0      cli_3.6.3        
+[17] crayon_1.5.3      rlang_1.1.4       bit64_4.5.2       munsell_0.5.1    
+[21] withr_3.0.2       yaml_2.3.10       parallel_4.4.2    tools_4.4.2      
+[25] RJSONIO_1.3-1.9   tzdb_0.4.0        colorspace_2.1-1  curl_6.0.1       
+[29] png_0.1-8         vctrs_0.6.5       R6_2.5.1          lifecycle_1.0.4  
+[33] magick_2.8.5      rsvg_2.6.1        bit_4.5.0.1       htmlwidgets_1.6.4
+[37] vroom_1.6.5       pkgconfig_2.0.3   pillar_1.10.0     gtable_0.3.6     
+[41] glue_1.8.0        Rcpp_1.0.13-1     xfun_0.49         tidyselect_1.2.1 
+[45] rstudioapi_0.17.1 knitr_1.49        farver_2.1.2      htmltools_0.5.8.1
+[49] labeling_0.4.3    rmarkdown_2.29    testthat_3.2.1.1  compiler_4.4.2   
+[53] RCurl_1.98-1.16  
+```
+
+### Data Analysis After Enrichment Analysis
+
+```
+R version 4.4.2 (2024-10-31 ucrt)
+Platform: x86_64-w64-mingw32/x64
+Running under: Windows 10 x64 (build 19044)
+
+Matrix products: default
+
+
+locale:
+[1] LC_COLLATE=English_United States.utf8 
+[2] LC_CTYPE=English_United States.utf8   
+[3] LC_MONETARY=English_United States.utf8
+[4] LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.utf8    
+
+time zone: Europe/Berlin
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] ggkegg_1.2.3        tidygraph_1.3.1     igraph_2.1.2       
+ [4] XML_3.99-0.17       ggraph_2.2.1        qs_0.27.2          
+ [7] KEGGREST_1.44.1     gplots_3.2.0        ggpubr_0.6.0       
+[10] scales_1.3.0        patchwork_1.3.0     egg_0.4.5          
+[13] gridExtra_2.3       ggVennDiagram_1.5.2 ggbeeswarm_0.7.2   
+[16] corrr_0.4.4         scico_1.5.0         ggh4x_0.3.0        
+[19] lubridate_1.9.4     forcats_1.0.0       stringr_1.5.1      
+[22] dplyr_1.1.4         purrr_1.0.2         readr_2.1.5        
+[25] tidyr_1.3.1         tibble_3.2.1        ggplot2_3.5.1      
+[28] tidyverse_2.0.0    
+
+loaded via a namespace (and not attached):
+  [1] rstudioapi_0.17.1       jsonlite_1.8.9          magrittr_2.0.3         
+  [4] magick_2.8.5            farver_2.1.2            rmarkdown_2.29         
+  [7] GlobalOptions_0.1.2     zlibbioc_1.50.0         ragg_1.3.3             
+ [10] vctrs_0.6.5             memoise_2.0.1           rstatix_0.7.2          
+ [13] htmltools_0.5.8.1       curl_6.0.1              broom_1.0.7            
+ [16] Formula_1.2-5           KernSmooth_2.23-24      htmlwidgets_1.6.4      
+ [19] cachem_1.1.0            lifecycle_1.0.4         pkgconfig_2.0.3        
+ [22] R6_2.5.1                fastmap_1.2.0           GenomeInfoDbData_1.2.12
+ [25] digest_0.6.37           pcaMethods_1.98.0       colorspace_2.1-1       
+ [28] AnnotationDbi_1.66.0    S4Vectors_0.42.1        textshaping_0.4.0      
+ [31] RSQLite_2.3.9           org.Hs.eg.db_3.19.1     filelock_1.0.3         
+ [34] labeling_0.4.3          timechange_0.3.0        httr_1.4.7             
+ [37] polyclip_1.10-7         abind_1.4-8             compiler_4.4.2         
+ [40] bit64_4.5.2             withr_3.0.2             backports_1.5.0        
+ [43] carData_3.0-5           viridis_0.6.5           DBI_1.2.3              
+ [46] ggforce_0.4.2           ggsignif_0.6.4          MASS_7.3-61            
+ [49] rjson_0.2.23            gtools_3.9.5            caTools_1.18.3         
+ [52] tools_4.4.2             vipor_0.4.7             beeswarm_0.4.0         
+ [55] glue_1.8.0              grid_4.4.2              shadowtext_0.1.4       
+ [58] generics_0.1.3          gtable_0.3.6            tzdb_0.4.0             
+ [61] data.table_1.16.4       RApiSerialize_0.1.4     hms_1.1.3              
+ [64] utf8_1.2.4              stringfish_0.16.0       car_3.1-3              
+ [67] XVector_0.44.0          BiocGenerics_0.50.0     ggrepel_0.9.6          
+ [70] pillar_1.10.0           vroom_1.6.5             tweenr_2.0.3           
+ [73] BiocFileCache_2.12.0    bit_4.5.0.1             tidyselect_1.2.1       
+ [76] Biostrings_2.72.1       knitr_1.49              IRanges_2.38.1         
+ [79] stats4_4.4.2            xfun_0.49               graphlayouts_1.2.2     
+ [82] Biobase_2.64.0          stringi_1.8.4           UCSC.utils_1.0.0       
+ [85] yaml_2.3.10             evaluate_1.0.1          codetools_0.2-20       
+ [88] cli_3.6.3               RcppParallel_5.1.9      systemfonts_1.1.0      
+ [91] munsell_0.5.1           Rcpp_1.0.13-1           GenomeInfoDb_1.40.1    
+ [94] dbplyr_2.5.0            png_0.1-8               parallel_4.4.2         
+ [97] blob_1.2.4              bitops_1.0-9            viridisLite_0.4.2      
+[100] crayon_1.5.3            GetoptLong_1.0.5        rlang_1.1.4            
+```
