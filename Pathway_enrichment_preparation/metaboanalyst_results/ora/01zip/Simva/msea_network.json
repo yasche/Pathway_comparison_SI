@@ -1,0 +1,34 @@
+{
+ "nodes": [
+ {
+ "id": "Steroid hormone biosynthesis",
+"label": "Steroid hormone biosynthesis",
+"size": 17.49275,
+"color": "#FF0000",
+"x": 1.115028,
+"y": 0.03072189 
+},
+{
+ "id": "Glycerophospholipid metabolism",
+"label": "Glycerophospholipid metabolism",
+"size": 8.813953,
+"color": "#FF8000",
+"x": -0.5525947,
+"y": -0.4311984 
+},
+{
+ "id": "Fatty acid degradation",
+"label": "Fatty acid degradation",
+"size": 17.53488,
+"color": "#FFFF00",
+"x": -0.1188178,
+"y": 1.243966 
+} 
+],
+"edges": [ {
+ "id": "1" 
+},
+{
+ "id": "0" 
+} ] 
+}

@@ -1,0 +1,34 @@
+{
+ "nodes": [
+ {
+ "id": "Fructose and mannose metabolism",
+"label": "Fructose and mannose metabolism",
+"size": 23.24291,
+"color": "#FF0000",
+"x": -0.8926678,
+"y": 0.8689303 
+},
+{
+ "id": "Glutathione metabolism",
+"label": "Glutathione metabolism",
+"size": 23.24291,
+"color": "#FF8000",
+"x": -0.401609,
+"y": -0.7926938 
+},
+{
+ "id": "Amino sugar and nucleotide sugar metabolism",
+"label": "Amino sugar and nucleotide sugar metabolism",
+"size": 11.13008,
+"color": "#FFFF00",
+"x": 0.7918702,
+"y": 0.4633876 
+} 
+],
+"edges": [ {
+ "id": "1" 
+},
+{
+ "id": "0" 
+} ] 
+}

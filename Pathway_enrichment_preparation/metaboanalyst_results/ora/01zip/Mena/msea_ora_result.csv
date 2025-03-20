@@ -1,0 +1,21 @@
+"","total","expected","hits","Raw p","Holm p","FDR"
+"Pentose and glucuronate interconversions",3,0.607,3,0.0077,0.616,0.533
+"Purine metabolism",12,2.43,6,0.0165,1,0.533
+"Amino sugar and nucleotide sugar metabolism",4,0.81,3,0.0265,1,0.533
+"Galactose metabolism",2,0.405,2,0.04,1,0.533
+"Ascorbate and aldarate metabolism",2,0.405,2,0.04,1,0.533
+"Alanine, aspartate and glutamate metabolism",2,0.405,2,0.04,1,0.533
+"Pyrimidine metabolism",5,1.01,3,0.0569,1,0.569
+"Glycerophospholipid metabolism",5,1.01,3,0.0569,1,0.569
+"Pentose phosphate pathway",3,0.607,2,0.105,1,0.761
+"Arginine and proline metabolism",3,0.607,2,0.105,1,0.761
+"Glutathione metabolism",3,0.607,2,0.105,1,0.761
+"Citrate cycle (TCA cycle)",1,0.202,1,0.202,1,0.81
+"Fatty acid degradation",1,0.202,1,0.202,1,0.81
+"Arginine biosynthesis",1,0.202,1,0.202,1,0.81
+"Tryptophan metabolism",1,0.202,1,0.202,1,0.81
+"Starch and sucrose metabolism",1,0.202,1,0.202,1,0.81
+"Ether lipid metabolism",1,0.202,1,0.202,1,0.81
+"Glyoxylate and dicarboxylate metabolism",1,0.202,1,0.202,1,0.81
+"Nicotinate and nicotinamide metabolism",1,0.202,1,0.202,1,0.81
+"Pantothenate and CoA biosynthesis",1,0.202,1,0.202,1,0.81

@@ -1,0 +1,622 @@
+Query,PubChem,Match,HMDB,ChEBI,KEGG,METLIN,SMILES
+4-NONYLPHENOL,1752,4-Nonylphenol,HMDB0038982,34440,C14550,NA,CCCCCCCCCC1=CC=C(O)C=C1
+NCGC00381421-01_2-ethyl-4-_Z_-2-_3-formamido-2-hydroxybenzoyl_amino_but-2-enoyl_oxy-3-_2-methylbutanoyloxy_pentanoic acid,75528849,NA,NA,NA,NA,NA,CCC(C)C(=O)OC(C(C)OC(=O)/C(=C/C)/NC(=O)C1=C(C(=CC=C1)NC=O)O)C(CC)C(=O)O
+Thr-Val-Leu,49864481,Thr-Val-Leu,NA,NA,NA,NA,C[C@H]([C@@H](C(=O)N[C@@H](C(C)C)C(=O)N[C@@H](CC(C)C)C(=O)O)N)O
+Glu-Phe,18653118,Glutamylphenylalanine,HMDB0029156,NA,NA,NA,N[C@@H](CCC(O)=O)C(=O)N[C@@H](CC1=CC=CC=C1)C(O)=O
+Methyl 2-_3-formamido-2-hydroxybenzoyl_amino_-3-hydroxybutanoate,23789044,NA,NA,NA,NA,NA,CC(C(C(=O)OC)NC(=O)C1=C(C(=CC=C1)NC=O)O)O
+Adenosine 2_-monophosphate,94136,2'-Adenylic acid,NA,NA,C00946,NA,C1=NC(=C2C(=N1)N(C=N2)[C@H]3[C@@H]([C@@H]([C@H](O3)CO)O)OP(=O)(O)O)N
+Guanosine 5_-diphospho-.beta.-L-fucose,135412609,Guanosine Diphosphate Fucose,HMDB0001095,NA,C00325,NA,C[C@H]1[C@H]([C@H]([C@@H](C(O1)OP(=O)(O)OP(=O)(O)OC[C@@H]2[C@H]([C@H]([C@@H](O2)N3C=NC4=C3N=C(NC4=O)N)O)O)O)O)O
+L-.gamma.-Glutamyl-L-glutamic acid,92865,gamma-Glutamylglutamic acid,HMDB0011737,73705,C05282,NA,N[C@@H](CCC(=O)N[C@@H](CCC(O)=O)C(O)=O)C(O)=O
+URIDINE 5_-DIPHOSPHOGLUCURONIC ACID,17473,Uridine diphosphate glucuronic acid,HMDB0000935,17200,C00167,5884,O[C@@H]1[C@@H](COP(O)(=O)OP(O)(=O)O[C@H]2O[C@@H]([C@@H](O)[C@H](O)[C@H]2O)C(O)=O)O[C@H]([C@@H]1O)N1C=CC(=O)NC1=O
+Cytidine monophosphate,6131,Cytidine monophosphate,HMDB0000095,17361,C00055,5143,NC1=NC(=O)N(C=C1)[C@@H]1O[C@H](COP(O)(O)=O)[C@@H](O)[C@H]1O
+L-Cysteine-glutathione disulfide,10455148,S-Glutathionyl-cysteine,NA,NA,C05526,NA,C(CC(=O)N[C@@H](CSSC[C@@H](C(=O)O)N)C(=O)NCC(=O)O)[C@@H](C(=O)O)N
+"5,6-Dimethylbenzimidazole",675,Dimethylbenzimidazole,HMDB0003701,15890,C03114,NA,CC1=CC2=C(C=C1C)N=CN2
+"2,4-Di-tert-butylphenol",7311,"2,4-Di-tert-butylphenol",HMDB0013816,89188,NA,NA,CC(C)(C)C1=CC=C(O)C(=C1)C(C)(C)C
+"9-_2,3-Dihydroxypropoxy_-9-oxononanoic acid",45783154,NA,NA,NA,NA,NA,C(CCCC(=O)O)CCCC(=O)OCC(CO)O
+4-Dodecylbenzenesulfonic acid,8485,4-Dodecylbenzenesulfonic Acid,HMDB0059915,NA,NA,NA,CCCCCCCCCCCCC1=CC=C(C=C1)S(O)(=O)=O
+ANTIMYCIN A _A1 shown,5702199,NA,NA,NA,C11339,NA,CCCCC[C@@H]1[C@H]([C@@H](OC(=O)[C@H]([C@H](OC1=O)C)NC(=O)C2=C(C(=CC=C2)NC=O)O)C)OC(=O)CC(C)C
+"Simvastatin, Sodium Salt",16760655,NA,HMDB0005007,NA,C21581,NA,CCC(C)(C)C(=O)O[C@H]1C[C@H](C=C2[C@H]1[C@H]([C@H](C=C2)C)CC[C@H](C[C@H](CC(=O)[O-])O)O)C.[Na+]
+".alpha.,.alpha.,.alpha.-Trifluorothymidine",6256,Trifluridine,HMDB0014576,75179,NA,NA,OC[C@H]1O[C@H](C[C@@H]1O)N1C=C(C(=O)NC1=O)C(F)(F)F
+Mevinic acid,446154,NA,NA,NA,NA,NA,CC[C@H](C)C(=O)O[C@H]1CCC=C2[C@H]1[C@H]([C@H](C=C2)C)CC[C@H](C[C@H](CC(=O)O)O)O
+5-Fluorouridine,9427,5-Fluorouridine,HMDB0060396,40154,C16633,NA,OC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=C(F)C(=O)NC1=O
+ADENINE,190,Adenine,HMDB0000034,16708,C00147,85,NC1=C2NC=NC2=NC=N1
+PEPSTATIN A,5478883,NA,HMDB0256301,NA,NA,NA,C[C@@H](C(=O)N[C@@H](CC(C)C)[C@H](CC(=O)O)O)NC(=O)C[C@@H]([C@H](CC(C)C)NC(=O)[C@H](C(C)C)NC(=O)[C@H](C(C)C)NC(=O)CC(C)C)O
+Bestatin _hydrochloride,72172,NA,NA,NA,NA,NA,CC(C)C[C@@H](C(=O)O)NC(=O)[C@H]([C@@H](CC1=CC=CC=C1)N)O
+Epibestatin hydrochloride,9995423,NA,NA,NA,NA,NA,CC(C)C[C@@H](C(=O)O)NC(=O)[C@@H]([C@@H](CC1=CC=CC=C1)N)O
+INOSINE,6021,Inosine,HMDB0000195,17596,C00294,84,OC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=NC2=C(O)N=CN=C12
+D-Tryptophan,6305,L-Tryptophan,HMDB0000929,16828,C00078,5879,N[C@@H](CC1=CNC2=C1C=CC=C2)C(O)=O
+Pantothenic acid,6613,Pantothenic acid,HMDB0000210,46905,C00864,NA,CC(C)(CO)[C@@H](O)C(=O)NCCC(O)=O
+Uridine diphosphate-N-acetylglucosamine,445675,Uridine diphosphate-N-acetylglucosamine,HMDB0000290,16264,C00043,5281,CC(=O)N[C@@H]1[C@@H](O)[C@H](O)[C@@H](CO)O[C@@H]1OP(O)(=O)OP(O)(=O)OC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=CC(=O)NC1=O
+Glu-Gln,10171586,Glutamylglutamine,HMDB0028817,141435,NA,NA,N[C@@H](CCC(O)=O)C(=O)N[C@@H](CCC(N)=O)C(O)=O
+UDP-glucose,8629,Uridine diphosphate glucose,HMDB0000286,46229,C00029,5278,OC[C@H]1O[C@H](OP(O)(=O)OP(O)(=O)OC[C@H]2O[C@H]([C@H](O)[C@@H]2O)N2C=CC(=O)NC2=O)[C@H](O)[C@@H](O)[C@@H]1O
+Uridine 5_-monophosphate,6030,Uridine 5'-monophosphate,HMDB0000288,16695,C00105,NA,O[C@H]1[C@@H](O)[C@@H](O[C@@H]1COP(O)(O)=O)N1C=CC(=O)NC1=O
+Ribose 1-phosphate,439236,Ribose 1-phosphate,HMDB0001489,16300,C00620,6273,OC[C@H]1O[C@H](OP(O)(O)=O)[C@H](O)[C@@H]1O
+Citric acid,311,Citric acid,HMDB0000094,30769,C00158,124,OC(=O)CC(O)(CC(O)=O)C(O)=O
+Glucose 1-phosphate,65533,Glucose 1-phosphate,HMDB0001586,29042,C00103,6331,OC[C@H]1O[C@H](OP(O)(O)=O)[C@H](O)[C@@H](O)[C@@H]1O
+"Glutathione, oxidized",65359,Oxidized glutathione,HMDB0003337,17858,C00127,6893,N[C@@H](CCC(=O)N[C@@H](CSSC[C@H](NC(=O)CC[C@H](N)C(O)=O)C(=O)NCC(O)=O)C(=O)NCC(O)=O)C(O)=O
+1-_3-Methylphenyl_-4-piperidinamine,23461900,NA,NA,NA,NA,NA,CC1=CC(=CC=C1)N2CCC(CC2)N
+Acenapthylene,9161,Acenaphthylene,HMDB0247900,33081,NA,NA,C1=CC2=C3C1=CC=CC3=CC=C2
+4-Methylphthalic anhydride,88069,NA,NA,NA,NA,NA,CC1=CC2=C(C=C1)C(=O)OC2=O
+Trp-Cys,19762195,Tryptophyl-Cysteine,HMDB0029080,NA,NA,NA,NC(CC1=CNC2=C1C=CC=C2)C(=O)NC(CS)C(O)=O
+Rilmenidine,68712,Rilmenidine,HMDB0257232,NA,C11120,NA,C1CC1C(C2CC2)NC3=NCCO3
+_-alpha-Methyl-4-carboxyphenylglycine,446355,alpha-Methyl-4-carboxyphenylglycine,HMDB0243703,NA,NA,NA,C[C@](C1=CC=C(C=C1)C(=O)O)(C(=O)O)N
+CocamidopropylBetaine,20280,NA,NA,NA,NA,NA,CCCCCCCCCCCC(=O)NCCC[N+](C)(C)CC(=O)[O-]
+2-Methylbutyroylcarnitine,6426901,2-Methylbutyroylcarnitine,HMDB0000378,73026,NA,5367,CCC(C)C(=O)OC(CC([O-])=O)C[N+](C)(C)C
+8-Hydroxyquinoline,1923,Quinolin-8-ol,NA,NA,C19434,NA,C1=CC2=C(C(=C1)O)N=CC=C2
+Docosan-1-amine,84218,NA,NA,NA,NA,NA,CCCCCCCCCCCCCCCCCCCCCCN
+cyclandelate,2893,Cyclandelate,HMDB0015586,3988,NA,NA,CC1CC(CC(C)(C)C1)OC(=O)C(O)C1=CC=CC=C1
+PGPC,46907872,PC(16:0/5:0(COOH)),NA,61822,C03889,NA,CCCCCCCCCCCCCCCC(=O)OC(COP(=O)()OCC(C)(C)C)OC(=O)CCCC(=O)O
+6-Methylquinoline,7059,6-Methylquinoline,HMDB0033115,NA,NA,NA,CC1=CC2=C(C=C1)N=CC=C2
+Indole,798,Indole,HMDB0000738,16881,C00463,286,N1C=CC2=C1C=CC=C2
+_-Propionylcarnitine,107738,O-Propionylcarnitine,HMDB0000824,NA,C03017,NA,CCC(=O)OC(CC(=O)[O-])C[N+](C)(C)C
+N-_2-_dimethylamino_-2-phenylethyl_-4-methylbenzenesulfonamide,2947388,NA,NA,NA,NA,NA,CC1=CC=C(C=C1)S(=O)(=O)NCC(C2=CC=CC=C2)N(C)C
+Thiamine,1130,Thiamine,HMDB0000235,18385,C00378,5242,CC1=C(CCO)SC=[N+]1CC1=CN=C(C)N=C1N
+4-Ethylbenzene-1-sulfonamide,222870,NA,NA,NA,NA,NA,CCC1=CC=C(C=C1)S(=O)(=O)N
+N_-Acetyl-L-arginine,67427,N-a-Acetyl-L-arginine,HMDB0004620,40521,NA,NA,CC(=O)N[C@@H](CCCNC(N)=N)C(O)=O
+Ala Val Val,145453725,Ala-Val-Val,NA,NA,NA,NA,C[C@@H](C(=O)N[C@@H](C(C)C)C(=O)N[C@@H](C(C)C)C(=O)O)N
+METHACHOLINE,1993,Methacholine,HMDB0015654,6804,C07471,NA,CC(C[N+](C)(C)C)OC(C)=O
+Dicyclohexylamine,7582,Dicyclohexylamine,HMDB0251214,NA,C14686,NA,C1CCC(CC1)NC1CCCCC1
+Glu Pro Arg,145455472,Glu-Pro-Arg,NA,NA,NA,NA,NA
+Arg Gly Glu,53662383,Arg-Gly-Glu,NA,NA,NA,NA,NA
+Thr Thr Arg,145458202,Thr-Thr-Arg,NA,NA,NA,NA,NA
+Pro Glu,194260,NA,NA,NA,NA,NA,NA
+Hexamethylcyclotrisiloxane,10914,NA,NA,NA,NA,NA,NA
+V-PYRRO_NO,9605288,NA,NA,NA,NA,NA,NA
+Glu Ser,6995653,Glutamylserine,HMDB0028828,73509,NA,NA,N[C@@H](CCC(O)=O)C(=O)N[C@@H](CO)C(O)=O
+Deoxyadenosine monophosphate,12599,Deoxyadenosine monophosphate,HMDB0000905,17713,C00360,3461,NC1=NC=NC2=C1N=CN2[C@H]1C[C@H](O)[C@@H](COP(O)(O)=O)O1
+Glycerophospho-N-Palmitoyl Ethanolamine,53393933,NA,NA,NA,NA,NA,CCCCCCCCCCCCCCCC(=O)NCCOP(=O)(O)OCC(CO)O
+Glu Gln Gln,145455357,Glu-Gln-Gln,NA,NA,NA,NA,NA
+Lys Ser,151428,Lysylserine,HMDB0028960,74568,NA,NA,NCCCC[C@H](N)C(=O)N[C@@H](CO)C(O)=O
+Gln Lys,71363012,Glutaminyllysine,HMDB0028802,NA,NA,NA,[H][C@](N)(CCC(O)=N)C(O)=N[C@@]([H])(CCCCN)C(O)=O
+Arg Glu,6995004,NA,NA,NA,NA,NA,NA
+.beta.-Nicotinamide adenine dinucleotide phosphate,5885,NADP,HMDB0000217,44409,C00006,5227,NC(=O)C1=C[N+](=CC=C1)[C@@H]1O[C@H](COP([O-])(=O)OP(O)(=O)OC[C@H]2O[C@H]([C@H](OP(O)(O)=O)[C@@H]2O)N2C=NC3=C2N=CN=C3N)[C@@H](O)[C@H]1O
+ADMA,123831,Asymmetric dimethylarginine,HMDB0001539,17929,C03626,6309,N[C@@H](CCC\N=C(/N)N(C)C)C(O)=O
+"2-Ethyl-1,2,3,4-tetrahydroisoquinolin-5-amine",18687359,NA,NA,NA,NA,NA,NA
+Estrone,5870,Estrone,HMDB0000145,17263,C00468,264,[H][C@@]12CCC(=O)[C@@]1(C)CC[C@]1([H])C3=C(CC[C@@]21[H])C=C(O)C=C3
+Chamazulene,10719,"1,4-Dimethyl-7-ethylazulene",HMDB0036470,3573,C09633,NA,CCC1=CC2=C(C)C=CC2=C(C)C=C1
+"1,2-Dioleoyl-sn-glycerol",9543716,DG(18:1(9Z)/18:1(9Z)/0:0),HMDB0007218,52333,C00165,4355,[H][C@](CO)(COC(=O)CCCCCCC\C=C/CCCCCCCC)OC(=O)CCCCCCC\C=C/CCCCCCCC
+Phthalic anhydride,6811,NA,NA,NA,NA,NA,NA
+Dipalmitolein _9c,14275348,NA,NA,NA,NA,NA,CCCCCC/C=C\CCCCCCCC(=O)OCC(CO)OC(=O)CCCCCCC/C=C\CCCCCC
+N-Palmitoylsphingosine,5283564,Cer(d18:1/16:0),HMDB0004949,72959,C00195,7202,[H][C@@](CO)(NC(=O)CCCCCCCCCCCCCCC)[C@H](O)\C=C\CCCCCCCCCCCCC
+Di_2-ethylhexyl_ phthalate,8343,Bis(2-ethylhexyl)phthalate,NA,NA,NA,NA,NA
+Docosanamide,76468,Docosanamide,HMDB0000583,NA,NA,5565,CCCCCCCCCCCCCCCCCCCCCC(N)=O
+Cycloxydim-TP BH 517-TSO E_Z-isomer,145740499,NA,NA,NA,NA,NA,CCC/C(=N\OCC)/C1=C(CC(CC1=O)C2CCCS(=O)C2)O
+N-Oleoylethanolamine,5283454,Oleoylethanolamide,HMDB0002088,71466,NA,NA,CCCCCCCC\C=C/CCCCCCCC(=O)NCCO
+13E-Docosenamide,5365369,13-Docosenamide,HMDB0244507,NA,NA,NA,CCCCCCCC/C=C/CCCCCCCCCCCC(=O)N
+Antimycin A1,12550,Antimycin A,HMDB0248488,NA,C11339,NA,CCCCCCC1C(OC(=O)CC(C)C)C(C)OC(=O)C(NC(=O)C2=CC=CC(NC=O)=C2O)C(C)OC1=O
+Koninginin A,10934979,NA,NA,NA,NA,NA,CCCCCC[C@H]1[C@@H]2CC[C@H]3[C@H](CC[C@H]([C@]3(O2)O1)O)O
+Resolvin D2 methyl ester,101354717,NA,NA,NA,NA,NA,CC/C=C\C[C@@H]([C@@H](/C=C/C=C/C=C\C=C\[C@H](C/C=C\CCC(=O)OC)O)O)O
+Nephrosteranic acid,6453427,NA,NA,NA,NA,NA,CCCCCCCCCCCC1C(C(=C)C(=O)O1)C(=O)O
+9-Fluorenone,10241,NA,NA,NA,NA,NA,NA
+1-Stearoyl-rac-glycerol,15560610,MG(18:0/0:0/0:0),HMDB0011131,75550,NA,NA,[H][C@](O)(CO)COC(=O)CCCCCCCCCCCCCCCCC
+Pipericine,101713141,Pipericine,HMDB0031678,NA,NA,NA,CCCCCCCCCCCCC\C=C/C=C/C(=O)NCC(C)C
+Methyl geranate,5365910,Methyl geranate,HMDB0059816,NA,NA,NA,COC(=O)\C=C(/C)CCC=C(C)C
+4-_1-_1-cyclopentylazetidin-3-yl_methyl_-5-methylimidazol-2-yl_pyridine,124046976,NA,NA,NA,NA,NA,CC1=CN=C(N1CC2CN(C2)C3CCCC3)C4=CC=NC=C4
+Ethylene brassylate,61014,Ethylene brassylate,HMDB0040459,NA,NA,NA,O=C1CCCCCCCCCCCC(=O)OCCO1
+MG_18:1_9Z_0:0_0:0_rac,5283468,Glyceryl monooleate,HMDB0254854,NA,NA,NA,CCCCCCCC/C=C\CCCCCCCC(=O)OCC(CO)O
+Monoelaidin,33022,Monoelaidin,HMDB0254854,NA,NA,NA,CCCCCCCCC=CCCCCCCCC(=O)OCC(O)CO
+7-keto DHEA,193313,7-Keto-dehydroepiandrosterone,HMDB0247266,NA,NA,NA,C[C@]12CC[C@H]3[C@H]([C@@H]1CCC2=O)C(=O)C=C4[C@@]3(CC[C@@H](C4)O)C
+2-Linoleoyl Glycerol,549043,2-Linoleoyl Glycerol,HMDB0245187,173124,NA,NA,CCCCCC=CCC=CCCCCCCCC(=O)OC(CO)CO
+trans-Cinnamic acid,444539,trans-Cinnamic acid,HMDB0000930,35697,C10438,5880,OC(=O)\C=C\C1=CC=CC=C1
+Simvastatin,54454,Simvastatin,HMDB0005007,9150,NA,2443,[H][C@]12[C@H](C[C@@H](C)C=C1C=C[C@H](C)[C@@H]2CC[C@@H]1C[C@@H](O)CC(=O)O1)OC(=O)C(C)(C)CC
+1-Monopalmitin,3084463,MG(16:0/0:0/0:0),HMDB0011564,75542,NA,NA,[H][C@](O)(CO)COC(=O)CCCCCCCCCCCCCCC
+AVOCADENE ACETATE,25107527,avocadene acetate,NA,NA,NA,NA,C=CCCCCCCCCCCC(O)C(O)COC(C)=O
+Avocadene 2-acetate,45360032,Avocadene 2-acetate,HMDB0031044,NA,NA,NA,CC(=O)OC(CO)CC(O)CCCCCCCCCCCC=C
+Monopalmitolein _9c,9883914,NA,NA,NA,NA,NA,CCCCCC/C=C\CCCCCCCC(=O)OCC(CO)O
+N-octadecanoyl-L-Homoserine lactone,69757690,N-(octadecanoyl)-homoserine lactone,NA,NA,NA,NA,CCCCCCCCCCCCCCCCCC(=O)N1CCOC1=O
+Linoleoyl Ethanolamide,5283446,Linoleoyl ethanolamide,HMDB0012252,64032,NA,NA,CCCCC\C=C/C\C=C/CCCCCCCC(=O)NCCO
+Ricinoleic Acid methyl ester,5354133,NA,NA,NA,NA,NA,CCCCCC[C@H](C/C=C\CCCCCCCC(=O)OC)O
+Rac-trans-3-Hydroxy-1-methyl-2-pyrrolidinone-5-_3-pyridinyl_carboxylic acid,46781754,NA,NA,NA,NA,NA,CN1[C@@H](C[C@H](C1=O)O)C2=CC(=CN=C2)C(=O)O
+Anthraquinone,6780,Anthraquinone,HMDB0248468,40448,C16207,NA,O=C1C2=CC=CC=C2C(=O)C2=CC=CC=C12
+"_3,5-dimethylphenyl_-_3-_2-_furan-2-yl_imidazo_4,5-b_pyridin-3-yl_pyrrolidin-1-yl_methanone",87050856,NA,NA,NA,NA,NA,NA
+"N-_1-_3-propan-2-yl-1,2,4-oxadiazol-5-yl_cyclohexyl_pyrazine-2-carboxamide",53181947,NA,NA,NA,NA,NA,NA
+Velvione,5362736,NA,NA,NA,NA,NA,NA
+lovastatin,53232,Lovastatin,HMDB0014372,40303,C07074,NA,[H][C@]12[C@H](C[C@@H](C)C=C1C=C[C@H](C)[C@@H]2CC[C@@H]1C[C@@H](O)CC(=O)O1)OC(=O)[C@@H](C)CC
+3-_1-_4-fluorophenyl_sulfonylpiperidin-3-yl_propanoic acid,56828897,NA,NA,NA,NA,NA,NA
+N-cyclohexyl-4-ethoxypiperidine-1-carboxamide,53016544,NA,NA,NA,NA,NA,NA
+beta-Ionone,638014,beta-Ionone,HMDB0036565,32325,C12287,NA,CC(=O)\C=C\C1=C(C)CCCC1(C)C
+Lactarorufin A,56842298,NA,NA,NA,NA,NA,NA
+Ionene,68057,alpha-Ionene,HMDB0059826,87604,NA,NA,CC1=CC=C2C(CCCC2(C)C)=C1
+4-_3-methoxyphenyl_sulfonylmorpholine,890650,NA,NA,NA,NA,NA,NA
+Artemisinin,68827,Artemisin,NA,223316,C09538,NA,C1CC2(C)C(=O)O3O4(C)CC132OO4
+Mevastatin,2854,Mevastatin,HMDB0254692,NA,NA,NA,CCC(C)C(=O)OC1CCC=C2C=CC(C)C(CCC3CC(O)CC(=O)O3)C12
+Acoric acid,25750964,Acoric acid,HMDB0038165,NA,NA,NA,CC(C)C(=O)[C@]1(CC[C@@H](C)C(=O)C1)[C@@H](C)CC(O)=O
+"5_S_,6_R_,15_R_-Lipoxin A4",71684475,Epi-Lipoxin A4,HMDB0251839,NA,C06314,NA,CCCCC[C@H](/C=C\C=C\C=C/C=C\[C@H](C(CCCC(=O)O)O)O)O
+N-_1-_6-ethoxypyridin-3-yl_methyl_pyrrolidin-3-yl_-2-pyridin-3-ylacetamide,53185236,NA,NA,NA,NA,NA,NA
+2-_Methylsulfonyl_anilino_propanoic acid,22193708,NA,NA,NA,NA,NA,NA
+PARTHENOLIDE,108068,Parthenolide,HMDB0242219,NA,C07609,NA,C=C1C(=O)O21CC/C(C)=C/CC1(C)O21
+"_1R,5S,6S,8R_-8-Hydroxy-11-_hydroxymethyl_-1,5,11-trimethyltricyclo_6.2.1.02,6_undec-2-en-9-one",118705846,NA,NA,NA,NA,NA,C[C@H]1CC=C2[C@H]1C[C@@]3(C(=O)C[C@]2(C3(C)CO)C)O
+Lovastatin acid _Mevinolinic acid,64727,NA,NA,NA,NA,NA,NA
+"NCGC00384680-01_C17H24O4_Bicyclo_7.2.0_undec-4-en-3-one, 11-_acetyloxy_methyl_-4-_hydroxymethyl_-11-methyl-8-methylene-, _1R,4Z,9S_",15601259,NA,NA,NA,NA,NA,NA
+"1,6-Dioxacyclohexadecane-7,16-dione",94013,NA,NA,NA,NA,NA,NA
+Lauryldiethanolamine,352309,NA,NA,NA,NA,NA,NA
+Rasfonin,11259090,NA,NA,NA,NA,NA,NA
+"Methyl 2-_4-ethenyl-2,6-dihydroxy-3-_3-hydroxyprop-1-en-2-yl_-4-methylcyclohexyl_prop-2-enoate",45783164,NA,NA,NA,NA,NA,NA
+"6-_E_-2,8-Dihydroxy-5,7-dimethylnon-5-enyl_-4-hydroxy-3-methylpyran-2-one",75411942,NA,NA,NA,NA,NA,NA
+"4,2_-Dihydroxy-3-methoxy-5_-methylchalcone",5989122,NA,NA,NA,NA,NA,NA
+Pravastatin lactone,9931182,NA,NA,NA,NA,NA,NA
+glycohyodeoxycholic acid,13955650,Glycohyodeoxycholic acid,HMDB0304944,NA,NA,NA,CC(CCC(=O)NCC(O)=O)C1CCC2C3CC(O)C4CC(O)CCC4(C)C3CCC12C
+HIMBACINE,6436265,Himbacine,NA,NA,C10598,NA,NA
+POV-PC,23557187,PC(16:0/5:0(CHO)),NA,77890,NA,NA,CCCCCCCCCCCCCCCC(=O)OC(COP(=O)()OCC(C)(C)C)OC(=O)CCCC=O
+1-Palmitoyl-2-linoleoyl PE,9546747,"PE(16:0/18:2(9Z,12Z))",HMDB0008928,73008,C00350,NA,[H][C@@](COC(=O)CCCCCCCCCCCCCCC)(COP(O)(=O)OCCN)OC(=O)CCCCCCC\C=C/C\C=C/CCCCC
+"4-Methoxy-6-pentyl-2-prop-1-en-2-yl-2,3-dihydro-1-benzofuran-7-carboxylic acid",51136368,NA,NA,NA,NA,NA,NA
+1-Oleoyl-sn-glycero-3-phosphocholine,16081932,LysoPC(18:1/0:0),HMDB0002815,28610,C04230,184,CCCCCCCC\C=C/CCCCCCCC(=O)OC[C@@H](O)COP([O-])(=O)OCC[N+](C)(C)C
+"1,2-Dioleoyl-sn-glycero-3-phosphoethanolamine",9546757,PE(18:1(9Z)/18:1(9Z)),HMDB0009059,74986,C00350,NA,[H][C@@](COC(=O)CCCCCCC\C=C/CCCCCCCC)(COP(O)(=O)OCCN)OC(=O)CCCCCCC\C=C/CCCCCCCC
+1-Palmitoyl-2-myristoyl-sn-glycero-3-phosphocholine,24778679,PC(16:0/14:0),HMDB0007965,75304,C00157,NA,[H][C@@](COC(=O)CCCCCCCCCCCCCCC)(COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCCCCCCCC
+1-Oleoyl-2-myristoyl-sn-glycero-3-phosphocholine,24778931,PC(18:1(9Z)/14:0),HMDB0008097,86092,C00157,NA,CCCCCCCCCCCCCC(=O)O[C@]([H])(COC(=O)CCCCCCC\C=C/CCCCCCCC)COP([O-])(=O)OCC[N+](C)(C)C
+"1,2-Dioleoyl PC",10350317,PC(36:2),HMDB0000593,74669,C00157,5572,CCCCCCCC\C=C/CCCCCCCC(=O)OC[C@H](COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC\C=C/CCCCCCCC
+2-Oleoyl-1-palmitoyl-sn-glycero-3-phosphocholine,5497103,PC(16:0/18:1(9Z)),HMDB0007972,73001,C00157,NA,[H][C@@](COC(=O)CCCCCCCCCCCCCCC)(COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC\C=C/CCCCCCCC
+Palmitoyl-L-carnitine,11953816,Palmitoylcarnitine,HMDB0000222,17490,C02990,5231,CCCCCCCCCCCCCCCC(=O)O[C@H](CC(O)=O)C[N+](C)(C)C
+1-Palmitoyl-2-oleoyl-sn-glycero-3-phosphoethanolamine,5283496,PE(16:0/18:1(9Z)),HMDB0008927,73007,C00350,NA,[H][C@@](COC(=O)CCCCCCCCCCCCCCC)(COP(O)(=O)OCCN)OC(=O)CCCCCCC\C=C/CCCCCCCC
+4-AMINOETHYLBENZENESULFONYL FLUORIDE,16667735,NA,NA,NA,NA,NA,NA
+1-Palmitoyl-sn-glycero-3-phosphocholine,460602,LysoPC(16:0/0:0),HMDB0010382,72998,C04230,NA,CCCCCCCCCCCCCCCC(=O)OC[C@@H](O)COP([O-])(=O)OCC[N+](C)(C)C
+Leu Glu Ile Glu,NA,NA,NA,NA,NA,NA,NA
+"1,2-Dilinoleoyl-sn-glycero-3-phosphocholine",5288075,"PC(18:2(9Z,12Z)/18:2(9Z,12Z))",HMDB0008138,42027,C00157,NA,CCCCC\C=C/C\C=C/CCCCCCCC(=O)OC[C@]([H])(COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC\C=C/C\C=C/CCCCC
+Val Asp Leu Arg,NA,NA,NA,NA,NA,NA,NA
+"1,2-Dipalmitoleoyl-sn-glycero-3-phosphocholine",24778764,PC(16:1(9Z)/16:1(9Z)),HMDB0008002,83717,C00157,NA,CCCCCC\C=C/CCCCCCCC(=O)OC[C@]([H])(COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCC\C=C/CCCCCC
+2-_Aminomethyl_-4-_tert-butyl_-6-_methylsulfonyl_phenol,3038493,NA,NA,NA,NA,NA,NA
+Niacinamide,936,Niacinamide,HMDB0001406,17154,C00153,1497,NC(=O)C1=CC=CN=C1
+4-Hydroxymandelonitrile,440104,(S)-4-Hydroxymandelonitrile,HMDB0060318,16660,C03742,NA,O[C@H](C#N)C1=CC=C(O)C=C1
+1-Palmitoyl-2-docosahexaenoyl-sn-glycero-3-phosphocholine,6441886,PC(38:6),HMDB0007991,74963,C00157,NA,CCCCCCCCCCCCCCCC(=O)OC[C@]([H])(COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CC\C=C/C\C=C/C\C=C/C\C=C/C\C=C/C\C=C/CC
+N-_1H-Indol-3-ylacetyl_methionine,17580936,indole-3-acetyl-methionine,HMDB0304384,NA,NA,NA,NA
+Hexaethylene glycol,17472,Hexaethylene glycol,HMDB0061822,49793,NA,NA,OCCOCCOCCOCCOCCOCCO
+1-Myristoyl-2-palmitoyl-sn-glycero-3-phosphocholine,129657,PC(30:0),HMDB0007869,75062,C00157,NA,[H][C@@](COC(=O)CCCCCCCCCCCCC)(COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCCCCCCCCCC
+"N-_3-ethoxypropyl_-2-_2-oxo-4,5-dihydro-3H-1-benzazepin-1-yl_acetamide",20909567,NA,NA,NA,NA,NA,NA
+"1,2-Ditetradecanoyl-sn-glycero-3-phosphocholine",5459377,PC(14:0/14:0),HMDB0007866,45240,C00157,NA,[H][C@@](COC(=O)CCCCCCCCCCCCC)(COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CCCCCCCCCCCCC
+5_-Deoxy-5_-_WBR_methylthio_adenosine,439176,5'-Methylthioadenosine,HMDB0001173,17509,C00170,3425,CSC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=NC2=C1N=CN=C2N
+Diphenylcyclopropenone,65057,Diphenylcyclopropenone,HMDB0251457,53074,NA,NA,O=C1C(=C1C1=CC=CC=C1)C1=CC=CC=C1
+3-HYDROXY-4-_SUCCIN-2-YL_-CARYOLANE delta-LACTONE,6857784,NA,NA,NA,NA,NA,NA
+"_4AS,7R,8aS_-9,9-Dimethyltetrahydro-4H-4a,7-methanobenzo_c_1,2_oxazireno_2,3-b_isothiazole 3,3-dioxide",7128360,NA,NA,NA,NA,NA,NA
+9-Phenanthrol,10229,9-Hydroxyphenanthrene,HMDB0059801,28820,C11430,NA,OC1=CC2=CC=CC=C2C2=CC=CC=C12
+4-_1-Phenylcyclohexyl_phenol,1538454,NA,NA,NA,NA,NA,NA
+3-HYDROXYFLAVONE,11349,3-Hydroxyflavone,HMDB0031816,5078,C01495,NA,OC1=C(OC2=CC=CC=C2C1=O)C1=CC=CC=C1
+Tetrahydrocortisol 21-acetate,71752444,NA,NA,NA,NA,NA,NA
+Oleoyl-L-carnitine,46907933,Oleoylcarnitine,HMDB0005065,84651,C02301,NA,CCCCCCCC\C=C/CCCCCCCC(=O)O[C@H](CC(O)=O)C[N+](C)(C)C
+"2,5-Dimethylbenzaldehyde",10236014,"2,3,6-Trimethylbenzaldehyde",HMDB0032014,NA,NA,NA,CC1=C(C)C(C=O)=C(C)C=C1
+2-_3-Methoxyphenyl_sulfanyl_acetic acid,820084,NA,NA,NA,NA,NA,NA
+Phenolsulfonphthalein,4766,NA,NA,NA,NA,NA,NA
+Stearoyl-L-carnitine,52922056,Stearoylcarnitine,HMDB0000848,84644,C02301,5811,CCCCCCCCCCCCCCCCCC(=O)O[C@H](CC(O)=O)C[N+](C)(C)C
+Linoleoylcarnitine,6450015,Linoleyl carnitine,HMDB0006469,84098,C02301,NA,CCCCC\C=C/C\C=C/CCCCCCCC(=O)O[C@H](CC(O)=O)C[N+](C)(C)C
+N-Lauroylsarcosine,7348,N-LAUROYLSARCOSINE,HMDB0255165,NA,NA,NA,CCCCCCCCCCCC(=O)N(C)CC(O)=O
+"5-Vinyl-3,4-dihydro-1H-pyrano_3,4-c_pyridin-1-one",354616,Gentianine,HMDB0303030,28981,C06525,NA,C=CC1=C2CCOC(=O)C2=CN=C1
+Pyridoxine _Vitamin B6,1054,Pyridoxine,HMDB0000239,16709,C00314,5245,CC1=C(O)C(CO)=C(CO)C=N1
+N-_Octadecanoyl_sphing-4-enine-1-phosphocholine,6453725,SM(d18:1/18:0),HMDB0001348,83358,C00550,176,[H][C@@](COP([O-])(=O)OCC[N+](C)(C)C)(NC(=O)CCCCCCCCCCCCCCCCC)[C@H](O)\C=C\CCCCCCCCCCCCC
+ELAIDYLPHOSPHOCHOLINE,14856193,NA,NA,NA,NA,NA,NA
+SM_d18:1_16:0,9939941,SM(d18:1/16:0),HMDB0010169,78646,C00550,NA,[H][C@@](COP([O-])(=O)OCC[N+](C)(C)C)(NC(=O)CCCCCCCCCCCCCCC)[C@H](O)\C=C\CCCCCCCCCCCCC
+9-OxoODE,9839084,9-OxoODE,HMDB0004669,72842,C14766,NA,CCCCC\C=C/C=C/C(=O)CCCCCCCC(O)=O
+OCTADECYLPHOSPHOCHOLINE,125219,NA,NA,NA,NA,NA,NA
+5_-Deoxy-5_-methylthioadenosine,439176,5'-Methylthioadenosine,HMDB0001173,17509,C00170,3425,CSC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=NC2=C1N=CN=C2N
+Rimantadine,5071,Rimantadine,HMDB0014621,193858,C07236,NA,CC(N)C12CC3CC(CC(C3)C1)C2
+Azacyclotridecan-2-one,13690,NA,NA,NA,NA,NA,NA
+PG_18:1_9Z_0:0,9547135,LysoPG(18:1(9Z)/0:0),HMDB0240602,72952,NA,NA,CCCCCCCC\C=C/CCCCCCCC(=O)OC[C@@H](O)COP(O)(=O)OC[C@@H](O)CO
+N-_2-hydroxyethyl_-N_-_1-phenylcyclopentyl_methyl_oxamide,1989736,NA,NA,NA,NA,NA,NA
+1-METHYLADENOSINE,27476,1-Methyladenosine,HMDB0003331,16020,C02494,6888,CN1C=NC2=C(N=CN2[C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)C1=N
+"1-_azepan-1-yl_-2-_3-_4-fluorophenyl_-6-methyl-_1,2_oxazolo_5,4-d_pyrimidin-4-yl_oxy_ethanone",53107855,NA,NA,NA,NA,NA,NA
+1-_1Z-Octadecenyl_-sn-glycero-3-phosphocholine,24779527,LysoPC(P-18:0/0:0),HMDB0013122,133662,C04230,NA,CCCCCCCCCCCCCCCC\C=C/OC[C@](O)([H])COP([O-])(=O)OCC[N+](C)(C)C
+Dodecanoylcarnitine,168381,Dodecanoylcarnitine,HMDB0002250,77086,C02301,6573,CCCCCCCCCCCC(=O)O[C@H](CC(O)=O)C[N+](C)(C)C
+1-_1Z-Hexadecenyl_-sn-glycero-3-phosphocholine,10917802,LysoPC(P-16:0/0:0),HMDB0010407,73850,C04230,NA,CCCCCCCCCCCCCC\C=C/OC[C@](O)([H])COP([O-])(=O)OCC[N+](C)(C)C
+Butenoyl PAF,57545134,NA,NA,NA,NA,NA,NA
+enantio-PAF C-16,2499,NA,NA,NA,NA,NA,NA
+Oleamide,5283387,Oleamide,HMDB0002117,116314,C19670,NA,CCCCCCCC\C=C/CCCCCCCC(N)=O
+1-heptadecanoyl-sn-glycero-3-phosphocholine,24779463,LysoPC(17:0/0:0),HMDB0012108,74340,C04230,NA,CCCCCCCCCCCCCCCCC(=O)OC[C@@H](O)COP([O-])(=O)OCC[N+](C)(C)C
+1-Linoleoyl-sn-glycero-3-phosphorylcholine,11005824,LysoPC(18:2/0:0),HMDB0010386,28733,C04230,NA,CCCCC\C=C/C\C=C/CCCCCCCC(=O)OC[C@@H](O)COP([O-])(=O)OCC[N+](C)(C)C
+PC_16:0_0:0_U_ _ PC_16:0_0:0_rac,460602,LysoPC(16:0/0:0),HMDB0010382,72998,C04230,NA,CCCCCCCCCCCCCCCC(=O)OC[C@@H](O)COP([O-])(=O)OCC[N+](C)(C)C
+2-Docosahexaenoyl-1-stearoyl-sn-glycero-3-phosphoserine,91746196,"PS(18:0/22:6(4Z,7Z,10Z,13Z,16Z,19Z))",HMDB0010167,NA,NA,NA,NA
+PC_14:0_0:0,460604,LysoPC(14:0/0:0),HMDB0010379,64489,C04230,NA,CCCCCCCCCCCCCC(=O)OC[C@@H](O)COP([O-])(=O)OCC[N+](C)(C)C
+Phe Val,7359122,NA,NA,NA,NA,NA,NA
+Leupeptin,3910,Leupeptin,HMDB0254042,NA,NA,NA,CC(C)CC(NC(C)=O)C(=O)NC(CC(C)C)C(=O)NC(CCCNC(N)=N)C=O
+Vitamin K2_20,5282367,Menatetrenone,HMDB0030017,78277,C00828,NA,CC(C)=CCC\C(C)=C\CC\C(C)=C\CC\C(C)=C\CC1=C(C)C(=O)C2=CC=CC=C2C1=O
+PE_18:1_9Z_0:0,9547071,LysoPE(18:1(9Z)/0:0),HMDB0011506,74971,NA,NA,[H][C@@](O)(COC(=O)CCCCCCC\C=C/CCCCCCCC)COP(O)(=O)OCCN
+LPE 18:2,52925130,"LysoPE(18:2(9Z,12Z)/0:0)",HMDB0011507,83058,NA,NA,[H][C@@](O)(COC(=O)CCCCCCC\C=C/C\C=C/CCCCC)COP(O)(=O)OCCN
+PE_16:0_0:0,9547069,LysoPE(16:0/0:0),HMDB0011503,73004,NA,NA,[H][C@@](O)(COC(=O)CCCCCCCCCCCCCCC)COP(O)(=O)OCCN
+LysoPE_16:1_9Z_0:0,52925129,LysoPE(16:1(9Z)/0:0),HMDB0011504,NA,NA,NA,[H][C@@](O)(COC(=O)CCCCCCC\C=C/CCCCCC)COP(O)(=O)OCCN
+HYPOXANTHINE,790,Hypoxanthine,HMDB0000157,17368,C00262,83,OC1=NC=NC2=C1NC=N2
+METHYLANABASINE,29758,NA,NA,NA,NA,NA,NA
+1-Acetylindole,68470,NA,NA,NA,NA,NA,NA
+_-Hexanoylcarnitine,3246938,Hexanoylcarnitine,HMDB0000756,84834,C02301,3548,CCCCCC(=O)O[C@H](CC(O)=O)C[N+](C)(C)C
+"9H-Purine-6-thiol, 9-_tetrahydro-2-furyl_",3000792,NA,NA,NA,NA,NA,NA
+GUANINE,764,Guanine,HMDB0000132,16235,C00242,315,NC1=NC(=O)C2=C(N1)N=CN2
+2-_1-oxophthalazin-2-yl_acetic acid,977525,NA,NA,NA,NA,NA,NA
+"D-Glucopyranose, 2-_3-_acetylamino_-5-_acetylmethylamino_-2,4,6-triiodobenzoyl_amino_-2-deoxy",20056604,NA,NA,NA,NA,NA,NA
+PAz-PC,46907870,PC(16:0/9:0(COOH)),NA,61817,NA,NA,CCCCCCCCCCCCCCCC(=O)OC(COP(=O)()OCC(C)(C)C)OC(=O)CCCCCCCC(=O)O
+"N-Butyl-1H-1,3-benzodiazol-2-amine",284016,NA,NA,NA,NA,NA,NA
+CYTOSINE,597,Cytosine,HMDB0000630,16040,C00380,283,NC1=CC=NC(=O)N1
+Indoline,10328,Indoline,HMDB0253472,43295,NA,NA,C1CC2=CC=CC=C2N1
+Butyryl-L-carnitine,213144,Butyrylcarnitine,HMDB0002013,21949,C02862,6436,CCCC(=O)O[C@H](CC([O-])=O)C[N+](C)(C)C
+Diethylcarbamazine,3052,Diethylcarbamazine,HMDB0014849,129569,C07968,NA,CCN(CC)C(=O)N1CCN(C)CC1
+PANTOTHENATE,6613,Pantothenic acid,HMDB0000210,46905,C00864,NA,CC(C)(CO)[C@@H](O)C(=O)NCCC(O)=O
+Penicillin G Potassium _Benzylpenicillin,5904,Penicillin G,HMDB0015186,18208,C05551,NA,[H][C@]12SC(C)(C)[C@@H](N1C(=O)[C@H]2NC(=O)CC1=CC=CC=C1)C(O)=O
+5-_Methylthio_salicylic acid,597283,NA,NA,NA,NA,NA,NA
+Methylnoradrenaline,3917,Methylnoradrenaline,HMDB0002832,142891,C17925,1217,CC(N)C(O)C1=CC(O)=C(O)C=C1
+D-Biotin,171548,Biotin,HMDB0000030,15956,C00120,243,[H][C@]12CS[C@@H](CCCCC(O)=O)[C@@]1([H])NC(=O)N2
+D-Glucoheptose,76599,NA,NA,NA,NA,NA,NA
+"1,4-Anthraquinone",69457,NA,NA,NA,NA,NA,NA
+4-Aminobenzamide,76079,NA,NA,NA,NA,NA,NA
+4-Methyl-5-thiazoleethanol,1136,5-(2-Hydroxyethyl)-4-methylthiazole,HMDB0032985,17957,C04294,NA,CC1=C(CCO)SC=N1
+Acetylcarnitine,7045767,L-Acetylcarnitine,HMDB0000201,57589,C02571,5213,CC(=O)O[C@H](CC(O)=O)C[N+](C)(C)C
+3-Guanidinopropanoate,67701,Guanidinopropionic acid,HMDB0013222,15968,C03065,NA,NC(=N)NCCC(O)=O
+L-CARNITINE,10917,L-Carnitine,HMDB0000062,16347,C00487,52,C[N+](C)(C)C[C@H](O)CC(O)=O
+Pro Leu,444109,NA,NA,NA,NA,NA,NA
+His Gly,101179,Histidylglycine,HMDB0028885,73930,NA,NA,N[C@@H](CC1=CNC=N1)C(=O)NCC(O)=O
+Val Arg,444523,Valylarginine,HMDB0029121,73711,NA,NA,CC(C)[C@H](N)C(=O)N[C@@H](CCCNC(N)=N)C(O)=O
+3-Methyl-L-histidine,64969,Methylhistidine,HMDB0000479,27596,C01152,5466,[H][C@](N)(CC1=CN=CN1C)C(O)=O
+S-Adenosylhomocysteine,439155,S-Adenosylhomocysteine,HMDB0000939,16680,C00021,296,N[C@@H](CCSC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=NC2=C1N=CN=C2N)C(O)=O
+Glycerophosphocholine,657272,Glycerophosphocholine,HMDB0000086,16870,C00670,370,C[N+](C)(C)CCOP([O-])(=O)OC[C@H](O)CO
+Glu Cys Ala,88245162,Glu-Cys-Ala,NA,NA,NA,NA,NA
+Arg Glu Ala,145453804,Arg-Glu-Ala,NA,NA,NA,NA,NA
+O-Acetyl-L-serine,99478,O-Acetylserine,HMDB0003011,17981,C00979,3270,CC(=O)OC[C@H](N)C(O)=O
+3-_.beta.-D-Glucopyranosyloxy_-2-methylbutanenitrile,56776200,NA,NA,NA,NA,NA,NA
+Thr Arg,7016110,Threonylarginine,HMDB0029055,74825,NA,NA,C[C@@H](O)[C@H](N)C(=O)N[C@@H](CCCNC(N)=N)C(O)=O
+Arg Ala,7020333,Arginylalanine,HMDB0028702,73810,NA,NA,C[C@H](NC(=O)[C@@H](N)CCCNC(N)=N)C(O)=O
+Thr-Arg,7016110,Threonylarginine,HMDB0029055,74825,NA,NA,C[C@@H](O)[C@H](N)C(=O)N[C@@H](CCCNC(N)=N)C(O)=O
+Pro Asp,3838871,Prolyl-Aspartate,HMDB0029013,NA,NA,NA,OC(=O)CC(NC(=O)C1CCCN1)C(O)=O
+Thr Glu Gly,145458046,Thr-Glu-Gly,NA,NA,NA,NA,NA
+Uridine-5-diphosphoacetylglucosamine,643981,Uridine diphosphate-N-acetylglucosamine,HMDB0000290,NA,C00043,NA,NA
+Gln Gln,7010588,NA,NA,NA,NA,NA,NA
+2-Hydroxy-4-methoxy-5-_2-methylbut-3-en-2-yl_benzaldehyde,125416427,NA,NA,NA,NA,NA,NA
+Glu Gln,22791125,NA,NA,NA,NA,NA,NA
+L-HISTIDINE,6274,Histidine,HMDB0000177,15971,C00135,21,N[C@@H](CC1=CN=CN1)C(O)=O
+Lys Ala,7010504,Lysylalanine,HMDB0028944,61872,NA,NA,C[C@H](NC(=O)[C@@H](N)CCCCN)C(O)=O
+Gly-Arg,333414,Glycyl-Arginine,HMDB0028835,NA,NA,NA,NCC(O)=NC(CCCNC(N)=N)C(O)=O
+URIDINE 5_39_-DIPHOSPHOGLUCOSE,439156,UDP-glucose,HMDB0000286,NA,C00029,NA,NA
+Bis_2-ethylhexyl_ phthalate,8343,Bis(2-ethylhexyl)phthalate,NA,NA,NA,NA,NA
+L-Cystine,67678,L-Cystine,HMDB0000192,16283,C00491,5207,N[C@@H](CSSC[C@H](N)C(O)=O)C(O)=O
+Arg Ser,7021454,Arginylserine,HMDB0028718,73819,NA,NA,N[C@@H](CCCNC(N)=N)C(=O)N[C@@H](CO)C(O)=O
+Adenosine monophosphate,6083,Adenosine monophosphate,HMDB0000045,16027,C00020,5111,NC1=C2N=CN([C@@H]3O[C@H](COP(O)(O)=O)[C@@H](O)[C@H]3O)C2=NC=N1
+Ethylenediaminetetraacetic acid,6049,Edetic Acid,HMDB0015109,42191,C00284,NA,OC(=O)CN(CCN(CC(O)=O)CC(O)=O)CC(O)=O
+CREATINE PHOSPHATE,587,Phosphocreatine,HMDB0001511,17287,C02305,6288,CN(CC(O)=O)C(=N)NP(O)(O)=O
+Nicotinamide adenine dinucleotide _NAD,5892,NAD,HMDB0000902,44215,C00003,5858,NC(=O)C1=C[N+](=CC=C1)[C@@H]1O[C@H](COP([O-])(=O)OP(O)(=O)OC[C@H]2O[C@H]([C@H](O)[C@@H]2O)N2C=NC3=C2N=CN=C3N)[C@@H](O)[C@H]1O
+N-Acetylglucosamine 6-phosphate,439219,N-Acetylglucosamine 6-phosphate,HMDB0002817,NA,NA,3429,CC(=O)N[C@H]1[C@@H](O)O[C@H](COP(O)(O)=O)[C@@H](O)[C@@H]1O
+Uridine monophosphate _UMP,6030,Uridine 5'-monophosphate,HMDB0000288,16695,C00105,NA,O[C@H]1[C@@H](O)[C@@H](O[C@@H]1COP(O)(O)=O)N1C=CC(=O)NC1=O
+Cytidine diphosphate choline _CDPcholine,13804,CDP-choline,HMDB0001413,NA,C00307,NA,NA
+Cytidine 5_-diphosphocholine,13804,CDP-choline,HMDB0001413,NA,C00307,NA,NA
+PHOSPHOCHOLINE,1014,Phosphorylcholine,HMDB0001565,18132,C00588,6326,C[N+](C)(C)CCOP(O)(O)=O
+Cytidine 5_-diphosphate ethanolamine,123727,CDP-ethanolamine,HMDB0001564,16732,C00570,3538,NCCOP(O)(=O)OP(O)(=O)OC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=CC(N)=NC1=O
+URIDINE 5_39_-DIPHOSPHOGLUCURONIC ACID,17473,Uridine diphosphate glucuronic acid,HMDB0000935,17200,C00167,5884,O[C@@H]1[C@@H](COP(O)(=O)OP(O)(=O)O[C@H]2O[C@@H]([C@@H](O)[C@H](O)[C@H]2O)C(O)=O)O[C@H]([C@@H]1O)N1C=CC(=O)NC1=O
+ADP,6022,ADP,HMDB0001341,16761,C00008,6175,NC1=NC=NC2=C1N=CN2[C@@H]1O[C@H](COP(O)(=O)OP(O)(O)=O)[C@@H](O)[C@H]1O
+S-Adenosylmethionine,34756,S-Adenosylmethionine,HMDB0001185,15414,C00019,6064,C[S+](CC[C@H](N)C(O)=O)C[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=NC2=C1N=CN=C2N
+Adenylosuccinic acid,195,Adenylosuccinic acid,HMDB0248010,NA,C03794,NA,OC1C(COP(O)(O)=O)OC(C1O)N1C=NC2=C(NC(CC(O)=O)C(O)=O)N=CN=C12
+FOSFOSAL,3418,Fosfosal,HMDB0252467,29052,C00118,NA,OC(=O)C1=CC=CC=C1OP(O)(O)=O
+N1-Acetylspermidine,496,N1-Acetylspermidine,HMDB0001276,17927,C00612,3323,CC(=O)NCCCNCCCCN
+Bis_2-ethylhexyl_ terephthalate,22932,Bis(2-ethylhexyl) terephthalate,HMDB0249244,NA,NA,NA,CCCCC(CC)COC(=O)C1=CC=C(C=C1)C(=O)OCC(CC)CCCC
+Lys Ile,7010499,Lysylisoleucine,HMDB0028954,74559,NA,NA,CC[C@H](C)[C@H](NC(=O)[C@@H](N)CCCCN)C(O)=O
+L-ARGININE,6322,L-Arginine,HMDB0000517,16467,C00062,5502,N[C@@H](CCCNC(N)=N)C(O)=O
+GLUCONIC ACID,10690,Gluconic acid,HMDB0000625,33198,C00257,345,OC[C@@H](O)[C@@H](O)[C@H](O)[C@@H](O)C(O)=O
+D-Ribulose 5-phosphate,439184,D-Ribulose 5-phosphate,HMDB0000618,17363,C00199,5591,OCC(=O)[C@H](O)[C@H](O)COP(O)(O)=O
+_-L-Fucose 1-phosphate,65369,Fucose 1-phosphate,HMDB0001265,12387,C02985,6120,C[C@@H]1O[C@H](OP(O)(O)=O)[C@@H](O)[C@H](O)[C@@H]1O
+CMP-N-acetylneuraminic acid,448209,Cytidine 5'-monophosphate-N-acetylneuraminic acid,HMDB0001176,16556,C00128,6057,[H][C@]1(O[C@](C[C@H](O)[C@H]1NC(C)=O)(OP(O)(=O)OC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=CC(N)=NC1=O)C(O)=O)[C@H](O)[C@H](O)CO
+OPHTHALMIC ACID,7018721,Ophthalmic acid,HMDB0005765,84058,C21016,NA,CC[C@H](NC(=O)CC[C@H](N)C(O)=O)C(=O)NCC(O)=O
+L-Tyrosine,6057,L-Tyrosine,HMDB0000158,17895,C00082,34,N[C@@H](CC1=CC=C(O)C=C1)C(O)=O
+Ile-Glu,18218218,Isoleucyl-Glutamate,HMDB0028906,NA,NA,NA,CCC(C)C(N)C(=O)NC(CCC(O)=O)C(O)=O
+Ser-Tyr,7021866,NA,NA,NA,NA,NA,NA
+2-Methylguanosine,3035422,2-Methylguanosine,HMDB0005862,19702,NA,NA,CNC1=NC(=O)C2=C(N1)N(C=N2)[C@@H]1O[C@H](CO)[C@@H](O)[C@H]1O
+L-Alanyl-L-norleucine,1549453,NA,NA,NA,NA,NA,NA
+Val-Val,107475,Valylvaline,HMDB0029140,73704,NA,NA,CC(C)[C@H](N)C(=O)N[C@@H](C(C)C)C(O)=O
+N-_4-Sulfamoylphenyl_methyl_acetamide,74833,NA,NA,NA,NA,NA,NA
+"5-amino-2-_1,3-dioxooctahydro-2H-4,7-methanoisoindol-2-yl_-5-oxopentanoic acid",315878,NA,NA,NA,NA,NA,NA
+N-_4-Aminobenzoyl_-L-glutamic acid,196473,4-Aminobenzoylglutamic acid,NA,NA,NA,NA,NA
+"2,5-Dimethylbenzenesulfonic acid",11868,NA,NA,NA,NA,NA,NA
+Asn-Leu,18218182,Asparaginyl-Leucine,HMDB0028735,NA,NA,NA,CC(C)CC(NC(=O)C(N)CC(N)=O)C(O)=O
+ALANYL-dl-PHENYLALANINE,96814,Alanylphenylalanine,HMDB0028694,73807,NA,NA,C[C@H](N)C(=O)N[C@@H](CC1=CC=CC=C1)C(O)=O
+4-Hydroxybenzenesulfonic acid,4765,4-Hydroxybenzenesulfonic acid,NA,NA,NA,NA,NA
+Val-Ile,7010531,Valylisoleucine,HMDB0029130,75012,NA,NA,CC[C@H](C)[C@H](NC(=O)[C@@H](N)C(C)C)C(O)=O
+Acetyl-L-tyrosine,68310,N-Acetyl-L-tyrosine,HMDB0000866,21563,C01657,NA,CC(=O)N[C@@H](CC1=CC=C(O)C=C1)C(O)=O
+Ser-Trp,14409364,Seryltryptophan,HMDB0029050,141445,NA,NA,N[C@@H](CO)C(=O)N[C@@H](CC1=CNC2=C1C=CC=C2)C(O)=O
+4-formyl Indole,333703,NA,NA,NA,NA,NA,NA
+Flavine mononucleotide _FMN,643976,Flavin mononucleotide,HMDB0001520,17621,C00061,6295,CC1=CC2=C(C=C1C)N(C[C@H](O)[C@H](O)[C@H](O)COP(O)(O)=O)C1=NC(=O)NC(=O)C1=N2
+"1,4-Dihydroxynaphthalene",11305,"1,4-Dihydroxynaphthalene",HMDB0255445,34063,C14785,NA,OC1=CC=C(O)C2=CC=CC=C12
+Trp-Glu,3634442,Tryptophyl-Glutamate,HMDB0029082,NA,NA,NA,NC(CC1=CNC2=C1C=CC=C2)C(=O)NC(CCC(O)=O)C(O)=O
+2-Benzothiazolesulfonic acid,30647,NA,NA,NA,NA,NA,NA
+Acetyl-DL-Leucine,70912,N-Acetyl-Leu,HMDB0011756,17786,C02710,NA,CC(C)C[C@H](NC(C)=O)C(O)=O
+4-hydroxy Nonenal Glutathione,92970719,4-Hydroxynonenal glutathione,HMDB0240578,NA,NA,NA,CCCCC[C@@H]1O[C@@H](O)C[C@@H]1SC[C@H](NC(=O)CC[C@H](N)C(O)=O)C(=O)NCC(O)=O
+Afalaninum,2000,N-Acetyl-DL-phenylalanine,HMDB0255056,21626,C03519,NA,CC(=O)NC(CC1=CC=CC=C1)C(O)=O
+2_3H_-Benzothiazolone,13625,2(3H)-Benzothiazolone,HMDB0249030,115196,NA,NA,OC1=NC2=CC=CC=C2S1
+3-_Cyclohexylamino_-2-hydroxy-1-propanesulfonic acid,2733480,3-(Cyclohexylamino)-2-hydroxy-1-propanesulfonic acid,HMDB0247339,NA,NA,NA,OC(CNC1CCCCC1)CS(O)(=O)=O
+Sebacic acid,5192,Sebacic acid,HMDB0000792,41865,C08277,4240,OC(=O)CCCCCCCCC(O)=O
+_E_-5-Hydroxyundec-2-enoic acid,12227668,NA,NA,NA,NA,NA,NA
+"3-_2-Methyl-3-oxo-2,5,6,7,8,8a-hexahydro-1H-naphthalen-1-yl_propanoic acid",102571644,NA,NA,NA,NA,NA,NA
+"2,3-dinor Prostaglandin E1",16061101,"2,3-dinor-PGE1",NA,NA,NA,NA,CCCCC(O)/C=C/1(O)CC(=O)1CCCCC(=O)O
+Naphthofluorescein,3124834,NA,NA,NA,NA,NA,NA
+1-Myristoyl-2-hydroxy-sn-glycero-3-phosphoethanolamine,9547070,LysoPE(14:0/0:0),HMDB0011500,84299,NA,NA,[H][C@@](O)(COC(=O)CCCCCCCCCCCCC)COP(O)(=O)OCCN
+"3-_Hepta-1,3-dienyl_hexanedioic acid",156602850,NA,NA,NA,NA,NA,NA
+"3,5,9-Trioxa-4-phosphatetracosan-1-aminium, 7-_acetyloxy_-24-carboxy-4-hydroxy-N,N,N-trimethyl-, inner salt, 4-oxide, _R_",195638,NA,NA,NA,NA,NA,NA
+"Methyl 3-_acetyloxy_-16,19-dihydroxy-4,4,8,12,16-pentamethyl-15,17-dioxoandrost-11-ene-14-carboxylate",129008947,NA,NA,NA,NA,NA,NA
+"D-Myo-Inositol, 1-_2-hydroxy-3-_1-oxo-9,12-octadecadienyl_oxy_propyl hydrogen phosphate_, _S-_Z,Z_",45359145,NA,NA,NA,NA,NA,NA
+"5,6-dehydro Arachidonic Acid",6443815,"8Z,1Z1,14Z-Eicosatrien-5-ynoic acid",NA,NA,NA,NA,CCCCC/C=C\C/C=C\C/C=C\CC#CCCCC(=O)O
+Eicosenoic acid,5282768,11Z-Eicosenoic acid,HMDB0002231,32425,C16526,6563,CCCCCCCC\C=C/CCCCCCCCCC(O)=O
+Sedoheptulose 7-phosphate,616,Sedoheptulose 7-phosphate,HMDB0258206,NA,C05382,NA,OCC(=O)C(O)C(O)C(O)C(O)COP(O)(O)=O
+DL-Glycerol 1-phosphate,439162,Glycerol 3-phosphate,HMDB0000126,15978,C00093,5161,OC[C@@H](O)COP(O)(O)=O
+3-Amino-4-ethylbenzenesulfonic acid,77278,NA,NA,NA,NA,NA,NA
+deoxyguanosine 5_-monophosphate _dGMP,135398597,Deoxyguanylic acid,HMDB0001044,NA,C00362,NA,NA
+D-Myoinositol 4-phosphate,440043,D-myo-Inositol 4-phosphate,HMDB0001313,18384,C03546,6151,O[C@@H]1[C@H](O)[C@H](O)[C@@H](OP(O)(O)=O)[C@H](O)[C@H]1O
+Gln-Glu,7020029,Glutaminylglutamic acid,HMDB0028796,73847,NA,NA,N[C@@H](CCC(N)=O)C(=O)N[C@@H](CCC(O)=O)C(O)=O
+UDP-D-galactose,18068,Uridine diphosphategalactose,HMDB0000302,67119,C00052,5291,OC[C@H]1O[C@H](OP(O)(=O)OP(O)(=O)OC[C@H]2O[C@H]([C@H](O)[C@@H]2O)N2C=CC(=O)NC2=O)[C@H](O)[C@@H](O)[C@H]1O
+5_-CMP,6131,Cytidine monophosphate,HMDB0000095,17361,C00055,5143,NC1=NC(=O)N(C=C1)[C@@H]1O[C@H](COP(O)(O)=O)[C@@H](O)[C@H]1O
+GDP-L-fucose,439211,GDP-L-fucose,HMDB0001095,17009,C00325,6001,C[C@@H]1OC(OP(O)(=O)OP(O)(=O)OC[C@H]2O[C@H]([C@H](O)[C@@H]2O)N2C=NC3=C2N=C(N)NC3=O)[C@@H](O)[C@H](O)[C@@H]1O
+Deoxyuridine monophosphate _dUMP,65063,dUMP,HMDB0001409,17622,C00365,6225,O[C@H]1C[C@@H](O[C@@H]1COP(O)(O)=O)N1C=CC(=O)NC1=O
+Guanidylic acid _guanosine monophosphate,135398631,5'-Guanylic acid,HMDB0001397,NA,C00144,NA,NA
+URIDINE,6029,Uridine,HMDB0000296,16704,C00299,90,OC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=CC(=O)NC1=O
+Inosine 5_-monophosphate _IMP,135398640,Inosinic acid,HMDB0000175,NA,C00130,NA,NA
+GLUTATHIONE,124886,Glutathione,HMDB0000125,16856,C00051,44,N[C@@H](CCC(=O)N[C@@H](CS)C(=O)NCC(O)=O)C(O)=O
+"S-_1,2-DICARBOXYETHYL_GLUTATHIONE",9802383,NA,NA,NA,NA,NA,NA
+dTMP,9700,5-Thymidylic acid,HMDB0001227,17013,C00364,6092,CC1=CN([C@H]2C[C@H](O)[C@@H](COP(O)(O)=O)O2)C(=O)NC1=O
+N-_4-Methylphenyl_methanesulfonamide,835475,NA,NA,NA,NA,NA,NA
+XANTHINE,1188,Xanthine,HMDB0000292,17712,C00385,82,O=C1NC2=C(NC=N2)C(=O)N1
+Adenylosuccinate,447145,Adenylsuccinic acid,HMDB0000536,15919,C03794,5521,O[C@@H]1[C@@H](COP(O)(O)=O)O[C@H]([C@@H]1O)N1C=NC2=C1N=CN=C2N[C@@H](CC(O)=O)C(O)=O
+GUANOSINE,6802,Guanosine,HMDB0000133,16750,C00387,87,NC1=NC2=C(N=CN2[C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)C(=O)N1
+".beta.-Nicotinamide adenine dinucleotide phosphate, reduced",5884,NADPH,HMDB0000221,16474,C00005,3691,NC(=O)C1=CN(C=CC1)[C@@H]1O[C@H](COP(O)(=O)OP(O)(=O)OC[C@H]2O[C@H]([C@H](OP(O)(O)=O)[C@@H]2O)N2C=NC3=C2N=CN=C3N)[C@@H](O)[C@H]1O
+Phe-Ser,193508,Phenylalanylserine,HMDB0029004,71032,NA,NA,N[C@@H](CC1=CC=CC=C1)C(=O)N[C@@H](CO)C(O)=O
+Nicotinamide Adenine Dinucleotide Phosphate _NADP,5885,NADP,HMDB0000217,44409,C00006,5227,NC(=O)C1=C[N+](=CC=C1)[C@@H]1O[C@H](COP([O-])(=O)OP(O)(=O)OC[C@H]2O[C@H]([C@H](OP(O)(O)=O)[C@@H]2O)N2C=NC3=C2N=CN=C3N)[C@@H](O)[C@H]1O
+Glu-Val,6992567,Glutamylvaline,HMDB0028832,68846,NA,NA,CC(C)[C@H](NC(=O)[C@@H](N)CCC(O)=O)C(O)=O
+DL-Phenylalanine,6140,Phenylalanine,HMDB0000159,17295,C00079,28,N[C@@H](CC1=CC=CC=C1)C(O)=O
+"N1,N4-Diacetylsulfanilamide",101240,NA,NA,NA,NA,NA,NA
+Glu-Met,6426949,Glutamylmethionine,HMDB0028825,73507,NA,NA,CSCC[C@H](NC(=O)[C@@H](N)CCC(O)=O)C(O)=O
+Val-Abu-OH,NA,NA,NA,NA,NA,NA,NA
+Gln-Ile,57315376,Glutaminylisoleucine,HMDB0028800,NA,NA,NA,CC[C@H](C)[C@H](NC(=O)[C@@H](N)CCC(N)=O)C(O)=O
+Uridine diphosphate _UDP,6031,Uridine 5'-diphosphate,HMDB0000295,17659,C00015,NA,O[C@H]1[C@@H](O)[C@@H](O[C@@H]1COP(O)(=O)OP(O)(O)=O)N1C=CC(=O)NC1=O
+Ser-Phe,7009597,Serylphenylalanine,HMDB0029046,71029,NA,NA,N[C@@H](CO)C(=O)N[C@@H](CC1=CC=CC=C1)C(O)=O
+DL-Tryptophan,6305,L-Tryptophan,HMDB0000929,16828,C00078,5879,N[C@@H](CC1=CNC2=C1C=CC=C2)C(O)=O
+Thr-Phe,7010579,Threonylphenylalanine,HMDB0029068,74862,NA,NA,C[C@@H](O)[C@H](N)C(=O)N[C@@H](CC1=CC=CC=C1)C(O)=O
+Gamma-Glu-Leu,151023,gamma-Glutamylleucine,HMDB0011171,68433,NA,NA,CC(C)C[C@H](NC(=O)CC[C@H](N)C(O)=O)C(O)=O
+Hydroxyphenyllactic acid,9378,Hydroxyphenyllactic acid,HMDB0000755,17385,C03672,5723,OC(CC1=CC=C(O)C=C1)C(O)=O
+Trifluridine,6256,Trifluridine,HMDB0014576,75179,NA,NA,OC[C@H]1O[C@H](C[C@@H]1O)N1C=C(C(=O)NC1=O)C(F)(F)F
+E-64,123985,E64,NA,NA,NA,NA,NA
+FLAVIN ADENINE DINUCLEOTIDE,643975,FAD,HMDB0001248,16238,C00016,6106,CC1=CC2=C(C=C1C)N(C[C@H](O)[C@H](O)[C@H](O)COP(O)(=O)OP(O)(=O)OC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=NC3=C1N=CN=C3N)C1=NC(=O)NC(=O)C1=N2
+5-Phenylisoxazol-3-ol,70318,NA,NA,NA,NA,NA,NA
+2-_2-Methoxy-2-oxoethyl_amino_benzoic acid,818219,NA,NA,NA,NA,NA,NA
+p-Acetaminobenzoic acid,19266,4-Acetamidobenzoic acid,HMDB0246328,46171,NA,NA,CC(=O)NC1=CC=C(C=C1)C(O)=O
+ACETANILIDE,904,N-Acetylarylamine,HMDB0001250,28884,C07565,6107,CC(=O)NC1=CC=CC=C1
+N-_5-_Butylamino_sulfonyl_-2-methoxyphenyl_acetamide,110491,NA,NA,NA,NA,NA,NA
+Ile-Ile,13879965,Isoleucyl-Isoleucine,HMDB0028910,NA,NA,NA,CCC(C)C(N)C(=O)NC(C(C)CC)C(O)=O
+Phe-Leu,76808,Phe-Leu,NA,NA,NA,NA,NA
+Nonanedioic acid,2266,Azelaic acid,HMDB0000784,48131,C08261,5750,OC(=O)CCCCCCCC(O)=O
+9-Hydroxynonanoic acid,138052,9-hydroxy pelargonic acid,NA,79121,NA,NA,O=C(O)CCCCCCCCO
+Penicillin G,5904,Penicillin G,HMDB0015186,18208,C05551,NA,[H][C@]12SC(C)(C)[C@@H](N1C(=O)[C@H]2NC(=O)CC1=CC=CC=C1)C(O)=O
+2-Fluoro-5-methanesulfonylbenzoic acid,22467566,NA,NA,NA,NA,NA,NA
+Undecanedioic acid,15816,Undecanedioic acid,HMDB0000888,73713,NA,5846,OC(=O)CCCCCCCCCC(O)=O
+"_Z_-9,12,13-Trihydroxyoctadec-15-enoic acid",24066906,NA,NA,NA,NA,NA,NA
+"9S,10S,11R-trihydroxy-12Z-octadecenoic acid",16061050,"9S,10S,11R-trihydroxy-12Z-octadecenoic acid",NA,138082,NA,NA,CCCCC/C=C\(O)(O)(O)CCCCCCCC(=O)O
+2-_4-Tert-Butylphenoxy_propanoic acid,246868,NA,NA,NA,NA,NA,NA
+2-Hydroxyibuprofen,10443535,2-Hydroxyibuprofen,HMDB0060920,133197,NA,NA,CC(C(O)=O)C1=CC=C(CC(C)(C)O)C=C1
+Zingerone,31211,Zingerone,HMDB0032590,68657,C17497,NA,COC1=C(O)C=CC(CCC(C)=O)=C1
+PGG2,5280883,Prostaglandin G2,HMDB0003235,27647,C05956,3508,[H][C@@](CCCCC)(OO)\C=C\[C@@]1([H])[C@@]2([H])C[C@]([H])(OO2)[C@]1([H])C\C=C/CCCC(O)=O
+"5.alpha.-Androstan-3.alpha.,17.beta.-diol-O-3-.beta.-glucuronic acid",16727166,3-alpha-Androstanediol glucuronide,HMDB0010339,NA,NA,NA,NA
+1-Oleoyl-2-hydroxy-sn-glycero-3-phospho-_1_-rac-glycerol,132285229,NA,NA,NA,NA,NA,NA
+Diacetyl-8-gingerdiol,156373480,[8]-Gingerdiol,HMDB0302129,NA,NA,NA,CCCCCCCC(CC(CCC1=CC=C(O)C(OC)=C1)OC(C)=O)OC(C)=O
+FCCP,3330,Carbonyl cyanide p-trifluoromethoxyphenylhydrazone,HMDB0252179,75458,NA,NA,FC(F)(F)OC1=CC=C(NN=C(C#N)C#N)C=C1
+1-Palmitoyl-2-hydroxy-sn-glycero-3-phosphoethanolamine,9547069,LysoPE(16:0/0:0),HMDB0011503,73004,NA,NA,[H][C@@](O)(COC(=O)CCCCCCCCCCCCCCC)COP(O)(=O)OCCN
+Laurylsulfuric acid,3423265,NA,NA,NA,NA,NA,NA
+2-_2-Octanyloxy_carbonyl_benzoic acid,109265,NA,NA,NA,NA,NA,NA
+Tyr Thr Gln Arg,NA,NA,NA,NA,NA,NA,NA
+_12_13_-EpOME,5356421,"12,13-EpOME",HMDB0004702,38299,C14826,NA,CCCCCC1OC1C\C=C/CCCCCCCC(O)=O
+PS_18:1_9Z_0:0,9547099,LysoPS(18:1(9Z)/0:0),HMDB0240603,52649,NA,NA,CCCCCCCC\C=C/CCCCCCCC(=O)OC[C@@H](O)COP(O)(=O)OC[C@H](N)C(O)=O
+"3,5-Di-tert-butyl-2-hydroxybenzaldehyde",688023,NA,NA,NA,NA,NA,NA
+"cis-9,10-Epoxystearic acid",15868,"9,10-Epoxystearic acid",HMDB0247617,85661,C19418,NA,CCCCCCCCC1OC1CCCCCCCC(O)=O
+3-Oxostearic acid,5283005,3-Oxooctadecanoic acid,HMDB0010736,50576,NA,NA,CCCCCCCCCCCCCCCC(=O)CC(O)=O
+1-Stearoyl-2-hydroxy-sn-glycero-3-phosphoethanolamine,9547068,LysoPE(18:0/0:0),HMDB0011130,75036,C21484,NA,[H][C@@](O)(COC(=O)CCCCCCCCCCCCCCCCC)COP(O)(=O)OCCN
+2-hydroxyhexadecanoic acid,12575964,2-Hydroxyhexadecanoic acid,HMDB0031057,75977,NA,NA,CCCCCCCCCCCCCC[C@H](O)C(O)=O
+"8,11-eicosadiynoic acid",1899,"8,11-Eicosadiynoic acid",HMDB0062432,NA,C21936,NA,CCCCCCCCC#CCC#CCCCCCCC(=O)O
+Spermine,1103,Spermine,HMDB0001256,15746,C00750,255,NCCCNCCCCNCCCN
+Ser Tyr,7021866,NA,NA,NA,NA,NA,NA
+Phe Ala,5488196,Phenylalanylalanine,HMDB0028988,73630,NA,NA,C[C@H](NC(=O)[C@@H](N)CC1=CC=CC=C1)C(O)=O
+Thr Ile,57281443,Threonylisoleucine,HMDB0029064,141446,NA,NA,CC[C@H](C)[C@H](NC(=O)[C@@H](N)[C@@H](C)O)C(O)=O
+Isobutyryl carnitine,168379,Isobutyryl-L-carnitine,HMDB0000736,84838,C02301,5704,CC(C)C(=O)O[C@H](CC(O)=O)C[N+](C)(C)C
+Thr Phe,7010580,NA,NA,NA,NA,NA,NA
+1-_4-Pyridinyl_-4-piperidinamine,18918608,NA,NA,NA,NA,NA,NA
+Ile Leu Asn Asp,NA,NA,NA,NA,NA,NA,NA
+4-tert-Butylaniline,69861,NA,NA,NA,NA,NA,NA
+Leu Ile Asp Arg,NA,NA,NA,NA,NA,NA,NA
+Lumichrome,506,Lumichrome,HMDB0254199,17781,C01727,NA,CC1=CC2=NC3=C(N=C2C=C1C)C(=O)NC(=O)N3
+Flunisolide,82153,Flunisolide,HMDB0014326,5106,C07005,NA,[H][C@@]12C[C@@]3([H])[C@]4([H])C[C@H](F)C5=CC(=O)C=C[C@]5(C)[C@@]4([H])[C@@H](O)C[C@]3(C)[C@@]1(OC(C)(C)O2)C(=O)CO
+Ortophosphate,1004,Phosphate,HMDB0001429,26078,C00009,3231,OP(O)(O)=O
+4-Methyl-1H-benzimidazole,1519341,NA,NA,NA,NA,NA,NA
+"3-Pyridinecarboxylic acid, 2-_2-phenylethyl_thio_",888706,NA,NA,NA,NA,NA,NA
+2-_Ethyl_3-methylphenyl_amino_acetonitrile,113027,NA,NA,NA,NA,NA,NA
+"4-Ethynyl-1,1_-biphenyl",34464,NA,NA,NA,NA,NA,NA
+Triphenylphosphine oxide,13097,NA,NA,NA,NA,NA,NA
+n-Pentadecylamine,17386,Pentadecylamine,HMDB0243828,87551,NA,NA,CCCCCCCCCCCCCCCN
+"N,N_-Dicyclohexylurea",4277,"1,3-Dicyclohexylurea",HMDB0244166,NA,NA,NA,O=C(NC1CCCCC1)NC1CCCCC1
+N-Benzyl-4-methylbenzamide,228681,NA,NA,NA,NA,NA,NA
+"N,N-Dimethyloctanamide",14240,NA,NA,NA,NA,NA,NA
+_-Myristoylcarnitine,6426854,Myristoylcarnitine,HMDB0254979,73061,C02301,NA,CCCCCCCCCCCCCC(=O)OC(CC([O-])=O)C[N+](C)(C)C
+2-_Methylthio_benzothiazole,11989,2-(Methylthio)benzothiazole,HMDB0303335,1217,C10910,NA,CSC1=NC2=CC=CC=C2S1
+Heptadecanoyl Ethanolamide,14455158,Margaroyl-EA,NA,NA,NA,NA,CCCCCCCCCCCCCCCCC(=O)NCCO
+Dibenzylamine,7656,Dibenzylamine,HMDB0251169,NA,NA,NA,C(NCC1=CC=CC=C1)C1=CC=CC=C1
+"N,N-Bis_2-hydroxyethyl_dodecanamide",8430,Lauroyl diethanolamide,HMDB0032358,NA,NA,NA,CCCCCCCCCCCC(=O)N(CCO)CCO
+Triphenyl phosphate,8289,Triphenyl Phosphate,HMDB0259262,35033,C14235,NA,O=P(OC1=CC=CC=C1)(OC1=CC=CC=C1)OC1=CC=CC=C1
+3-ketosphingosine,440922,3-Ketosphingosine,HMDB0245914,20096,C06121,NA,CCCCCCCCCCCCCC=CC(=O)C(N)CO
+D-Tyrosine t-butyl ester,6950582,NA,NA,NA,NA,NA,NA
+N-Butylaniline,14310,NA,NA,NA,NA,NA,NA
+"3,5-Dimethylpyridine",11565,NA,NA,NA,NA,NA,NA
+2-METHYL GRAMINE,181513,NA,NA,NA,NA,NA,NA
+Phenylethylamine,1001,Phenylethylamine,HMDB0012275,18397,C05332,NA,NCCC1=CC=CC=C1
+Elaidic acid,637517,Elaidic acid,HMDB0000573,27997,C01712,3406,CCCCCCCC\C=C\CCCCCCCC(O)=O
+Stearic acid,5281,Stearic acid,HMDB0000827,28842,C01530,189,CCCCCCCCCCCCCCCCCC(O)=O
+2-Ethylaniline,11357,NA,NA,NA,NA,NA,NA
+N1-Acetylspermine,916,N1-Acetylspermine,HMDB0001186,17312,C02567,3369,CC(=O)NCCCNCCCCNCCCN
+"N1,N12-Diacetylspermine",132680,"N1,N12-Diacetylspermine",HMDB0002172,28101,C03413,6525,CC(=O)NCCCNCCCCNCCCNC(C)=O
+"N-_2,4-difluorophenyl_-2-_1,1-dioxo-4H-1_l_6_,2,4-benzothiadiazin-3-yl_acetamide",22588753,NA,NA,NA,NA,NA,NA
+Ala Gly Glu,145453586,Ala-Gly-Glu,NA,NA,NA,NA,NA
+Cys Gly Glu,145454743,Cys-Gly-Glu,NA,NA,NA,NA,NA
+URIDINE 5_-DIPHOSPHO-N-ACETYLGLUCOSAMINE,445675,Uridine diphosphate-N-acetylglucosamine,HMDB0000290,16264,C00043,5281,CC(=O)N[C@@H]1[C@@H](O)[C@H](O)[C@@H](CO)O[C@@H]1OP(O)(=O)OP(O)(=O)OC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=CC(=O)NC1=O
+4-_Methylthio_benzoic acid,83230,NA,NA,NA,NA,NA,NA
+Uridine 5_-_trihydrogen diphosphate,6031,Uridine 5'-diphosphate,HMDB0000295,17659,C00015,NA,O[C@H]1[C@@H](O)[C@@H](O[C@@H]1COP(O)(=O)OP(O)(O)=O)N1C=CC(=O)NC1=O
+.beta.-Nicotinamide adenine dinucleotide,5892,NAD,HMDB0000902,44215,C00003,5858,NC(=O)C1=C[N+](=CC=C1)[C@@H]1O[C@H](COP([O-])(=O)OP(O)(=O)OC[C@H]2O[C@H]([C@H](O)[C@@H]2O)N2C=NC3=C2N=CN=C3N)[C@@H](O)[C@H]1O
+Palmitic acid,985,Palmitic acid,HMDB0000220,15756,C00249,187,CCCCCCCCCCCCCCCC(O)=O
+"N-_2,4-difluorophenyl_-1-_4-_pyrrolidine-1-carbonyl_thiophen-2-yl_sulfonylpiperidine-4-carboxamide",53074722,NA,NA,NA,NA,NA,NA
+Leu Asp Cys,145456367,Leu-Asp-Cys,NA,NA,NA,NA,NA
+3-Amino-3-_4-hydroxyphenyl_propanoate,6057,L-Tyrosine,HMDB0000158,17895,C00082,34,N[C@@H](CC1=CC=C(O)C=C1)C(O)=O
+PHENACYLAMINE,11952,2-Aminoacetophenone,HMDB0032628,NA,NA,NA,NCC(=O)C1=CC=CC=C1
+2-Amino-6-methylbenzonitrile,279973,NA,NA,NA,NA,NA,NA
+Leu Glu,7009630,NA,NA,NA,NA,NA,NA
+Phe Ser,193508,Phenylalanylserine,HMDB0029004,71032,NA,NA,N[C@@H](CC1=CC=CC=C1)C(=O)N[C@@H](CO)C(O)=O
+Thr Tyr,11778518,Threonyltyrosine,HMDB0029073,73667,NA,NA,C[C@@H](O)[C@H](N)C(=O)N[C@@H](CC1=CC=C(O)C=C1)C(O)=O
+Phe Thr,10445608,NA,NA,NA,NA,NA,NA
+Phe Asp,6992643,Phenylalanylaspartic acid,HMDB0028991,73631,NA,NA,N[C@@H](CC1=CC=CC=C1)C(=O)N[C@@H](CC(O)=O)C(O)=O
+Met Glu,7015689,NA,NA,NA,NA,NA,NA
+Phe Glu,151134,Phenylalanylglutamic acid,HMDB0028994,74712,NA,NA,N[C@@H](CC1=CC=CC=C1)C(=O)N[C@@H](CCC(O)=O)C(O)=O
+Glu Tyr,515717,Glutamyltyrosine,HMDB0028831,73513,NA,NA,N[C@@H](CCC(O)=O)C(=O)N[C@@H](CC1=CC=C(O)C=C1)C(O)=O
+2-_3-Thienylmethyl_malonic acid,268926,NA,NA,NA,NA,NA,NA
+Val Tyr,7009555,NA,NA,NA,NA,NA,NA
+Ser Leu,7015695,NA,NA,NA,NA,NA,NA
+Gln Ile,57315376,Glutaminylisoleucine,HMDB0028800,NA,NA,NA,CC[C@H](C)[C@H](NC(=O)[C@@H](N)CCC(N)=O)C(O)=O
+Leu Glu Gly,145456413,Leu-Glu-Gly,NA,NA,NA,NA,NA
+Ser Phe,7009598,NA,NA,NA,NA,NA,NA
+Val Ile,7010532,NA,NA,NA,NA,NA,NA
+Ile Glu Ala,145456125,Ile-Glu-Ala,NA,NA,NA,NA,NA
+"1,5-Naphthalenediamine",16720,"1,5-Naphthalenediamine",HMDB0244231,53003,C19463,NA,NC1=CC=CC2=C1C=CC=C2N
+Pentaethylene glycol,62551,Pentaethylene glycol,HMDB0256256,39631,NA,NA,OCCOCCOCCOCCOCCO
+3-amino-2-naphthoic acid,22244,NA,NA,NA,NA,NA,NA
+2-_4-methoxyphenyl_sulfonylethanamine,16644604,NA,NA,NA,NA,NA,NA
+1-cyclopropylsulfonylpiperidine-4-carboxylic acid,25000516,NA,NA,NA,NA,NA,NA
+Leu Tyr,273262,Leucyl-Tyrosine,HMDB0028941,NA,NA,NA,CC(C)CC(N)C(=O)NC(CC1=CC=C(O)C=C1)C(O)=O
+Ser Thr Phe,145457888,Ser-Thr-Phe,NA,NA,NA,NA,NA
+N-_4-_Aminosulfonyl_phenyl_propanamide,847760,NA,NA,NA,NA,NA,NA
+"Methyl 3-_2-methyl-1,3-thiazolidin-4-yl_formamido_propanoate",21299095,NA,NA,NA,NA,NA,NA
+Glu Phe,18653118,Glutamylphenylalanine,HMDB0029156,NA,NA,NA,N[C@@H](CCC(O)=O)C(=O)N[C@@H](CC1=CC=CC=C1)C(O)=O
+Ser Trp,14409364,Seryltryptophan,HMDB0029050,141445,NA,NA,N[C@@H](CO)C(=O)N[C@@H](CC1=CNC2=C1C=CC=C2)C(O)=O
+Leu Ile,7010534,NA,NA,NA,NA,NA,NA
+5-Isoquinolinol,30386,NA,NA,NA,NA,NA,NA
+5-Hydroxyindoleacetic acid,1826,5-Hydroxyindoleacetic acid,HMDB0000763,27823,C05635,2975,OC(=O)CC1=CNC2=C1C=C(O)C=C2
+1-cyclohexyl-3-_1-_hydroxymethyl_cyclopropyl_methyl_urea,49670988,NA,NA,NA,NA,NA,NA
+Tyr Leu,87071,NA,NA,NA,NA,NA,NA
+Flavin adenine dinucleotide _FAD,643975,FAD,HMDB0001248,16238,C00016,6106,CC1=CC2=C(C=C1C)N(C[C@H](O)[C@H](O)[C@H](O)COP(O)(=O)OP(O)(=O)OC[C@H]1O[C@H]([C@H](O)[C@@H]1O)N1C=NC3=C1N=CN=C3N)C1=NC(=O)NC(=O)C1=N2
+Ile Leu,7019083,NA,NA,NA,NA,NA,NA
+Asn-Pro-Lys,24984626,Asn-Pro-Lys,NA,NA,NA,NA,NA
+Biotin sulfone,83863,Biotin sulfone,HMDB0004818,NA,C20387,NA,NA
+4-_S_-Amino_carboxy_methyl_-3-methylbenzoic acid,5311261,NA,NA,NA,NA,NA,NA
+p-Acetaminobenzaldehyde,73942,4-Acetamidobenzaldehyde,NA,NA,NA,NA,NA
+Hippuric acid,464,Hippuric acid,HMDB0000714,18089,C01586,1301,OC(=O)CNC(=O)C1=CC=CC=C1
+Gln Lys Leu,145455140,Gln-Lys-Leu,NA,NA,NA,NA,NA
+Phe Phe,6993090,NA,NA,NA,NA,NA,NA
+Trp Leu,6997510,NA,NA,NA,NA,NA,NA
+Aldosterone,5839,Aldosterone,HMDB0000037,27584,C01780,418,[H][C@@]12CC[C@H](C(=O)CO)[C@]1(C[C@H](O)[C@@]1([H])[C@@]2([H])CCC2=CC(=O)CC[C@]12C)C=O
+4-Oxododecanedioic acid,13213508,NA,NA,NA,NA,NA,NA
+Trp-Pro-Lys,71471842,Trp-Pro-Lys,NA,NA,NA,NA,NA
+4-Methyl-1-phenylpentan-3-one,170307,NA,NA,NA,NA,NA,NA
+Pentapropylene glycol,9836244,NA,NA,NA,NA,NA,NA
+Latanoprost Lactone Diol,10267038,NA,NA,NA,NA,NA,NA
+2alpha-Hydroxyalantolactone,4039117,2alpha-Hydroxyalantolactone,HMDB0030910,NA,NA,NA,CC1CC(O)CC2(C)CC3OC(=O)C(=C)C3C=C12
+"3,5-Di-tert-butyl-4-hydroxybenzoic acid",15007,"3,5-Di-tert-butyl-4-hydroxybenzoic acid",HMDB0240642,NA,NA,NA,CC(C)(C)C1=CC(=CC(=C1O)C(C)(C)C)C(O)=O
+3-phenyl-N-_1-_5-pyrrolidin-1-ylpyrimidin-4-yl_pyrazol-4-yl_propanamide,53189943,NA,NA,NA,NA,NA,NA
+Valerenic acid,6042891,Valerenic acid,HMDB0030016,NA,C09743,NA,CC1CCC(\C=C(/C)C(O)=O)C2=C(C)CCC12
+"NCGC00381428-01_C25H39NO7_7E_-6-Hydroperoxy-11,12-dihydroxy-3-isobutyl-13-methoxy-4,5,8-trimethyl-3,3a,6,6a,9,10,11,12,13,14-decahydro-1H-cycloundeca_d_isoindole-1,15_2H_-dione",71694483,NA,NA,NA,NA,NA,NA
+methyl 2-_2-_4-methylphenyl_azepane-1-carbonyl_amino_acetate,53013151,NA,NA,NA,NA,NA,NA
+"1-oxo-N-_4-sulfamoylphenyl_-3,4-dihydroisochromene-3-carboxamide",4973739,NA,NA,NA,NA,NA,NA
+Isopalmitic acid,36247,Isopalmitic acid,HMDB0031068,84890,NA,NA,CC(C)CCCCCCCCCCCCC(O)=O
+3-_4-Sulfamoylphenyl_propanoic acid,3161908,NA,NA,NA,NA,NA,NA
+9-Oxo-9H-fluorene-2-carboxylic acid,69913,NA,NA,NA,NA,NA,NA
+"3-_Allyloxy_-N-_1,3-thiazol-2-yl_benzamide",2229515,NA,NA,NA,NA,NA,NA
+Hexapropylene glycol,12827208,NA,NA,NA,NA,NA,NA
+Brefeldin A,5287620,Brefeldin A,NA,NA,NA,NA,NA
+Benzothiazole,7222,Benzothiazole,HMDB0032930,45993,NA,NA,S1C=NC2=CC=CC=C12
+Isostearic acid,21859,16-Methylheptadecanoic acid,HMDB0031066,84896,C20356,NA,CC(C)CCCCCCCCCCCCCCC(O)=O
+3.beta.-Hydroxymevastatin,NA,NA,NA,NA,NA,NA,NA
+4-Oxo-4-_3-oxodecan-2-yl_amino_butanoic acid,NA,NA,NA,NA,NA,NA,NA
+"NCGC00347634-02_2,3-dihydroxy-10,13-dimethyl-2,3,4,5,6,7,8,14,15,17-decahydro-1H-cyclopenta_a_phenanthrene-12,16-dione",51136569,NA,NA,NA,NA,NA,NA
+Phe-Cys,10355684,Phenylalanylcysteine,HMDB0028992,NA,NA,NA,N[C@@H](CC1=CC=CC=C1)C(=O)N[C@@H](CS)C(O)=O
+"1,4-Dioxacyclohexadecane-5,16-dione",41270,NA,NA,NA,NA,NA,NA
+Heptapropylene glycol,12827211,NA,NA,NA,NA,NA,NA
+2-_4-Morpholinyl_benzothiazole,77901,NA,NA,NA,NA,NA,NA
+Val-Asp,7009608,Valylaspartic acid,HMDB0029123,75009,NA,NA,CC(C)[C@H](N)C(=O)N[C@@H](CC(O)=O)C(O)=O
+Tris_2-chloroethyl_ phosphate,8295,NA,NA,NA,NA,NA,NA
+2.4-Dichlorobenzoic acid,5787,"2,4-Dichlorobenzoic acid",NA,NA,NA,NA,NA
+Octapropylene glycol,22051740,NA,NA,NA,NA,NA,NA
+"_3E_-4-_2,4,6-Trimethyl-3-cyclohexen-1-yl_-3-buten-2-one",6285057,NA,NA,NA,NA,NA,NA
+Dihydroactinidiolide,27209,Dihydroactinidiolide,HMDB0035240,NA,NA,NA,CC12CCCC(C)(C)C1=CC(=O)O2
+"N-_2-_5,6-Dimethyl-1H-benzimidazol-2-yl_ethyl_-4-_4H-1,2,4-triazol-4-yl_benzamide",46978227,NA,NA,NA,NA,NA,NA
+Methoxyeugenol,226486,Methoxyeugenol,HMDB0041194,86562,NA,NA,COC1=CC(CC=C)=CC(OC)=C1O
+Hydrocortisone 21-acetate,5744,Cortisol 21-acetate,NA,17609,C02821,NA,CC(=O)OCC(=O)1(O)CC23CCC4=CC(=O)CC4(C)3(O)C21C
+N-_oxolan-3-ylmethyl_-N-propylcyclohexanecarboxamide,91915477,NA,NA,NA,NA,NA,NA
+16-Oxokahweol,5157251,NA,NA,NA,NA,NA,NA
+Diphenylsulfone,31386,Diphenyl sulfone,HMDB0251453,78360,NA,NA,O=S(=O)(C1=CC=CC=C1)C1=CC=CC=C1
+_-_-trans-C75,9881506,NA,NA,NA,NA,NA,NA
+Linoleamide,6435901,Linoleamide,HMDB0062656,82984,NA,NA,[H]\C(CCCCC)=C(/[H])C\C([H])=C(\[H])CCCCCCCC(O)=N
+"19-Aldoandrost-4-ene-3,17-dione",92854,"19-Oxoandrost-4-ene-3,17-dione",HMDB0006768,799,C05297,NA,C12CC3(CCC4=CC(=O)CC43C=O)1CCC2=O
+"5,6-Benzoflavone",2361,beta-Naphthoflavone,HMDB0249144,NA,NA,NA,NA
+"_4-pyridin-2-ylpiperazin-1-yl_-_4,5,6,7-tetrahydro-1,2-benzoxazol-3-yl_methanone",17254514,NA,NA,NA,NA,NA,NA
+"4_-Ethenyl-2_-hydroxy-1,4_,4a-trimethyl-5-oxospiro_2,3,4,7,8,8a-hexahydronaphthalene-6,1_-cyclopentane_-1-carboxylic acid",57509504,NA,NA,NA,NA,NA,NA
+Bis_p-methylbenzylidene_sorbitol,11069095,NA,NA,NA,NA,NA,NA
+2-Hydroxycinnamic acid,637540,2-Hydroxycinnamic acid,HMDB0002641,18125,C01772,6727,OC(=O)\C=C\C1=C(O)C=CC=C1
+"13-Keto-9Z,11E-octadecadienoic acid",6446027,13-OxoODE,HMDB0004668,68947,C14765,NA,CCCCCC(=O)\C=C\C=C/CCCCCCCC(O)=O
+"_4-phenyl-5-_trifluoromethyl_-1,2,4-triazol-3-yl_methanamine",52416435,NA,NA,NA,NA,NA,NA
+"4,4,7a-Trimethyl-3a,5,6,7-tetrahydro-3H-indene-1-carboxylic acid",51136570,NA,NA,NA,NA,NA,NA
+9H-xanthen-9-one,7020,Xanthone,NA,NA,C22599,NA,NA
+tert-butyl p-Toluate,11629749,NA,NA,NA,NA,NA,NA
+Sphingosine,5280335,Sphingosine,HMDB0000252,16393,C00319,392,CCCCCCCCCCCCC\C=C\[C@@H](O)[C@@H](N)CO
+5.alpha.-Androstan-17.beta.-ol-3-one glucosiduronate,44263365,5-alpha-Dihydrotestosterone glucuronide,HMDB0006203,89417,NA,NA,[H][C@@]12CC[C@H](O[C@]3([H])O[C@@H]([C@@H](O)[C@H](O)[C@H]3O)C(O)=O)[C@@]1(C)CC[C@@]1([H])[C@@]2([H])CC[C@@]2([H])CC(=O)CC[C@]12C
+Sphinganine,91486,Sphinganine,HMDB0000269,16566,C00836,5268,CCCCCCCCCCCCCCC[C@@H](O)[C@@H](N)CO
+Acerogenin G,14608480,NA,NA,NA,NA,NA,NA
+"2,6-Diisopropylaniline",32484,NA,NA,NA,NA,NA,NA
+RUBESCENSIN A,5321010,NA,NA,NA,NA,NA,NA
+Met His Lys,145456954,Met-His-Lys,NA,NA,NA,NA,NA
+17-Epiestriol,256737,17-Epiestriol,HMDB0000356,42156,NA,5345,[H][C@@]12C[C@@H](O)[C@@H](O)[C@@]1(C)CC[C@]1([H])C3=C(CC[C@@]21[H])C=C(O)C=C3
+"NCGC00169628-03_C23H36O6_1-Naphthaleneheptanoic acid, 1,2,6,7,8,8a-hexahydro-beta,delta-dihydroxy-2-methyl-8-_2-methyl-1-oxobutoxy_-, _betaR,deltaR,1S,2S,8S,8aR_",23899997,NA,NA,NA,NA,NA,NA
+_6_-Gingerol,442793,[6]-Gingerol,NA,NA,C10462,NA,NA
+Pinolenic Acid,5312495,Pinolenic acid,NA,86136,NA,NA,CCCCC/C=C\C/C=C\CC/C=C\CCCC(=O)O
+ML 236A_120179,173651,NA,NA,NA,NA,NA,NA
+9_10_-Epoxy-12Z-octadecenoic acid,6246154,"9,10-Epoxyoctadecenoic acid",HMDB0004701,34494,C14825,NA,CCCCC\C=C/CC1OC1CCCCCCCC(O)=O
+BOHLMANN K2631,327378,Alantolactone,HMDB0035906,2540,C09289,NA,CC1CCCC2(C)CC3OC(=O)C(=C)C3C=C12
+12-OPDA,5280411,12-oxo-PDA,HMDB0301804,15560,C01226,NA,CC\C=C/C[C@H]1[C@@H](CCCCCCCC(O)=O)C=CC1=O
+CONFERTIFOLINE,442187,Confertifolin,NA,NA,C09376,NA,NA
+MUUROLLADIE-3-ONE,3989419,NA,NA,NA,NA,NA,NA
+Diisopropyl phthalate,11799,NA,NA,NA,NA,NA,NA
+Aureonitol,25064137,NA,NA,NA,NA,NA,NA
+1-Pentadecanoyl-sn-glycero-3-phosphocholine,24779458,"CE(22:5(7Z,10Z,13Z,16Z,19Z))",HMDB0010375,131924,C04230,NA,CC\C=C/C\C=C/C\C=C/C\C=C/C\C=C/CCCCCC(=O)O[C@H]1CC[C@]2(C)C3CC[C@]4(C)C(CCC4C3CC=C2C1)[C@H](C)CCCC(C)C
+"10E,12Z-Octadecadienoic acid",5282800,"(10E,12Z)-Octadecadienoic acid",HMDB0005048,44526,C04056,NA,CCCCC\C=C/C=C/CCCCCCCCC(O)=O
+"3-Hydroxy-2-_9Z,12Z_-octadeca-9,12-dienoyloxy_propyl 2-_trimethylazaniumyl_ethyl phosphate",24871190,LysoPC(18:2/0:0),HMDB0010386,NA,C04100,NA,NA
+Linoleic acid,5280450,Linoleic acid,HMDB0000673,17351,C01595,191,CCCCC\C=C/C\C=C/CCCCCCCC(O)=O
+"1-O-Hexyl-2,3,5-trimethylhydroquinone",119193,"1-O-Hexyl-2,3,5-trimethylhydroquinone",HMDB0253220,NA,NA,NA,CCCCCCOC1=CC(C)=C(O)C(C)=C1C
+"6-_7-Methyloctyl_-4,6-dihydro-1H,3H-furo_3,4-c_furan-1-one",45359298,NA,NA,NA,NA,NA,NA
+2-Arachidonoyl-1-palmitoyl-sn-glycero-3-phosphoethanolamine,71306340,"PE(16:0/20:4(5Z,8Z,11Z,14Z))",HMDB0008937,NA,NA,NA,NA
+Stearidonic Acid,5312508,Stearidonic acid,HMDB0006547,32389,C16300,NA,CC\C=C/C\C=C/C\C=C/C\C=C/CCCCC(O)=O
+Cadabicilone,325292,Cadabicilone,HMDB0037559,174307,NA,NA,CC1C2CCC3(C)CCC(=O)C(C)C3C2OC1=O
+Isotalatizidine,11452543,NA,NA,NA,NA,NA,NA
+Cadalene,10225,Cadalene,HMDB0059698,89476,NA,NA,CC(C)C1=C2C=C(C)C=CC2=C(C)C=C1
+"1-Phenanthrenecarboxylic acid, 1,2,3,4,4a,9,10,10a-octahydro-1,4a-dimethyl-7-_1-methylethyl_-9-oxo-, _1R,4aS,10aR_",29212,NA,NA,NA,NA,NA,NA
+Microhelenin C,5281483,Microhelenin C,NA,NA,NA,NA,NA
+"11_-hydroxyandrost-4-ene-3,17-dione",94141,"11b-Hydroxyandrost-4-ene-3,17-dione",HMDB0006773,NA,C05284,NA,NA
+LPC 18:3,24779469,"LysoPC(18:3(9Z,12Z,15Z)/0:0)",HMDB0010388,133456,C04230,NA,CC\C=C/C\C=C/C\C=C/CCCCCCCC(=O)OC[C@](O)([H])COP([O-])(=O)OCC[N+](C)(C)C
+Lovastatin hydroxy acid,23689330,NA,NA,NA,NA,NA,NA
+R-Deprenyl N-Oxide,11447032,NA,NA,NA,NA,NA,NA
+Curlone,196216,Curlone,HMDB0037068,NA,NA,NA,CC(CC(=O)C=C(C)C)C1CCC(=C)C=C1
+"9-Oxo-10E,12Z,15Z-octadecatrienoic acid",11380794,9-KOT,NA,142251,NA,NA,CC/C=C\C/C=C\C=C\C(=O)CCCCCCCC(=O)O
+PE_17:0_0:0,52925149,1-Heptadecanoylglycerophosphoethanolamine,HMDB0061691,84490,NA,NA,CCCCCCCCCCCCCCCCC(=O)OC[C@@H](O)COP(O)(=O)OCCN
+"_2,2-Dimethyl-3,4-dihydro-2H-chromen-6-yl_acetic acid",1768299,NA,NA,NA,NA,NA,NA
+"9E,11E-Octadecadienoic acid",5282796,"(9E,11E)-Octadecadienoic acid",HMDB0005047,88464,C04056,NA,CCCCCC\C=C\C=C\CCCCCCCC(O)=O
+"_1S,7S,8S,8AS_-8-_2-_2R,4R_-4-Hydroxy-6-oxooxan-2-yl_ethyl_-7-methyl-1,2,3,4,4a,7,8,8a-octahydronaphthalen-1-yl_ _2S_-2-methylbutanoate",10000607,NA,NA,NA,NA,NA,NA
+FORMESTANE,11273,Formestane,NA,NA,NA,NA,NA
+1-Eicosatrienoyl-sn-glycero-3-phosphoethanolamine,52925141,"LysoPE(20:3(8Z,11Z,14Z)/0:0)",HMDB0011516,NA,NA,NA,[H][C@@](O)(COC(=O)CCCCCC\C=C/C\C=C/C\C=C/CCCCC)COP(O)(=O)OCCN
+"15-deoxy-_12,14-Prostaglandin A2",16061104,"15-deoxy-delta-12,14-PGA2",NA,63975,NA,NA,CCCCC/C=C/C=C1/C=CC(=O)1C/C=C\CCCC(=O)O
+"16alpha,17alpha-Epoxy-20-oxopregn-5-en-3beta-yl acetate",7659351,"16alpha,17alpha-Epoxypregnenolone acetate",NA,NA,C14635,NA,NA
+"NCGC00180855-02_C23H36O4_2-Pentenoic acid, 3-_acetyloxy_methyl_-5-_1R,4aR,8aR_-decahydro-5,5,8a-trimethyl-2-methylene-1-naphthalenyl_-, methyl ester, _2Z_",23872148,NA,NA,NA,NA,NA,NA
+_._-._-Lefetamine,443970,NA,NA,NA,NA,NA,NA
+METHOPRENE _S,1711973,Methoprene,NA,NA,C14308,NA,NA
+"3,6,9,12-Tetraoxatetracosan-1-ol",78933,Tetraethylene glycol monododecyl ether,HMDB0246913,NA,NA,NA,CCCCCCCCCCCCOCCOCCOCCOCCO
+Farnesyl acetone,1711945,Farnesyl acetone,HMDB0034495,NA,NA,NA,NA
+"3-benzyl-2-_furan-2-yl_chromeno_2,3-d_pyrimidine-4,5-dione",666649,NA,NA,NA,NA,NA,NA
+Latanoprost ethylamide,10287826,NA,NA,NA,NA,NA,NA
+Oleoyl Ethanolamide,5283454,Oleoylethanolamide,HMDB0002088,71466,C20792,NA,CCCCCCCC\C=C/CCCCCCCC(=O)NCCO
+11Z-hexadecenoic acid,5312414,cis-Palmitvaccenic acid,NA,35464,NA,NA,CCCC/C=C\CCCCCCCCCC(=O)O
+2-Palmitoyl-rac-glycerol,123409,MG(0:0/16:0/0:0),HMDB0011533,75455,NA,NA,[H]C(CO)(CO)OC(=O)CCCCCCCCCCCCCCC
+MG_0:0_18:1_9Z_0:0,5319879,MG(0:0/18:1(9Z)/0:0),HMDB0011537,73990,NA,NA,[H]C(CO)(CO)OC(=O)CCCCCCC\C=C/CCCCCCCC
+L-threo-Sphingosine C-18,5280335,Sphingosine,HMDB0000252,NA,C00319,NA,NA
+1-piperidinocyclohexylacetylene,305916,NA,NA,NA,NA,NA,NA
+"2,3-Dimethylaniline",6893,"2,3-Dimethylaniline",HMDB0245399,NA,NA,NA,CC1=C(C)C(N)=CC=C1
+Tolazoline,5504,Tolazoline,HMDB0014935,28502,C07147,NA,C(C1=NCCN1)C1=CC=CC=C1
+Decamethylcyclopentasiloxane,10913,NA,NA,NA,NA,NA,NA
+3-_Ethyl_phenyl_amino_propanenitrile,8995,NA,NA,NA,NA,NA,NA
+4-_1H-Inden-1-ylidenemethyl_phenylamine,6476992,NA,NA,NA,NA,NA,NA
+"4,7-Dimethyl-1,3-benzothiazol-2-ylamine",2049894,NA,NA,NA,NA,NA,NA
+Stearamide,31292,Octadecanamide,HMDB0034146,34900,C13846,NA,CCCCCCCCCCCCCCCCCC(N)=O
+Oleoyl Ethyl Amide,53442596,NA,NA,NA,NA,NA,NA
+N-Myristoyl-D-erythro-sphingosine,5282310,Cer(d18:1/14:0),HMDB0011773,72957,C13916,NA,CCCCCCCCCCCCC\C=C\[C@@H](O)[C@H](CO)NC(=O)CCCCCCCCCCCCC
+2-_3-Phenylpropyl_pyridine,459494,2-(3-Phenylpropyl)pyridine,HMDB0036173,NA,NA,NA,C(CC1=CC=CC=C1)CC1=NC=CC=C1
+Benzphetamine,5311017,Benzphetamine,HMDB0015003,3044,C07538,NA,C[C@@H](CC1=CC=CC=C1)N(C)CC1=CC=CC=C1
+5-Ethyl-2-methylpyridine,7728,5-Ethyl-2-methylpyridine,HMDB0029729,481701,NA,NA,CCC1=CN=C(C)C=C1
+"2,4,5-Trimethylaniline",8717,NA,NA,NA,NA,NA,NA
+13Z-Docosenamide,5365371,Erucamide,HMDB0244507,142245,NA,NA,CCCCCCCC/C=C\CCCCCCCCCCCC(N)=O
+"_S_-_-_-N,alpha-Dimethylbenzylamine",2060073,NA,NA,NA,NA,NA,NA
+"N,N-Diisopropylaniline",61329,NA,NA,NA,NA,NA,NA
+"N,N-Dimethyldodecan-1-amine",8168,"N,N-Dimethyldodecylamine",HMDB0255262,NA,NA,NA,CCCCCCCCCCCCN(C)C
+"Isoquinoline, 1,2,3,4-tetrahydro-4,4-dimethyl",192172,NA,NA,NA,NA,NA,NA

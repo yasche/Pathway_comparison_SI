@@ -1,0 +1,26 @@
+{
+ "nodes": [
+ {
+ "id": "Fatty acid degradation",
+"label": "Fatty acid degradation",
+"size": 40.73585,
+"color": "#FF0000",
+"x": 0.1697082,
+"y": 0.7541793 
+},
+{
+ "id": "Pyrimidine metabolism",
+"label": "Pyrimidine metabolism",
+"size": 10.57576,
+"color": "#FFFF00",
+"x": -0.5156043,
+"y": -0.4825408 
+} 
+],
+"edges": [ {
+ "id": "1" 
+},
+{
+ "id": "0" 
+} ] 
+}

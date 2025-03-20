@@ -1,0 +1,6 @@
+"Query","Match","HMDB","PubChem","KEGG","SMILES","Comment"
+"C05551","Penicillin G","HMDB0015186","5904","C05551","[H][C@]12SC(C)(C)[C@@H](N1C(=O)[C@H]2NC(=O)CC1=CC=CC=C1)C(O)=O","1"
+"C06525","Gentianine","HMDB0303030","354616","C06525","C=CC1=C2CCOC(=O)C2=CN=C1","1"
+"C02985","Fucose 1-phosphate","HMDB0001265","65369","C02985","C[C@@H]1O[C@H](OP(O)(O)=O)[C@@H](O)[C@H](O)[C@@H]1O","1"
+"C00051","Glutathione","HMDB0000125","124886","C00051","N[C@@H](CCC(=O)N[C@@H](CS)C(=O)NCC(O)=O)C(O)=O","1"
+"C00157","Phosphatidylcholine",NA,NA,"C00157",NA,"1"

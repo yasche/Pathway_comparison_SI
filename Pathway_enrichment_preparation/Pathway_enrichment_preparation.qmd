@@ -4,32 +4,873 @@ author: "Yannik Schermer"
 format: 
   html: 
     toc: true
+bibliography: references.bib
 ---
 
 ## Introduction
 
-
+This document describes the data preparation for subsequent enrichment analysis. Feature tables were created with Bruker Compass MetaboScape Version 7.0.1 (Build 10646) (2021b).Enrichment analyses were performed between 08.01.2025 and 17.01.2025 using MetaboAnalyst 6.0 [@pang2024].
 
 ## Universal data preparation
 
+The following paragraph describes the steps performed on the feature tables prior to all enrichment analyses.
+
+### Setup
+
+```{r setup}
+library(tidyverse)
+library(broom)
+library(PubChemR)
+```
+
 ### Data import
+
+```{r import}
+rp18_pos <- read_csv("feature_tables_raw/240813_All_cpds_2h_RP18_pos.csv", show_col_types = FALSE)
+rp18_neg <- read_csv("feature_tables_raw/240813_All_cpds_2h_RP18_neg.csv", show_col_types = FALSE)
+hilic_pos <- read_csv("feature_tables_raw/240813_All_cpds_2h_HILIC_pos.csv", show_col_types = FALSE)
+hilic_neg <- read_csv("feature_tables_raw/240813_All_cpds_2h_HILIC_neg.csv", show_col_types = FALSE)
+```
+
+### Data tidying
+
+Feature metadata and measured intensities are stored in 2 related tibbles to save memory as they are not needed for data preparation First, a unique identifier (UID) is added.
+
+```{r tidying-uid}
+rp18_pos <- rp18_pos %>%
+  mutate(UID = seq(1, nrow(.)))
+
+rp18_neg <- rp18_neg %>%
+  mutate(UID = seq(1, nrow(.)))
+
+hilic_pos <- hilic_pos %>%
+  mutate(UID = seq(1, nrow(.)))
+
+hilic_neg <- hilic_neg %>%
+  mutate(UID = seq(1, nrow(.)))
+```
+
+Then, feature metadata are saved in a separate tibble...
+
+```{r tidying-metadata}
+rp18_pos_ft_meta <- rp18_pos %>%
+  select(ncol(.), 1:6)
+
+rp18_neg_ft_meta <- rp18_neg %>%
+  select(ncol(.), 1:6)
+
+hilic_pos_ft_meta <- hilic_pos %>%
+  select(ncol(.), 1:6)
+
+hilic_neg_ft_meta <- hilic_neg %>%
+  select(ncol(.), 1:6)
+```
+
+... and removed from the other
+
+```{r tidying-remove}
+rp18_pos <- rp18_pos %>%
+  select(-c(1:6))
+
+rp18_neg <- rp18_neg %>%
+  select(-c(1:6))
+
+hilic_pos <- hilic_pos %>%
+  select(-c(1:6))
+
+hilic_neg <- hilic_neg %>%
+  select(-c(1:6))
+```
+
+After that, sample tables are made 'wider'.
+
+```{r tidying-gather}
+rp18_pos <- rp18_pos %>%
+  gather(key = "Sample", value = "Intensity", -UID)
+
+rp18_neg <- rp18_neg %>%
+  gather(key = "Sample", value = "Intensity", -UID)
+
+hilic_pos <- hilic_pos %>%
+  gather(key = "Sample", value = "Intensity", -UID)
+
+hilic_neg <- hilic_neg %>%
+  gather(key = "Sample", value = "Intensity", -UID)
+```
+
+Sample information is extracted from sample names. For this, a function is defined.
+
+```{r tidying-extract-info-def}
+extract_from_sample_name <- function(data#, method, polarity
+                                     ) {
+  data %>%
+  #extract infos
+  mutate(
+    #batch
+    Sample2 = Sample,
+    Batch = str_extract(Sample, "^B[0-9]{1,}"),
+    Batch = str_remove_all(Batch, "B"),
+    Sample = str_remove_all(Sample, "^B[0-9]{1,}_"),
+    Group = str_extract(Sample, "^[A-Za-z0-9]{2,}"),
+    Sample = str_remove_all(Sample, "^[A-Za-z0-9]{2,}_"),
+    Replicate = str_split_i(Sample, "_", 1),
+    Sample = Sample2
+  ) %>% 
+  select(-Sample2)
+}
+```
+
+```{r tidying-extract-info}
+rp18_pos <- extract_from_sample_name(rp18_pos)
+
+rp18_neg <- extract_from_sample_name(rp18_neg)
+
+hilic_pos <- extract_from_sample_name(hilic_pos)
+
+hilic_neg <- extract_from_sample_name(hilic_neg)
+```
+
+Some primitive visual quality control is performed
+
+```{r tidying-vis-qc, warning=FALSE}
+rp18_pos %>%
+  ggplot(aes(Sample, log10(Intensity), colour = Group)) +
+    geom_boxplot() +
+    labs(title = "RP18, pos") +
+    theme(axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank())
+
+rp18_neg %>%
+  ggplot(aes(Sample, log10(Intensity), colour = Group)) +
+    geom_boxplot() +
+    labs(title = "RP18, neg") +
+    theme(axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank())
+
+hilic_pos %>%
+  ggplot(aes(Sample, log10(Intensity), colour = Group)) +
+    geom_boxplot() +
+    labs(title = "HILIC, pos") +
+    theme(axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank())
+
+hilic_neg %>%
+  ggplot(aes(Sample, log10(Intensity), colour = Group)) +
+    geom_boxplot() +
+    labs(title = "HILIC, neg") +
+    theme(axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank())
+
+```
+
+There appear to be some outlier samples in HILIC negative mode with compound TFT but otherwise it looks okay.
+
+Next, method-specific feature tables are split into separate tables for each compound. This facilitates downstream analysis. For each batch, a separate vehicle control and a process blank were done. A lookup table, a helper function and a test function are defined.
+
+```{r tidying-lookup}
+groups <- list(
+  Metriz = list(groups = c("Metriz", "DMSO", "PBS"), batch = "1"),
+  dGlc = list(groups = c("dGlc", "DMSO", "PBS"), batch = "1"),
+  BP = list(groups = c("BP", "H2O", "PBS"), batch = "3"),
+  Phena = list(groups = c("Phena", "DMSO", "PBS"), batch = "4"),
+  FCCP = list(groups = c("FCCP", "DMSO", "PBS"), batch = "4"), 
+  Mena = list(groups = c("Mena", "DMSO", "PBS"), batch = "9"),
+  Comp = list(groups = c("Comp", "DMSO", "PBS"), batch = "9"),
+  Simva = list(groups = c("Simva", "DMSO", "PBS"), batch = "10"),
+  TFT = list(groups = c("TFT", "DMSO", "PBS"), batch = "10"),
+  AmA = list(groups = c("AmA", "DMSO", "PBS"), batch = "11"),
+  FU = list(groups = c("5FU", "DMSO", "PBS"), batch = "11")
+)
+
+split_featuretable <- function(glist, ft) {
+  groups <- glist[["groups"]]
+  batch <- glist[["batch"]]
+  
+  ft2 <- ft %>%
+    filter(Group %in% groups & Batch == batch)
+  
+  ft3 <- ft %>%
+    filter(Group == "QC")
+  
+  rbind(ft2, ft3)
+}
+
+test_split_featuretable <- function(ft) {
+  groups <- ft %>%
+    select(Group) %>%
+    pull() %>%
+    unique()
+  
+  batch <- ft %>%
+    select(Batch) %>%
+    pull() %>%
+    unique()
+  
+  c(batch, groups)
+}
+```
+
+```{r tidying-split-tables}
+rp18_pos <- map(groups, split_featuretable, rp18_pos)
+rp18_neg <- map(groups, split_featuretable, rp18_neg)
+
+hilic_pos <- map(groups, split_featuretable, hilic_pos)
+hilic_neg <- map(groups, split_featuretable, hilic_neg)
+```
+
+RP18 pos
+
+```{r tidying-split-test-rp18_pos}
+map(rp18_pos, test_split_featuretable)
+```
+
+RP18 neg
+
+```{r tidying-split-test-rp18_neg}
+map(rp18_neg, test_split_featuretable)
+```
+
+HILIC pos
+
+```{r tidying-split-test-hilic_pos}
+map(hilic_pos, test_split_featuretable)
+```
+
+HILIC neg
+
+```{r tidying-split-test-hilic_neg}
+map(hilic_neg, test_split_featuretable)
+```
+
+`split_featuretable()` produces the expected results.
 
 ### Filtering
 
+Several filters are applied to the data. In Bruker MetaboScape, features were initially filtered out, if they were not found in at least 75 % of the samples treated with the same compound. Here, this filter is applied again on the individual split feature tables, as well as the following additional filters: according to coefficient of variation (CV) in QC samples (\<= 0.2) and maximum intensity in samples must be \>= 3 times the maximum intensity of blank samples (PBS).
+
+```{r filtering-pipeline}
+print_n_features <- function(df) {
+  #helper function to print number of remaining features after each filtering step
+  df %>%
+    pull(UID) %>%
+    unique() %>%
+    length() %>%
+    print()
+  
+  return(df)
+}
+
+filter_blank <- function(df, min_frac = 3, blank_samples = "PBS") {
+  df %>%
+    mutate(
+      max_blank = case_when(select(df, Group) == blank_samples ~ Intensity, .default = NA),
+      max_sample = case_when(!(select(df, Group) == blank_samples) ~ Intensity, .default = NA)
+    ) %>%
+    group_by(UID) %>%
+    mutate(
+      max_blank = max(max_blank, na.rm = TRUE),
+      max_sample = max(max_sample, na.rm = TRUE),
+      frac_sb = max_sample / max_blank
+    ) %>%
+    #how should the case 0/0 be handled? -> 0/0 = NaN -> currently filtered out
+    #other approach: replace 0/0 with 0
+    filter(frac_sb >= min_frac & !is.nan(frac_sb)) %>%
+    ungroup() %>%
+    mutate(Intensity = na_if(Intensity, 0)) %>%
+    select( -"max_blank", -"max_sample")
+}
+
+zero_to_na <- function(df) {
+  mutate(df, Intensity = na_if(Intensity, 0))
+}
+
+filter_grouped_mv <- function(df, min_found = 0.75) {
+  df %>%
+    add_count(UID, Group, wt = !is.na(Intensity), name = "not_na") %>%
+    ungroup() %>%
+    group_by(UID, Group) %>%
+    mutate(perc_not_na = not_na / n()) %>%
+    ungroup() %>%
+    group_by(UID) %>%
+    mutate(max_perc_not_na = max(perc_not_na)) %>%
+    filter(max_perc_not_na >= min_found) %>%
+    ungroup() %>%
+    select(-"not_na", -"perc_not_na", -"max_perc_not_na")
+}
+
+filter_cv <- function(df, reference_samples = "QC", max_cv = 0.2) {
+  df %>%
+    #transform na to 0 -> mean(c(0,0,0)) / sd(c(0,0,0)) = NaN -> can keep samples that are not found in QC samples 
+    mutate(Intensity = case_when(is.na(Intensity) ~ 0, .default = Intensity)) %>%
+    mutate(Intensity_ref = case_when(Group == reference_samples ~ Intensity, .default = NA)) %>%
+    group_by(UID) %>%
+    mutate(cv = sd(Intensity_ref, na.rm = TRUE) / mean(Intensity_ref, na.rm = TRUE)) %>%
+    filter(cv <= max_cv | is.nan(cv)) %>%
+    ungroup() %>%
+    mutate(Intensity = na_if(Intensity, 0)) %>%
+    select(-"Intensity_ref")
+}
+
+
+
+rp18_pos <- rp18_pos %>%
+  map(filter_blank) %>% 
+  map(filter_cv) %>%
+  #remove Blank and QC samples
+  map(zero_to_na) %>%
+  map(filter, Group != "PBS") %>% 
+  map(filter, Group != "QC") %>%
+  map(filter_grouped_mv)
+  
+
+rp18_neg <- rp18_neg %>%
+  map(filter_blank) %>%
+  map(filter_cv) %>%
+  map(zero_to_na) %>%
+  map(filter, Group != "PBS") %>% 
+  map(filter, Group != "QC") %>%
+  map(filter_grouped_mv)
+  
+
+hilic_pos <- hilic_pos %>%
+  map(filter_blank) %>%
+  map(filter_cv) %>%
+  map(zero_to_na) %>%
+  map(filter, Group != "PBS") %>% 
+  map(filter, Group != "QC") %>%
+  map(filter_grouped_mv)
+
+hilic_neg <- hilic_neg %>%
+  map(filter_blank) %>%
+  map(filter_cv) %>%
+  map(zero_to_na) %>%
+  map(filter, Group != "PBS") %>% 
+  map(filter, Group != "QC") %>%
+  map(filter_grouped_mv)
+```
+
+```{r plot-cv, eval=FALSE, echo=FALSE}
+rbind(
+  mutate(rp18_pos[[1]], Method = "RP18 pos"),
+  mutate(rp18_neg[[1]], Method = "RP18 neg"),
+  mutate(hilic_pos[[1]], Method = "HILIC pos"),
+  mutate(hilic_neg[[1]], Method = "HILIC neg")
+) %>%
+  select(Method, cv) %>%
+  distinct() %>%
+  filter(cv < 0.75) %>%
+  ggplot(aes(cv)) +
+    geom_histogram() +
+    facet_wrap(~ Method)
+```
+
 ### Missing value imputation
+
+Missing values (`NA`) were replaced with 1/5th of the lowest measured intensity for that specific feature.
+
+```{r impute-mv}
+impute_lod <- function(df, div_by = 5) {
+  #https://omicsforum.ca/t/how-to-deal-with-missing-values/75
+  df %>%
+    group_by(UID) %>%
+    mutate(LoD = min(Intensity, na.rm = T) / div_by) %>%
+    ungroup() %>%
+    mutate(Intensity = case_when(is.na(Intensity) ~ LoD,
+                                 .default = Intensity)) %>%
+    select(-"LoD")
+}
+
+rp18_pos <- map(rp18_pos, impute_lod)
+
+rp18_neg <- map(rp18_neg, impute_lod)
+
+hilic_pos <- map(hilic_pos, impute_lod)
+
+hilic_neg <- map(hilic_neg, impute_lod)
+```
 
 ### Normalization
 
+Sample normalization is performed by setting the median of each sample to 1000 (i.e., divide by the median and multiply by 1000).
+
+```{r median-norm-def}
+normalize_median <- function(df, med = 1000) {
+  df %>%
+    group_by(Sample) %>%
+    mutate(Sample_median = median(Intensity)) %>%
+    ungroup() %>%
+    mutate(Intensity = (Intensity / Sample_median) * med) %>%
+    select(-Sample_median)
+}
+
+```
+
+Before normalization
+
+```{r boxplot-before-norm}
+rbind(
+  distinct(mutate(bind_rows(rp18_pos), Method = "RP18 pos")),
+  distinct(mutate(bind_rows(rp18_neg), Method = "RP18 neg")),
+  distinct(mutate(bind_rows(hilic_pos), Method = "HILIC pos")),
+  distinct(mutate(bind_rows(hilic_neg), Method = "HILIC neg"))
+) %>%
+  ggplot(aes(Sample, log10(Intensity), colour = Group)) +
+    geom_boxplot() +
+    facet_wrap(~Method)
+```
+
+After normalization
+
+```{r boxplot-after-norm}
+rp18_pos <- map(rp18_pos, normalize_median)
+rp18_neg <- map(rp18_neg, normalize_median)
+
+hilic_pos <- map(hilic_pos, normalize_median)
+hilic_neg <- map(hilic_neg, normalize_median)
+
+rbind(
+  distinct(mutate(bind_rows(rp18_pos), Method = "RP18 pos")),
+  distinct(mutate(bind_rows(rp18_neg), Method = "RP18 neg")),
+  distinct(mutate(bind_rows(hilic_pos), Method = "HILIC pos")),
+  distinct(mutate(bind_rows(hilic_neg), Method = "HILIC neg"))
+) %>%
+  ggplot(aes(Sample, log10(Intensity), colour = Group)) +
+    geom_boxplot() +
+    facet_wrap(~Method)
+
+```
+
 ### Collapse technical replicates
 
-### Add HMDB identifier
+Each sample was injected 3 times. Technical replicates are collapsed by calculating the mean across the 3 injections.
+
+```{r collapse-tr, warning=FALSE}
+collapse_tr <- function(df) {
+  df %>%
+    group_by(UID, Group, Replicate) %>%
+    summarise(Intensity = mean(Intensity)) %>%
+    ungroup() %>%
+    mutate(Sample = paste0(Group, "_", Replicate))
+}
+
+
+rp18_pos <- map(rp18_pos, collapse_tr) 
+rp18_neg <- map(rp18_neg, collapse_tr)
+
+hilic_pos <- map(hilic_pos, collapse_tr)
+hilic_neg <- map(hilic_neg, collapse_tr)
+```
+
+### Add compound identifiers
+
+Compound identifiers are mapped to the names using the [Compound ID Conversion](https://www.metaboanalyst.ca/MetaboAnalyst/upload/ConvertView.xhtml). Compounds that could not be mapped using this approach are subsequently mapped by hand.
+
+```{r compound-name-list}
+if (!("output" %in% list.dirs())) {
+  dir.create("output")
+}
+
+if (!("output/id_conv" %in% list.dirs(path = "output"))) {
+  dir.create("output/id_conv")
+}
+
+
+rbind(
+  select(hilic_neg_ft_meta, Name), 
+  select(hilic_pos_ft_meta, Name),
+  select(rp18_neg_ft_meta, Name),
+  select(rp18_pos_ft_meta, Name)
+) %>%
+  filter(!is.na(Name)) %>%
+  pull() %>%
+  unique() %>%
+  write_lines("output/id_conv/compound_names.txt")
+```
+
+Names were mapped to PubChem CIDs. Remaining missing values were added manually. After, CIDs were mapped to other identifiers.
+
+```{r join-ids}
+name_maps <- read_csv("input/id_conv/map_name2cid.csv", show_col_types = FALSE) %>%
+  left_join(read_csv("input/id_conv/map_cid2other.csv", show_col_types = FALSE), by = join_by(PubChem == Query)) %>%
+  select(-PubChem.y, -Comment)
+```
+
+Name maps are edited again to further decrase the number of missings.
+
+```{r write-name-maps}
+write_csv(name_maps, "output/id_conv/name_maps_joined.csv")
+```
+
+```{r read-name-maps}
+name_maps <- read_csv("input/id_conv/name_maps_joined_edited.csv", show_col_types = FALSE)
+```
+
+When searching with names, MetaboAnalyst removes "*" if it is the last character. Therefore, "*" are removed prior to joining.
+
+```{r join-ids-ft-meta}
+rp18_pos_ft_meta <- rp18_pos_ft_meta %>%
+  mutate(Name = str_remove(Name, "_$"))
+
+rp18_neg_ft_meta <- rp18_neg_ft_meta %>%
+  mutate(Name = str_remove(Name, "_$"))
+
+hilic_pos_ft_meta <- hilic_pos_ft_meta %>%
+  mutate(Name = str_remove(Name, "_$"))
+
+hilic_neg_ft_meta <- hilic_neg_ft_meta %>%
+  mutate(Name = str_remove(Name, "_$"))
+
+rp18_pos_ft_meta <- left_join(rp18_pos_ft_meta, name_maps, by = join_by(Name == Query))
+rp18_neg_ft_meta <- left_join(rp18_neg_ft_meta, name_maps, by = join_by(Name == Query))
+
+hilic_pos_ft_meta <- left_join(hilic_pos_ft_meta, name_maps, by = join_by(Name == Query))
+hilic_neg_ft_meta <- left_join(hilic_neg_ft_meta, name_maps, by = join_by(Name == Query))
+```
 
 ## Method-specific data preparation
 
+Different enrichment methods require different input types. Preparations are shown below.
+
 ### ORA
+
+Over-representation analysis (ORA) requires a list of significantly up & down regulated features and a background (i.e., all metabolites that can be identified with that specific method, see [@wieder2021]).
+
+The following cut-off values were chosen: *p*: 0.05 & absolute log2-FC: 0.58 (approximately a 1.5-fold increase or decrease compared to control).
+
+First, names are joined to feature tables.
+
+```{r join-names-ft}
+rp18_pos_names <- map(rp18_pos, left_join, rp18_pos_ft_meta, by = "UID")
+rp18_neg_names <- map(rp18_neg, left_join, rp18_neg_ft_meta, by = "UID")
+
+hilic_pos_names <- map(hilic_pos, left_join, hilic_pos_ft_meta, by = "UID")
+hilic_neg_names <- map(hilic_neg, left_join, hilic_neg_ft_meta, by = "UID")
+```
+
+```{r def-ttest}
+tidy_ttest <- function(df) {
+  t.test(Intensity ~ Group, data = df)
+}
+
+tidy_lfc <- function(df, control = c("DMSO", "H2O")) {
+  control <- df %>%
+    filter(Group %in% control) %>%
+    pull(Intensity) %>%
+    mean(na.rm = TRUE)
+  
+  samples <- df %>%
+    filter(!(Group %in% control)) %>%
+    pull(Intensity) %>%
+    mean(na.rm = TRUE)
+  
+  samples - control
+}
+
+extract_p <- function(df) {
+  df %>%
+    select(p.value) %>%
+    pull()
+}
+
+ora_prep_signif <- function(df, p_val_cutoff = 0.05, lfc_cutoff = 0.58) {
+  df %>%
+    mutate(Intensity = log2(Intensity)) %>%
+    group_by(UID, Name, Match, HMDB, KEGG) %>%
+    nest() %>%
+    mutate(p_val = map(data, tidy_ttest)) %>%
+    mutate(p_val = map(p_val, glance)) %>%
+    #replace with unnest(.drop = TRUE)?
+    mutate(p_val = map(p_val, extract_p)) %>%
+    mutate(p_val = as.numeric(p_val)) %>%
+    mutate(lfc = map(data, tidy_lfc)) %>%
+    mutate(lfc = as.numeric(lfc)) %>%
+    select(-data) %>%
+    filter(p_val <= p_val_cutoff & abs(lfc) >= lfc_cutoff) %>%
+    ungroup()
+}
+
+rp18_pos_ora_signif <- map(rp18_pos_names, ora_prep_signif)
+rp18_neg_ora_signif <- map(rp18_neg_names, ora_prep_signif)
+
+hilic_pos_ora_signif <- map(hilic_pos_names, ora_prep_signif)
+hilic_neg_ora_signif <- map(hilic_neg_names, ora_prep_signif)
+```
+
+Significant and background metabolites are written to disk. For this, a function is defined.
+
+```{r def-write-metab}
+write_metab <- function(folder, identifier = "KEGG", ...) {
+  metabo_lists <- list(...)
+  #print(metabo_lists)
+  for(i in 1:length(metabo_lists[[1]])) {
+    metabolite_names <- character()
+    compound_name <- names(metabo_lists[[1]])[[i]]
+    file = paste0(folder, "/", compound_name, ".txt")
+    
+    for(j in 1:length(metabo_lists)) {
+      curr_metabolite_names <- metabo_lists[[j]][[i]] %>%
+        select(all_of(identifier)) %>%
+        pull() %>%
+        unique()
+      
+      metabolite_names <- c(metabolite_names, curr_metabolite_names)
+    }
+    
+    metabolite_names <- metabolite_names[!is.na(metabolite_names)] %>%
+      unique()
+    
+    write_lines(metabolite_names, file)
+  }
+}
+
+write_metab(folder = "output/ora/signif", 
+            identifier = "KEGG",
+            rp18_pos_ora_signif,
+            rp18_neg_ora_signif,
+            hilic_pos_ora_signif,
+            hilic_neg_ora_signif)
+
+write_metab(folder = "output/ora/background/", 
+            identifier = "Match",
+            rp18_pos_names,
+            rp18_neg_names,
+            hilic_pos_names,
+            hilic_neg_names)
+
+```
+
+ORA was performed on compound lists saved under `output/ora/signif` with [MetaboAnalyst 6.0](https://new.metaboanalyst.ca/MetaboAnalyst/upload/EnrichUploadView.xhtml "MetaboAnalyst 6.0: Over Representation Analysis") [@pang2024] with the parameters given in @tbl-ora-parameters.
+
+| Parameter                          | Value                   |
+|------------------------------------|-------------------------|
+| Compound List                      | `output/ora/signif`     |
+| Input Type                         | KEGG ID                 |
+| Feature Type                       | Metabolites             |
+| Metabolite Set                     | KEGG                    |
+| Minimum entries per metabolite set | 2                       |
+| Reference metabolome               | `output/ora/background` |
+
+: ORA parameters {#tbl-ora-parameters}
+
+PDF reports and zip files are saved in `metaboanalyst_results/ora` to ensure reproducibility.
 
 ### MSEA
 
+Metabolite Set Enrichment Analysis (MSEA) or Quantitative Enrichment Analysis (QEA) requires a feature table as input. MSEA on MetaboAnalyst can't handle duplicate features. Therefore, the t-score is calculated and for duplicates, only the one with the highest absolute t-score is kept.
+
+```{r def-tbl-combine}
+combine_tables <- function(...) {
+  #metabo_lists is a list of lists
+  #this function assumes that tables in all lists have the same order
+  metabo_lists <- list(...)
+  return_list <- list()
+  for(i in 1:length(metabo_lists[[1]])) {
+    
+    curr_cpd_name <- names(metabo_lists[[1]])[i]
+      
+    #initialize empty list
+    combined_table <- list()
+    
+    
+    for(j in 1:length(metabo_lists)) {
+      curr_table <- metabo_lists[[j]][[i]] %>%
+        mutate(Method = paste0("Method", as.character(j))) 
+      
+      combined_table <- c(combined_table, list(curr_table))
+    }
+    
+    combined_table <- bind_rows(combined_table)
+    return_list <- c(return_list, list(combined_table))
+    
+    names(return_list)[i] <- curr_cpd_name
+  }
+  
+  return(return_list)
+}
+
+
+msea_prep <- function(df) {
+  df %>%
+    #log-transform
+    mutate(Intensity = log2(Intensity)) %>%
+    #calc t-score
+    group_by(Method, UID, Name, Match, HMDB, KEGG) %>%
+    nest() %>%
+    mutate(tstat = map(data, tidy_ttest)) %>%
+    mutate(tstat = map(tstat, glance)) %>%
+    unnest(tstat) %>%
+    unnest(data) %>%
+    ungroup() %>%
+    #filter
+    #assuming, KEGG identifier is later used
+    group_by(KEGG) %>%
+    mutate(max_tstat = max(abs(statistic))) %>%
+    ungroup() %>%
+    filter(abs(statistic) == max_tstat) %>%
+    filter(!is.na(KEGG)) %>%
+    #spread
+    select(KEGG, Group, Intensity, Sample) %>%
+    spread(key = KEGG, value = Intensity) %>%
+    relocate(Group, .after = Sample)
+}
+
+write_featuretables <- function(list, path = "output/msea") {
+  for(i in 1:length(list)) {
+    write_csv(list[[i]], paste0(path, "/", names(list)[[i]], ".csv"))
+  }
+}
+
+
+#combine
+combine_tables(rp18_pos_names,
+               rp18_neg_names,
+               hilic_pos_names,
+               hilic_neg_names) %>%
+  map(msea_prep) %>%
+  write_featuretables()
+
+```
+
+MSEA was performed on compound lists saved under `output/msea` with using [MetaboAnalyst 6.0](https://new.metaboanalyst.ca/MetaboAnalyst/upload/EnrichUploadView.xhtml "MetaboAnalyst 6.0: Quantitative Enrichment Analysis") [@pang2024] with the parameters given in @tbl-msea-parameters.
+
+| Parameter                          | Value           |
+|------------------------------------|-----------------|
+| Group Label                        | Categorical     |
+| ID Type                            | KEGG ID         |
+| Feature Type                       | Metabolites     |
+| Data Format                        | Samples in rows |
+| Data File                          | `output/msea`   |
+| Filtering                          | None            |
+| Normalization                      | None            |
+| Metabolite Set                     | KEGG            |
+| Minimum entries per metabolite set | 2               |
+| Reference metabolome               | None            |
+
+: MSEA parameters {#tbl-msea-parameters}
+
+PDF reports and zip files are saved in `metaboanalyst_results/msea` to ensure reproducibility.
+
 ### Mummichog
+
+Input for the mummichog algorithm [@li2013] was provided as a table containing *m/z*, p-value, t-score and mode (i.e., positive and negative). RP18 and HILIC data were combined so no retention time could be provided. Additionally, putative annotations were provided to improve performance [@lu2023].InChI-keys were chosen as annotation ID type because they could easily be retrieved from CIDs using the PubChemR package and they were used in the MetaboAnalyst examples.
+
+InChI-keys were retrieved using PubChem CIDs.
+
+```{r cid-conv}
+cids <- read_csv("input/id_conv/name_maps_joined_edited.csv", show_col_types = FALSE) %>%
+  select(PubChem) %>%
+  filter(!is.na(PubChem)) %>%
+  distinct() %>%
+  pull() %>%
+  as.character()
+```
+
+Trying to search all CIDs at once resulted in Error 403. Therefore, CIDs were split into two groups.
+
+```{r get-inchi}
+inchi_keys1 <- get_pug_rest(identifier = cids[1:350], namespace = "cid", domain = "compound", property = c("InChIKey"), output = "CSV")
+inchi_keys2 <- get_pug_rest(identifier = cids[351:length(cids)], namespace = "cid", domain = "compound", property = c("InChIKey"), output = "CSV")
+```
+
+CIDs were then combined into one table.
+
+```{r bind-inchi}
+inchi_keys <- rbind(inchi_keys1$result, inchi_keys2$result)
+```
+
+Feature tables were combined and InChI-keys were joined, p values and t-scores were calculated using a two-sided Welch t-test.
+
+```{r def-prep-mummichog}
+mummichog_prep <- function(df) {
+  df %>%
+    #log-transform
+    mutate(Intensity = log2(Intensity)) %>%
+    #calc t-score & p value
+    group_by(Method, UID, Name, Match, `m/z`, InChIKey, PubChem) %>%
+    nest() %>%
+    mutate(tstat = map(data, tidy_ttest)) %>%
+    mutate(tstat = map(tstat, glance)) %>%
+    unnest(tstat) %>%
+    ungroup() %>%
+    arrange(p.value) %>%
+    select(UID, `m/z`, p.value, statistic, InChIKey, PubChem, Name, Method)
+}
+
+mummichog_results <- combine_tables(rp18_pos_names,
+               rp18_neg_names,
+               hilic_pos_names,
+               hilic_neg_names) %>%
+  map(left_join, inchi_keys, by = join_by("PubChem" == "CID")) %>%
+  map(mummichog_prep)
+```
+
+Finally, tables with *m/z*, p-values and t-statistics, and annotation tables are saved to disk.
+
+```{r def-save-mummichog}
+save_mummichog <- function(df_list, path = "output/mummichog/") {
+  
+  #polarities for methods (order of arguments passed to combine_tables function):
+  polarities <- c("Method1" = "positive",
+                  "Method2" = "negative",
+                  "Method3" = "positive",
+                  "Method4" = "negative")
+  
+  for(i in 1:length(df_list)) {
+    df <- df_list[[i]] %>%
+      mutate(index = 1:nrow(.))
+    
+    data_df <- df %>%
+      transmute(mz = `m/z`,
+                p.value = p.value,
+                t.score = statistic,
+                mode = Method) %>%
+      mutate(mode = str_replace_all(mode, polarities))
+    
+    annotation_df <- tibble(
+      index = df$index,
+      InchiKey_1 = df$InChIKey
+    ) %>%
+      filter(!is.na(InchiKey_1))
+
+    
+    file_name <- paste0(names(df_list)[[i]], ".csv")
+    
+    write_csv(data_df, paste0(path, "data/", file_name))
+    write_csv(annotation_df, paste0(path, "annotation/annotation_", file_name))
+  }
+} 
+
+save_mummichog(mummichog_results)
+```
+
+Mummichog analysis [@li2013] was performed on compound lists saved under `output/mummichog` with using [MetaboAnalyst 6.0](https://new.metaboanalyst.ca/MetaboAnalyst/upload/PeakUploadView.xhtml "MetaboAnalyst 6.0: Functional Analysis") [@pang2024] with parameters given in @tbl-mummichog-parameters.
+
+| Parameter                          | Value                  |
+|------------------------------------|------------------------|
+| Ion Mode                           | Mixed                  |
+| Mass Tolerance (ppm)               | 5.0                    |
+| Retention Time                     | Not present            |
+| Ranked by                          | P values               |
+| Enforce Primary Ions               | Yes                    |
+| Data File                          | `output/mummichog`     |
+| Algorithms                         | Mummichog              |
+| P-value cutoff                     | Default top 10 % peaks |
+| Pathway Library                    | Homo sapiens, KEGG     |
+| Minimum entries per metabolite set | 2                      |
+
+: Mummichog parameters {#tbl-mummichog-parameters}
+
+PDF reports and zip files are saved in `metaboanalyst_results/msea` to ensure reproducibility.
+
+
+## Session Info
+
+```{r si}
+sessionInfo()
+```
 
 ## References

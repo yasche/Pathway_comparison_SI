@@ -1,0 +1,138 @@
+{
+ "nodes": [
+ {
+ "id": "Amino sugar and nucleotide sugar metabolism",
+"label": "Amino sugar and nucleotide sugar metabolism",
+"size": 9.756757,
+"color": "#FF0000",
+"x": -3.122227,
+"y": -1.622531 
+},
+{
+ "id": "Galactose metabolism",
+"label": "Galactose metabolism",
+"size": 12.00901,
+"color": "#FF1700",
+"x": -1.872724,
+"y": -2.716611 
+},
+{
+ "id": "Ascorbate and aldarate metabolism",
+"label": "Ascorbate and aldarate metabolism",
+"size": 12.00901,
+"color": "#FF2E00",
+"x": -1.64836,
+"y": 0.7551903 
+},
+{
+ "id": "Sphingolipid metabolism",
+"label": "Sphingolipid metabolism",
+"size": 12.00901,
+"color": "#FF4600",
+"x": -3.073558,
+"y": 1.508296 
+},
+{
+ "id": "Pentose and glucuronate interconversions",
+"label": "Pentose and glucuronate interconversions",
+"size": 9.006006,
+"color": "#FF5D00",
+"x": -1.760719,
+"y": 2.548641 
+},
+{
+ "id": "Glycerophospholipid metabolism",
+"label": "Glycerophospholipid metabolism",
+"size": 6.597122,
+"color": "#FF7400",
+"x": 1.455034,
+"y": -2.311048 
+},
+{
+ "id": "Citrate cycle (TCA cycle)",
+"label": "Citrate cycle (TCA cycle)",
+"size": 12.00901,
+"color": "#FF8B00",
+"x": -0.1318232,
+"y": 2.881094 
+},
+{
+ "id": "Fatty acid degradation",
+"label": "Fatty acid degradation",
+"size": 12.00901,
+"color": "#FFA200",
+"x": -0.246121,
+"y": -3.132408 
+},
+{
+ "id": "Tryptophan metabolism",
+"label": "Tryptophan metabolism",
+"size": 12.00901,
+"color": "#FFB900",
+"x": -1.63899,
+"y": -0.9378885 
+},
+{
+ "id": "Starch and sucrose metabolism",
+"label": "Starch and sucrose metabolism",
+"size": 12.00901,
+"color": "#FFD100",
+"x": 1.495659,
+"y": 2.054797 
+},
+{
+ "id": "Inositol phosphate metabolism",
+"label": "Inositol phosphate metabolism",
+"size": 12.00901,
+"color": "#FFE800",
+"x": -0.0110669,
+"y":  1.37312 
+},
+{
+ "id": "Glyoxylate and dicarboxylate metabolism",
+"label": "Glyoxylate and dicarboxylate metabolism",
+"size": 12.00901,
+"color": "#FFFF00",
+"x": 0.6422547,
+"y": -0.1664055 
+},
+{
+ "id": "Alanine, aspartate and glutamate metabolism",
+"label": "Alanine, aspartate and glutamate metabolism",
+"size": 7.504505,
+"color": "#FFFF20",
+"x": 2.230445,
+"y": 0.655541 
+},
+{
+ "id": "Glutathione metabolism",
+"label": "Glutathione metabolism",
+"size": 7.504505,
+"color": "#FFFF60",
+"x": 2.269602,
+"y": -0.9223123 
+},
+{
+ "id": "Arginine and proline metabolism",
+"label": "Arginine and proline metabolism",
+"size": 6.003003,
+"color": "#FFFF9F",
+"x": -0.03968344,
+"y": -1.674649 
+},
+{
+ "id": "Pyrimidine metabolism",
+"label": "Pyrimidine metabolism",
+"size": 4.798561,
+"color": "#FFFFDF",
+"x": -3.44278,
+"y": -0.06094112 
+} 
+],
+"edges": [ {
+ "id": "1" 
+},
+{
+ "id": "0" 
+} ] 
+}

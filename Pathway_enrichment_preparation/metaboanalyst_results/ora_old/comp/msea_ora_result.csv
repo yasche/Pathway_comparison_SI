@@ -1,0 +1,7 @@
+"","total","expected","hits","Raw p","Holm p","FDR"
+"Steroid hormone biosynthesis",2,0.189,2,0.00836,0.669,0.669
+"Glutathione metabolism",3,0.283,2,0.0237,1,0.948
+"Fatty acid degradation",1,0.0943,1,0.0943,1,1
+"Cysteine and methionine metabolism",3,0.283,1,0.259,1,1
+"Glycerophospholipid metabolism",4,0.377,1,0.33,1,1
+"Purine metabolism",9,0.849,1,0.6,1,1

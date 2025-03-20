@@ -1,0 +1,5 @@
+{
+ "pval": [ 9.705027, 0.8357066, 0.5522839, 0.4589702, 0.4090245, 0.385704, 0.3361578, 0.2805113, 0.2366094, 0.2011561, 0.0957011, 0.0831672, 0.06613325, 0.06309939, 0.03676483, 0.007495083, 0.00656377 ],
+"enr": [ 6.423733, 2.822586, 1.411333, 1.385617, 1.411293, 2.419404, 0.6195787, 0.8194706,  3.17541, 1.494299, 0.9072764, 0.7698229, 1.154668, 0.7698229, 0.9408223, 0.3628974, 0.3735804 ],
+"pathnames": [ "Steroid hormone biosynthesis", "Ubiquinone and other terpenoid-quinone biosynthesis", "Glycerophospholipid metabolism", "Drug metabolism - cytochrome P450", "Terpenoid backbone biosynthesis", "Tyrosine metabolism", "N-Glycan biosynthesis", "Porphyrin metabolism", "Phenylalanine metabolism", "Retinol metabolism", "Glutathione metabolism", "Glycine, serine and threonine metabolism", "Arachidonic acid metabolism", "Cysteine and methionine metabolism", "Galactose metabolism", "Purine metabolism", "Metabolism of xenobiotics by cytochrome P450" ] 
+}

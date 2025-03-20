@@ -1,0 +1,297 @@
+{
+ "nodes": [
+ {
+ "id": "Fructose and mannose metabolism",
+"label": "Fructose and mannose metabolism",
+"size": 9.832493,
+"color": "#FF0000",
+"x": -0.8274723,
+"y": 3.315279 
+},
+{
+ "id": "Amino sugar and nucleotide sugar metabolism",
+"label": "Amino sugar and nucleotide sugar metabolism",
+"size": 9.672197,
+"color": "#FF0A00",
+"x": 3.488925,
+"y": 0.5051917 
+},
+{
+ "id": "Glutathione metabolism",
+"label": "Glutathione metabolism",
+"size": 9.789164,
+"color": "#FF1400",
+"x": -1.817077,
+"y": -3.625389 
+},
+{
+ "id": "Ubiquinone and other terpenoid-quinone biosynthesis",
+"label": "Ubiquinone and other terpenoid-quinone biosynthesis",
+"size": 8.709016,
+"color": "#FF1D00",
+"x": -1.742898,
+"y": 1.520001 
+},
+{
+ "id": "Tyrosine metabolism",
+"label": "Tyrosine metabolism",
+"size": 8.709016,
+"color": "#FF2700",
+"x": 0.06136358,
+"y": 1.902084 
+},
+{
+ "id": "Phenylalanine metabolism",
+"label": "Phenylalanine metabolism",
+"size": 8.709016,
+"color": "#FF3100",
+"x": -2.543845,
+"y": -0.4994217 
+},
+{
+ "id": "Phenylalanine, tyrosine and tryptophan biosynthesis",
+"label": "Phenylalanine, tyrosine and tryptophan biosynthesis",
+"size": 8.709016,
+"color": "#FF3B00",
+"x": -3.299408,
+"y": -0.9099755 
+},
+{
+ "id": "Pyrimidine metabolism",
+"label": "Pyrimidine metabolism",
+"size": 6.456461,
+"color": "#FF4500",
+"x": 2.589266,
+"y": -4.477768 
+},
+{
+ "id": "Fatty acid degradation",
+"label": "Fatty acid degradation",
+"size": 8.394722,
+"color": "#FF4E00",
+"x": -3.009168,
+"y": 2.302396 
+},
+{
+ "id": "Inositol phosphate metabolism",
+"label": "Inositol phosphate metabolism",
+"size": 8.268165,
+"color": "#FF5800",
+"x": 3.996747,
+"y": -3.72684 
+},
+{
+ "id": "Arachidonic acid metabolism",
+"label": "Arachidonic acid metabolism",
+"size": 7.692216,
+"color": "#FF6200",
+"x": 0.9735995,
+"y": 0.01102715 
+},
+{
+ "id": "alpha-Linolenic acid metabolism",
+"label": "alpha-Linolenic acid metabolism",
+"size": 7.692216,
+"color": "#FF6C00",
+"x": -0.7844494,
+"y": 0.1393507 
+},
+{
+ "id": "Nicotinate and nicotinamide metabolism",
+"label": "Nicotinate and nicotinamide metabolism",
+"size": 7.408862,
+"color": "#FF7600",
+"x": 1.630673,
+"y": 4.877541 
+},
+{
+ "id": "Linoleic acid metabolism",
+"label": "Linoleic acid metabolism",
+"size": 6.366863,
+"color": "#FF8000",
+"x": 5.710275,
+"y": 0.7505487 
+},
+{
+ "id": "Glycerophospholipid metabolism",
+"label": "Glycerophospholipid metabolism",
+"size": 5.896192,
+"color": "#FF8900",
+"x": -2.708758,
+"y": -2.426892 
+},
+{
+ "id": "Ascorbate and aldarate metabolism",
+"label": "Ascorbate and aldarate metabolism",
+"size": 6.249055,
+"color": "#FF9300",
+"x": -1.074419,
+"y": -1.603264 
+},
+{
+ "id": "Tryptophan metabolism",
+"label": "Tryptophan metabolism",
+"size": 6.760045,
+"color": "#FF9D00",
+"x": 5.255562,
+"y": -2.418598 
+},
+{
+ "id": "Steroid hormone biosynthesis",
+"label": "Steroid hormone biosynthesis",
+"size": 6.414392,
+"color": "#FFA700",
+"x":  3.25783,
+"y": 4.407422 
+},
+{
+ "id": "Biotin metabolism",
+"label": "Biotin metabolism",
+"size": 6.282794,
+"color": "#FFB100",
+"x": 1.203018,
+"y": -4.142697 
+},
+{
+ "id": "Ether lipid metabolism",
+"label": "Ether lipid metabolism",
+"size": 6.176536,
+"color": "#FFBA00",
+"x": 2.467043,
+"y": -0.95584 
+},
+{
+ "id": "Arginine biosynthesis",
+"label": "Arginine biosynthesis",
+"size":  6.01862,
+"color": "#FFC400",
+"x": -0.1363585,
+"y": -4.588508 
+},
+{
+ "id": "Pantothenate and CoA biosynthesis",
+"label": "Pantothenate and CoA biosynthesis",
+"size": 5.957511,
+"color": "#FFCE00",
+"x": 0.8738325,
+"y": 3.568549 
+},
+{
+ "id": "Sphingolipid metabolism",
+"label": "Sphingolipid metabolism",
+"size": 5.752765,
+"color": "#FFD800",
+"x": -3.500242,
+"y": 0.8293563 
+},
+{
+ "id": "Purine metabolism",
+"label": "Purine metabolism",
+"size":  5.50119,
+"color": "#FFE200",
+"x": 3.765311,
+"y": -2.201572 
+},
+{
+ "id": "Alanine, aspartate and glutamate metabolism",
+"label": "Alanine, aspartate and glutamate metabolism",
+"size": 5.301764,
+"color": "#FFEB00",
+"x": 1.873391,
+"y": 1.597341 
+},
+{
+ "id": "Arginine and proline metabolism",
+"label": "Arginine and proline metabolism",
+"size": 4.853633,
+"color": "#FFF500",
+"x": 2.202344,
+"y": -2.829957 
+},
+{
+ "id": "Lysine degradation",
+"label": "Lysine degradation",
+"size": 4.871763,
+"color": "#FFFF00",
+"x": -2.122341,
+"y": 3.621536 
+},
+{
+ "id": "Pentose and glucuronate interconversions",
+"label": "Pentose and glucuronate interconversions",
+"size": 4.457441,
+"color": "#FFFF0E",
+"x": 4.529051,
+"y": -0.6408975 
+},
+{
+ "id": "Galactose metabolism",
+"label": "Galactose metabolism",
+"size": 4.413972,
+"color": "#FFFF2B",
+"x": 5.437611,
+"y": 2.146407 
+},
+{
+ "id": "Starch and sucrose metabolism",
+"label": "Starch and sucrose metabolism",
+"size": 4.275934,
+"color": "#FFFF47",
+"x": 5.932951,
+"y": -0.809049 
+},
+{
+ "id": "Cysteine and methionine metabolism",
+"label": "Cysteine and methionine metabolism",
+"size": 3.825353,
+"color": "#FFFF63",
+"x": 0.7185571,
+"y": -1.922502 
+},
+{
+ "id": "Riboflavin metabolism",
+"label": "Riboflavin metabolism",
+"size": 3.385566,
+"color": "#FFFF80",
+"x": -0.4167837,
+"y": -3.146373 
+},
+{
+ "id": "Citrate cycle (TCA cycle)",
+"label": "Citrate cycle (TCA cycle)",
+"size": 3.072176,
+"color": "#FFFF9C",
+"x":  3.85021,
+"y": 1.980652 
+},
+{
+ "id": "Glyoxylate and dicarboxylate metabolism",
+"label": "Glyoxylate and dicarboxylate metabolism",
+"size": 3.072176,
+"color": "#FFFFB8",
+"x": 4.506808,
+"y": 3.442335 
+},
+{
+ "id": "Thiamine metabolism",
+"label": "Thiamine metabolism",
+"size": 3.043881,
+"color": "#FFFFD4",
+"x": -0.2488158,
+"y": 4.736487 
+},
+{
+ "id": "Pentose phosphate pathway",
+"label": "Pentose phosphate pathway",
+"size": 3.036482,
+"color": "#FFFFF1",
+"x": 2.499429,
+"y": 3.154259 
+} 
+],
+"edges": [ {
+ "id": "1",
+"source": "Phenylalanine metabolism",
+"target": "Phenylalanine, tyrosine and tryptophan biosynthesis" 
+} ] 
+}

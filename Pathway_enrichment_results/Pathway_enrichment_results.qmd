@@ -1,0 +1,2147 @@
+---
+title: "Data analysis"
+author: "Yannik Schermer"
+format: 
+  html: 
+    toc: true
+---
+
+## Introduction
+
+This document describes the data analysis steps after enrichment analysis.
+
+## Data analysis and plotting
+
+### Setup
+
+```{r}
+library(tidyverse)
+library(ggh4x)
+library(scico)
+library(corrr)
+library(forcats)
+library(ggbeeswarm)
+library(ggVennDiagram)
+library(egg)
+library(patchwork)
+library(scales)
+library(ggpubr)
+library(gplots)
+library(KEGGREST)
+library(qs)
+library(ggkegg)
+```
+
+### Import data
+
+```{r create-file-list}
+msea_files <- list.files("enrichment_results/msea/")
+ora_files <- list.files("enrichment_results/ora/")
+mummichog_files <- list.files("enrichment_results/mummichog/")
+
+msea_filenames <- str_split_i(msea_files, "_", 1)
+ora_filenames <- str_split_i(ora_files, "_", 1)
+mummichog_filenames <- str_split_i(mummichog_files, "_", 1)
+
+msea_paths <- paste0("enrichment_results/msea/", msea_files)
+ora_paths <- paste0("enrichment_results/ora/", ora_files)
+mummichog_paths <- paste0("enrichment_results/mummichog/", mummichog_files)
+```
+
+Tables for each method must be read separately because they might have different columns.
+
+```{r read-tbls}
+msea_tbls <- map(msea_paths, read_csv, show_col_types = FALSE)
+ora_tbls <- map(ora_paths, read_csv, show_col_types = FALSE)
+mummichog_tbls <- map(mummichog_paths, read_csv, show_col_types = FALSE)
+```
+
+```{r add-cpd-names}
+cpd_name_to_col <- function(df, cpd_name) {
+  df %>%
+    mutate(Compound = cpd_name)
+}
+
+
+msea_tbls <- map2(msea_tbls, msea_filenames, cpd_name_to_col)
+ora_tbls <- map2(ora_tbls, ora_filenames, cpd_name_to_col)
+mummichog_tbls <- map2(mummichog_tbls, mummichog_filenames, cpd_name_to_col)
+```
+
+### Combine tables
+
+The different methods report different p-values. For ORA and MSEA, raw p-values were selected. For Mummichog, gamma p was chosen as a "combination" of empirical p and Fisher p. Enrichment ratios for mummichog and ora were calculated by dividing significant hits by expected hits for MSEA by dividing Q Statistic by Q Expected. Pathways with p = 1 where removed.
+
+```{r combine-tbls}
+msea_tbls <- bind_rows(msea_tbls) %>%
+  transmute(Pathway = `...1`,
+            nlogp = -log10(`Raw p`),
+            EnrichRatio = `Statistic Q` / `Expected Q`,
+            Compound = Compound,
+            Method = "MSEA")
+
+ora_tbls <- bind_rows(ora_tbls) %>%
+  transmute(Pathway = `...1`,
+            nlogp = -log10(`Raw p`),
+            EnrichRatio = hits / expected,
+            Compound = Compound,
+            Method = "ORA")
+
+mummichog_tbls <- bind_rows(mummichog_tbls) %>%
+  transmute(Pathway = `...1`,
+            nlogp = -log10(`P(Gamma)`),
+            EnrichRatio = Hits.sig / Expected,
+            Compound = Compound,
+            Method = "Mummichog")
+
+combined_tbl <- rbind(msea_tbls, ora_tbls, mummichog_tbls)
+```
+
+For some reason, with the Mummichog algorithm, "Glycolysis / Gluconeogenesis" is sometimes called "Glycolysis or Gluconeogenesis". It appears to be the same pathway and "Glycolysis or Gluconeogenesis" does not exist on kegg.jp. To make it consistent, it is renamed to "Glycolysis / Gluconeogenesis".
+
+```{r rename-glyc-gluconeo}
+combined_tbl <- combined_tbl %>%
+  mutate(Pathway = case_when(Pathway == "Glycolysis or Gluconeogenesis" ~ "Glycolysis / Gluconeogenesis",
+                             .default = Pathway))
+```
+
+
+### Add targets
+
+Compound targets are added as a nesting parameter for facet_wrap
+
+```{r}
+mechs <- c("AmA" = "Electron transport chain inhibitors",
+           "BP" = "Hexokinase inhibitors",
+           "Comp" = "HMG-CoA reductase inhibitors",
+           "dGlc" = "Hexokinase inhibitors",
+           "FCCP" = "Electron transport chain inhibitors",
+           "FU" = "Thymidylate synthase inhibitors",
+           "Mena" = "ROS generators",
+           "Metriz" = "Hexokinase inhibitors",
+           "Phena" = "ROS generators",
+           "Simva" = "HMG-CoA reductase inhibitors",
+           "TFT" = "Thymidylate synthase inhibitors")
+
+cpds_wrap <- c("AmA" = "Anti-mycin A",
+               "BP" = "3-Bromo-pyruvic acid",
+               "Comp" = "Meva-statin",
+               "dGlc" = "2-Deoxy-glucose",
+               "FCCP" = "FCCP",
+               "FU" = "5-Fluoro-uracil",
+               "Mena" = "Mena-dione",
+               "Metriz" = "Metriz-amide",
+               "Phena" = "Phenan-threne-9,10-dione",
+               "Simva" = "Simva-statin",
+               "TFT" = "Trifluoro-thymidine")
+
+cpds <- c("AmA" = "Antimycin A",
+          "BP" = "3-Bromopyruvic acid",
+          "Comp" = "Mevastatin",
+          "dGlc" = "2-Deoxyglucose",
+          "FCCP" = "FCCP",
+          "FU" = "5-Fluorouracil",
+          "Mena" = "Menadione",
+          "Metriz" = "Metrizamide",
+          "Phena" = "Phenanthrene-9,10-dione",
+          "Simva" = "Simvastatin",
+          "TFT" = "Trifluorothymidine")
+
+combined_tbl <- combined_tbl %>%
+  mutate(Target = Compound) %>%
+  mutate(Target = str_replace_all(Target, mechs)) %>%
+  mutate(CpdNoWrap = str_replace_all(Compound, cpds)) %>%
+  mutate(Compound = str_replace_all(Compound, cpds_wrap))
+
+```
+
+### Visualize data
+
+
+#### PCA
+
+The data set (i.e., the number of compounds with a similar MOA in the study) is relatively small, so it is not clear if the PCA will hold additional value but it can be done anyways.
+
+```{r}
+combined_tbl_spread <- combined_tbl %>%
+  group_by(Method) %>%
+  nest() %>%
+  mutate(data = map(data, select, Pathway, CpdNoWrap, nlogp)) %>%
+  mutate(data = map(data, spread, key = Pathway, value = nlogp)) %>%
+  ungroup()
+  
+combined_tbl_spread_cpds <- combined_tbl_spread %>%
+  unnest(data) %>%
+  select(CpdNoWrap)
+
+
+targets_for_spread <- combined_tbl %>%
+  select(CpdNoWrap, Target) %>%
+  distinct()
+
+
+combined_tbl_spread %>%
+  mutate(data = map(data, pcaMethods::pca)) %>%
+  mutate(data = map(data, pcaMethods::scores)) %>%
+  mutate(data = map(data, as_tibble)) %>%
+  unnest(data) %>%
+  cbind(combined_tbl_spread_cpds) %>%
+  left_join(targets_for_spread, by = "CpdNoWrap") %>%
+
+  ggplot(aes(PC1, PC2, color = Target)) +
+    geom_point() +
+    facet_wrap(~Method, scales = "free")
+```
+
+Unfortunately, there are not enough points to draw any meaningful conclusion from these plots.
+
+
+#### Heatmaps
+
+Heatmaps are created to give a broad overview. Several are created to find out, which conveys important information the clearest.
+
+Facet by method, p-value is color, enrichment ratio size. The scale is flipped because a darker color draws more attention on the relatively bright background.
+
+```{r plot-heat-v1}
+#| fig-height: 15
+#| fig-width: 12
+
+ggplot(combined_tbl, aes(str_wrap(CpdNoWrap, width = 15, whitespace_only = T), str_wrap(Pathway, width = 40), color = nlogp, size = EnrichRatio)) +
+  geom_point() +
+  facet_wrap(~Method, nrow = 1) +
+  scale_y_discrete(limits = rev) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  labs(x = "Compound", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+```
+
+Facet by method, p-value is color, enrichment ratio size but only significant pathways (p <= 0.05):
+
+
+```{r plot-heat-v1-signif}
+#| fig-height: 15
+#| fig-width: 12
+
+combined_tbl %>%
+  filter(nlogp >= -log10(0.05)) %>%
+  ggplot(aes(str_wrap(CpdNoWrap, width = 15, whitespace_only = T), str_wrap(Pathway, width = 40), color = nlogp, size = EnrichRatio)) +
+    geom_point() +
+    facet_wrap(~Method, nrow = 1) +
+    scale_y_discrete(limits = rev) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "bottom") +
+    labs(x = "Compound", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+```
+
+Facet by compound, nested by target/mechanism, size is p-value, enrichment ratio color:
+
+```{r plot-heat-v2}
+#| fig-height: 15
+#| fig-width: 12
+
+ggplot(combined_tbl, aes(Method, str_wrap(Pathway, width = 40), color = EnrichRatio, size = nlogp)) +
+  geom_point() +
+  facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
+  scale_y_discrete(limits = rev) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  labs(x = "Enrichment Method", y = "Pathway", color = str_wrap("Enrichment Ratio", width = 10), size = expression(-log[10]~(italic(p))))
+
+```
+
+Facet by compound, nested by target/mechanism enrichment ratio is size, p value color:
+
+```{r plot-heat-v3}
+#| fig-height: 15
+#| fig-width: 12
+
+ggplot(combined_tbl, aes(Method, str_wrap(Pathway, width = 70), size = EnrichRatio, color = nlogp)) +
+  geom_point() +
+  facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
+  scale_y_discrete(limits = rev) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  labs(x = "Enrichment Method", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+
+ggsave("output/plots/heat_v3_portrait.png", width = 11, height = 14, dpi = 600)
+```
+
+```{r plot-heat-v3-landscape}
+#| fig-height: 12
+#| fig-width: 20
+
+ggplot(combined_tbl, aes(str_wrap(Pathway, width = 1000), Method, size = EnrichRatio, color = nlogp)) +
+  geom_point() +
+  facet_nested(str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE) ~ .) +
+  scale_y_discrete(limits = rev) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom",
+        plot.margin = unit(c(0.5, 0.75, 0.5, 0.75), "inches")) +
+  labs(x = "Pathway", y = "Enrichment Method", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+
+ggsave("output/plots/heat_v3_landscape.png", width = 25, height = 13, dpi = 600)
+```
+
+The above figure is the clearest. It conveys the most important information the best. 
+
+Can the readability be improved if only significant pathways (i.e., p <= 0.05) are shown?
+
+```{r plot-heat-v3-signif}
+#| fig-height: 15
+#| fig-width: 12
+
+combined_tbl %>%
+  filter(nlogp >= -log10(0.05)) %>%
+  ggplot(aes(Method, str_wrap(Pathway, width = 40), size = EnrichRatio, color = nlogp)) +
+    geom_point() +
+    facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
+    scale_y_discrete(limits = rev) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "bottom") +
+    labs(x = "Enrichment Method", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p))))
+    #scale_fill_scico(palette = "lajolla", aesthetic = c("fill", "color"), direction = -1) 
+```
+The plot appears to be less convoluted.
+
+
+#### Questions to answer
+
+Correlation plots and Venn/UpSet diagrams were made to answer the 2 questions: (i) do different enrichment methods deliver the same results and (ii) which method delivers the most reliable result (i.e., are the results for compounds with similar MOA also similar?).
+
+##### Question 1 
+
+Do different enrichment methods deliver the same results?
+
+Looking at all pathways (i.e., significant and insignificant).
+
+```{r corr-plots-calc-all-no-shave-bw}
+#| fig-height: 3
+#| fig-width: 12
+corr_diff_meths_no_shave <- combined_tbl %>%
+  select(-EnrichRatio) %>%
+  pivot_wider(names_from = "Method", values_from =  "nlogp") %>%
+  group_by(CpdNoWrap, Compound, Target) %>%
+  nest() %>%
+  mutate(data = map(data, group_by, Pathway)) %>%
+  mutate(corrs = map(data, correlate, method = "spearman")) %>%
+  mutate(corrs = map(corrs, stretch)) %>%
+  unnest(corrs) %>%
+  mutate(x = fct_relevel(x, "MSEA", "ORA", "Mummichog"),
+         y = fct_relevel(y, "MSEA", "ORA", "Mummichog")) %>% 
+  ungroup()
+
+
+ggplot(corr_diff_meths_no_shave, aes(x, y, fill = r, label = round(r, digits = 2))) +
+  geom_tile() +
+  #geom_text(size = 3, color = "grey25") +
+  facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(x = "", y = "", fill = "\u03C1") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA, limits = c(-1, 1))
+
+ggsave("output/plots/corr_methods_all_bw.png", width = 12, height = 3)
+```
+
+```{r corr-plots-calc-all-no-shave}
+#| fig-width: 11
+#| fig-height: 3.8
+ggplot(corr_diff_meths_no_shave, aes(x, y, fill = r, label = round(r, digits = 2))) +
+  geom_tile() +
+  geom_text(size = 3, color = "yellow") +
+  facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  labs(x = "", y = "", fill = "\u03C1") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA, limits = c(-1, 1))
+
+ggsave("output/plots/corr_methods_all.png", width = 11, height = 3.8)
+```
+
+This is an example plot for correlation
+
+```{r example-corr-q1}
+#| fig-width: 4
+#| fig-height: 4
+test_corr_mev <- combined_tbl %>%
+  filter(CpdNoWrap == "Antimycin A" & (Method == "ORA" | Method == "Mummichog")) %>%
+  select(Pathway, nlogp, Method) %>%
+  spread(key = "Method", value = nlogp)
+
+test_corr_mev %>%
+  ggplot(aes(ORA, Mummichog)) +
+    geom_point() +
+    geom_abline(color = "orange") +
+    theme_bw() +
+    xlab(expression(-log[10](italic(p))~ORA)) +
+    ylab(expression(-log[10](italic(p))~Mummichog)) +
+    xlim(c(0, max(c(test_corr_mev$Mummichog, test_corr_mev$ORA)))) +
+    ylim(c(0, max(c(test_corr_mev$Mummichog, test_corr_mev$ORA)))) +
+    labs(title = "Antimycin A")
+
+ggsave("output/plots/corr_ama_mummi_ora.png", width = 3.5, height = 3.5)
+
+cor.test(test_corr_mev$Mummichog, test_corr_mev$ORA, method = "spearman")
+```
+```{r example-corr-q2}
+#| fig-width: 4
+#| fig-height: 4
+test_corr_simil <- combined_tbl %>%
+  filter((CpdNoWrap == "Antimycin A" | CpdNoWrap == "FCCP") & Method == "MSEA") %>%
+  select(Pathway, nlogp, CpdNoWrap) %>%
+  spread(key = "CpdNoWrap", value = nlogp)
+
+test_corr_simil %>%
+  ggplot(aes(`Antimycin A`, FCCP)) +
+    geom_point() +
+    geom_abline(color = "orange") +
+    theme_bw() +
+    xlab(expression(-log[10](italic(p))~Antimycin~A)) +
+    ylab(expression(-log[10](italic(p))~FCCP)) +
+    xlim(c(0, max(c(test_corr_simil$`Antimycin A`, test_corr_simil$FCCP)))) +
+    ylim(c(0, max(c(test_corr_simil$`Antimycin A`, test_corr_simil$FCCP)))) +
+    labs(title = "MSEA")
+
+ggsave("output/plots/corr_msea_ama_fccp.png", width = 3.5, height = 3.5)
+
+cor.test(test_corr_simil$`Antimycin A`, test_corr_simil$FCCP, method = "spearman")
+```
+
+
+```{r corr-plots-calc-all-shave}
+#| fig-height: 5
+#| fig-width: 12
+corr_diff_meths <- combined_tbl %>%
+  select(-EnrichRatio) %>%
+  pivot_wider(names_from = "Method", values_from =  "nlogp") %>%
+  group_by(CpdNoWrap, Compound, Target) %>%
+  nest() %>%
+  mutate(data = map(data, group_by, Pathway)) %>%
+  mutate(corrs = map(data, correlate, method = "spearman")) %>%
+  mutate(corrs = map(corrs, shave)) %>%
+  mutate(corrs = map(corrs, stretch)) %>%
+  unnest(corrs) %>%
+  mutate(x = fct_relevel(x, "MSEA", "ORA", "Mummichog"),
+         y = fct_relevel(y, "MSEA", "ORA", "Mummichog")) %>% 
+  ungroup() %>%
+  #make grid smaller by removing redundant entries
+  mutate(keep = rep(c(F, T, T, F, F, T, F, F, F), nrow(.) / 9)) %>%
+  filter(keep == T)
+
+
+ggplot(corr_diff_meths, aes(x, y, fill = r, label = round(r, digits = 2))) +
+  geom_tile() +
+  geom_text(size = 3, color = "yellow") +
+  facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  labs(x = "", y = "") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA) 
+```
+
+How are the correlations distributed?
+
+
+Dot plot with mean.
+
+```{r corr-distrib-all-dot-mean-bw}
+#| fig-height: 3.1
+#| fig-width: 3.1
+
+corr_diff_meths %>%
+  select(CpdNoWrap, Target, x, y, r) %>%
+  tidyr::unite(Methods, x, y, sep = "/") %>%
+  ggplot(aes(Methods, r)) +
+    geom_beeswarm(cex = 3) +
+    ylab("\u03C1") +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "orange")
+
+ggsave("output/plots/rho_dot_plot_mean_bw.png", width = 3.1, height = 3.1)
+```
+
+```{r corr-distrib-all-dot-mean}
+#| fig-height: 3.1
+#| fig-width: 3.1
+corr_diff_meths %>%
+  select(CpdNoWrap, Target, x, y, r) %>%
+  tidyr::unite(Methods, x, y, sep = "/") %>%
+  ggplot(aes(Methods, r)) +
+    geom_beeswarm(cex = 3) +
+    theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
+    ylab("\u03C1") +
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "orange")
+
+ggsave("output/plots/rho_dot_plot_mean.png", width = 3.1, height = 3.1, dpi = 600)
+```
+
+
+
+
+Looking only at significant pathways (i.e., p <= 0.05)
+
+```{r corr-plots-calc-signif-no-shave}
+#| fig-height: 5
+#| fig-width: 12
+corr_diff_meths_signif_no_shave <- combined_tbl %>%
+  filter(nlogp >= -log10(0.05)) %>%
+  select(-EnrichRatio) %>%
+  pivot_wider(names_from = "Method", values_from =  "nlogp") %>%
+  group_by(CpdNoWrap, Compound, Target) %>%
+  nest() %>%
+  mutate(data = map(data, group_by, Pathway)) %>%
+  mutate(corrs = map(data, correlate, method = "spearman")) %>%
+  mutate(corrs = map(corrs, stretch)) %>%
+  unnest(corrs) %>%
+  mutate(x = fct_relevel(x, "MSEA", "ORA", "Mummichog"),
+         y = fct_relevel(y, "MSEA", "ORA", "Mummichog")) %>% 
+  ungroup()
+
+
+ggplot(corr_diff_meths_signif_no_shave, aes(x, y, fill = r, label = round(r, digits = 2))) +
+  geom_tile() +
+  geom_text(size = 3, color = "yellow") +
+  facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  labs(x = "", y = "") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA) 
+
+```
+
+
+```{r corr-plots-calc-signif}
+#| fig-height: 5
+#| fig-width: 12
+corr_diff_meths_signif <- combined_tbl %>%
+  filter(nlogp >= -log10(0.05)) %>%
+  select(-EnrichRatio) %>%
+  pivot_wider(names_from = "Method", values_from =  "nlogp") %>%
+  group_by(CpdNoWrap, Compound, Target) %>%
+  nest() %>%
+  mutate(data = map(data, group_by, Pathway)) %>%
+  mutate(corrs = map(data, correlate, method = "spearman")) %>%
+  mutate(corrs = map(corrs, shave)) %>%
+  mutate(corrs = map(corrs, stretch)) %>%
+  unnest(corrs) %>%
+  mutate(x = fct_relevel(x, "MSEA", "ORA", "Mummichog"),
+         y = fct_relevel(y, "MSEA", "ORA", "Mummichog")) %>% 
+  ungroup() %>%
+  #make grid smaller by removing redundant entries
+  mutate(keep = rep(c(F, T, T, F, F, T, F, F, F), nrow(.) / 9)) %>%
+  filter(keep == T)
+
+
+ggplot(corr_diff_meths_signif, aes(x, y, fill = r, label = round(r, digits = 2))) +
+  geom_tile() +
+  geom_text(size = 3, color = "yellow") +
+  facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+  labs(x = "", y = "") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA) 
+
+```
+
+How are the correlations distributed?
+
+
+Dot plot with mean.
+
+```{r corr-distrib-signif-dot-mean}
+corr_diff_meths_signif %>%
+  select(CpdNoWrap, Target, x, y, r) %>%
+  tidyr::unite(Methods, x, y, sep = "/") %>%
+  ggplot(aes(Methods, r)) +
+    geom_beeswarm()     +
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "grey40")
+```
+
+
+
+
+How many pathways are significantly enriched with each method?
+
+```{r n-signif-enrich}
+n_signif_enriched <- combined_tbl %>%
+  filter(nlogp >= -log10(0.05)) %>%
+  group_by(Target, Compound, Method) %>%
+  count() %>%
+  ungroup() %>%
+  complete(Compound, Method) %>%
+  mutate(Target = case_when(Compound == "5-Fluoro-uracil" ~ "dTMP Biosynthesis and others",
+                            Compound == "Metriz-amide" ~ "Glycolysis",
+                            .default = Target)) %>%
+  mutate(n = case_when(is.na(n) ~ 0,
+                       .default = n))
+```
+
+```{r n-signif-enrich-bar}
+#| fig-height: 7
+#| fig-width: 12
+ggplot(n_signif_enriched, aes(Method, n)) +
+  geom_bar(stat = "identity") +
+  facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom")
+```
+
+
+Show overlap of sets significantly enriched with different methods faceted by compound.
+
+```{r compute-overlap}
+nested_df_to_list <- function(df) {
+  method_names <- c("MSEA", "Mummichog", "ORA")
+  
+  pw_list <- list()
+
+  
+  for(i in 1:length(method_names)) {
+    pws <- df %>%
+      filter(Method == method_names[[i]]) %>%
+      select(Pathway) %>%
+      pull
+    
+    pw_list[[i]] <- pws
+    names(pw_list)[i] <- method_names[[i]]
+  }
+  pw_list
+}
+
+updata_theme <- function(p, title) {
+  p + 
+    scale_fill_scico(palette = "lajolla", 
+                     aesthetic = c("fill", "color"), 
+                     na.value = NA, 
+                     direction = -1) +
+    scale_x_continuous(expand = expansion(mult = .5)) +
+    labs(title = title) +
+    theme(legend.position = "none")
+}
+
+overlap_diff_meths <- combined_tbl %>%
+  filter(nlogp >= -log10(0.05)) %>%
+  select(Pathway, Method, CpdNoWrap, Target) %>%
+  group_by(CpdNoWrap, Target) %>%
+  nest() %>%
+  mutate(data = map(data, nested_df_to_list)) %>%
+  mutate(plot = map(data, 
+                    ggVennDiagram, 
+                    label = "count", 
+                    label_geom = "label", 
+                    label_color = "black",
+                    set_color = "grey40")) %>%
+  mutate(plot = map2(plot, CpdNoWrap, updata_theme)) %>% 
+  ungroup()
+```
+
+
+
+Patchwork approach
+
+```{r patchwork}
+wrap_plots(overlap_diff_meths$plot) &
+  theme(plot.margin = unit(c(5,10,5,10), "points"),
+        plot.title = element_text(hjust = 0.5))
+```
+aes(fill) is done automatically by the ggVennDiagram call, so legends are always different. Therefore, a dummy is added, so the legend can be fine-tuned.
+
+
+```{r create-scale-bar}
+scale_bar_helper <- tibble(
+  x = seq(1, 2, length.out = 500),
+  y = 1,
+  count = 1:500
+)
+
+legend_p <- ggplot(scale_bar_helper, aes(x, y, fill = count)) +
+  geom_tile(alpha = 0.0) +
+  scale_fill_scico(palette = "lajolla", 
+                   aesthetic = c("fill", "color"), 
+                   na.value = NA, 
+                   labels = c("low", "high"), 
+                   breaks = c(1, 500),
+                   direction = -1) +
+  theme_void()+
+  theme(legend.position = "inside",
+        legend.direction = "horizontal")
+
+
+wrap_plots(c(overlap_diff_meths$plot, list(legend_p)))  &
+  theme(plot.margin = unit(c(5,10,5,10), "points"),
+        plot.title = element_text(hjust = 0.5))
+
+```
+
+Show distribution of intersects:
+
+```{r distrib-overlap}
+intersec_list_to_df <- function(ilist) {
+  
+  intersect_size <- ilist %>% 
+    map(length) %>% 
+    unlist()
+  
+  tibble(
+    intersection = c(names(ilist)),
+    set_size = intersect_size
+  )
+  
+}
+
+overlap_diff_meths_intersecs <- overlap_diff_meths %>%
+  mutate(intersec = map(data, gplots::venn, show.plot = F, simplify = FALSE)) %>%
+  mutate(intersec = map(intersec, attributes)) %>%
+  mutate(intersec = map(intersec, `$`, intersections)) %>%
+  mutate(intersec = map(intersec, intersec_list_to_df)) %>%
+  select(CpdNoWrap, intersec) %>%
+  unnest(intersec)
+
+ggplot(overlap_diff_meths_intersecs, aes(intersection, set_size))+
+  geom_point()
+```
+Other approach
+
+```{r}
+overlap_diff_meths_intersecs2 <- overlap_diff_meths %>%
+  mutate(intersec = map(data, ggVennDiagram::Venn)) %>%
+  mutate(intersec = map(intersec, process_region_data)) %>%
+  unnest(intersec)
+
+
+ggplot(overlap_diff_meths_intersecs2, aes(fct_relevel(name, c("MSEA", "Mummichog", "ORA", "MSEA/Mummichog", "MSEA/ORA", "Mummichog/ORA", "MSEA/Mummichog/ORA")), count)) +
+  geom_beeswarm() +
+  xlab("Method") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom")
+```
+
+Calculate Jaccard distance for methods. Only significant (p <= 0.05) pathways are considered.
+
+```{r calc-jaccard-methods}
+pairwise_jacc_dist <- function(df) {
+  permutations <- combn(c("MSEA", "ORA", "Mummichog"), m = 2, simplify = F)
+  
+  jacc_dists <- tibble(
+    Methods = character(length = length(permutations)),
+    jDistance = numeric(length = length(permutations))
+  )
+  
+  for (i in 1:length(permutations)) {
+    method1 <- df %>%
+      filter(Method == permutations[[i]][1]) %>%
+      select(Pathway) %>%
+      pull()
+    
+    method2 <- df %>%
+      filter(Method == permutations[[i]][2]) %>%
+      select(Pathway) %>%
+      pull()
+    
+    #jaccard distance is the intersection / union
+    
+    curr_jacc_dist <- length(intersect(method1, method2)) / length(union(method1, method2))
+    
+    jacc_dists$jDistance[i] <- curr_jacc_dist
+    jacc_dists$Methods[i] <- paste(permutations[[i]][1], permutations[[i]][2], sep = "/")
+    
+  }
+  jacc_dists
+  
+}
+
+jac_diff_meths <- combined_tbl %>%
+  filter(nlogp > -log10(0.05)) %>%
+  select(Pathway, Compound, CpdNoWrap, Method, Target) %>%
+  group_by(CpdNoWrap, Compound, Target) %>%
+  nest() %>%
+  mutate(jacc_dists = map(data, pairwise_jacc_dist)) %>%
+  ungroup()
+
+```
+
+
+Visualize Jaccard distances
+
+```{r viz-jacc-methods-bar}
+jac_diff_meths %>%
+  unnest(jacc_dists) %>%
+  ggplot(aes(Methods, jDistance)) +
+    geom_bar(stat = "identity") +
+    ylab(expression(italic(J))) +
+    facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE))+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r viz-jacc-methods-matrix}
+#| fig-width: 11
+#| fig-height: 3.8
+
+jac_diff_meths_matrix <- jac_diff_meths %>%
+  unnest(jacc_dists) %>%
+  separate(Methods, c("Method_A", "Method_B"), "/")
+
+jac_diff_meths_matrix_mirrored <- jac_diff_meths_matrix
+jac_diff_meths_matrix_mirrored$Method_A <- jac_diff_meths_matrix$Method_B
+jac_diff_meths_matrix_mirrored$Method_B <- jac_diff_meths_matrix$Method_A
+
+
+jac_diff_meths_matrix %>%
+  rbind(jac_diff_meths_matrix_mirrored) %>%
+  ggplot(aes(Method_A, Method_B, fill = jDistance, label = round(jDistance, digits = 2))) +
+    facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
+    geom_tile() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "bottom") +
+    geom_text(size = 3, color = "yellow") +
+    labs(x = "", y = "", fill = expression(italic(J))) +
+  scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
+
+ggsave("output/plots/jdist_methods_matrix.png", width = 11, height = 3.8, dpi = 600)
+```
+
+```{r viz-jacc-methods-dot-bw}
+#| fig-width: 3.5
+#| fig-height: 2.3
+jac_diff_meths %>%
+  unnest(jacc_dists) %>% 
+  ggplot(aes(Methods, jDistance)) +
+    geom_beeswarm(cex = 3) +
+    ylab(expression(italic(J))) +
+    theme_bw() +
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "orange")
+
+ggsave("output/plots/jaccard_methods_bw.png", width = 3.5, height = 2.3)
+```
+
+```{r viz-jacc-methods-dot}
+#| fig-width: 3.3
+#| fig-height: 3.3
+jac_diff_meths %>%
+  unnest(jacc_dists) %>% 
+  ggplot(aes(Methods, jDistance)) +
+    geom_beeswarm(cex = 3) +
+    theme(axis.text.x = element_text(angle = 15, hjust = 1))+
+    ylab(expression(italic(J))) +
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "orange")
+
+ggsave("output/plots/jaccard_methods.png", width = 3.3, height = 3.3, dpi = 600)
+```
+
+Summary table for Jaccard distance/similarity and correlation (both mean and median), only looking at the correlation for significant pathways.
+
+```{r methods-comp-summary-tbl-signif}
+jac_diff_meths_unnested <- jac_diff_meths %>%
+  select(CpdNoWrap, jacc_dists) %>%
+  unnest(jacc_dists)
+
+corr_diff_meths_signif_mcomb <- corr_diff_meths_signif %>%
+  select(CpdNoWrap, x, y, r) %>%
+  tidyr::unite(Methods, x, y, sep = "/")
+
+summary_tbl_methods_signif <- left_join(jac_diff_meths_unnested, corr_diff_meths_signif_mcomb, by = c("CpdNoWrap", "Methods")) %>%
+  group_by(Methods) %>%
+  summarise(median_dist = median(jDistance, na.rm = TRUE),
+            mean_dist = mean(jDistance, na.rm = TRUE),
+            median_r = median(r, na.rm = TRUE),
+            mean_r = mean(r, na.rm = TRUE))
+
+knitr::kable(summary_tbl_methods_signif)
+```
+
+And a table with the Jaccard similarity of signicant pathways and the correlation for all pathways
+
+```{r methods-comp-summary-tbl-all}
+corr_diff_meths_mcomb <- corr_diff_meths %>%
+  select(CpdNoWrap, x, y, r) %>%
+  tidyr::unite(Methods, x, y, sep = "/")
+
+summary_tbl_methods <- left_join(jac_diff_meths_unnested, corr_diff_meths_mcomb, by = c("CpdNoWrap", "Methods")) %>%
+  group_by(Methods) %>%
+  summarise(median_dist = median(jDistance, na.rm = TRUE),
+            mean_dist = mean(jDistance, na.rm = TRUE),
+            median_r = median(r, na.rm = TRUE),
+            mean_r = mean(r, na.rm = TRUE))
+
+knitr::kable(summary_tbl_methods)
+```
+
+
+
+
+##### Question 2
+
+Which method delivers the most reliable result, i.e., are the results for compounds with similar MOA also similar?
+
+Without shaving off the lower triangle
+
+```{r corr-plots-cpd-calc-all-no-shave-bw}
+#| fig-height: 4
+#| fig-width: 10.8
+arrange_rules <- combined_tbl %>%
+  arrange(toupper(Target), CpdNoWrap) %>%
+  pull(CpdNoWrap) %>%
+  unique()
+
+targets <- combined_tbl %>%
+  select(CpdNoWrap, Target) %>%
+  distinct()
+
+corr_diff_cpds_no_shave <- combined_tbl %>%
+  select(-EnrichRatio, -Target, -Compound) %>%
+  pivot_wider(names_from = "CpdNoWrap", values_from =  "nlogp") %>%
+  group_by(Method) %>%
+  nest() %>%
+  mutate(corrs = map(data, correlate, method = "spearman")) %>%
+  mutate(corrs = map(corrs, stretch)) %>%
+  unnest(corrs) %>%
+  mutate(x = fct_relevel(x, arrange_rules),
+         y = fct_relevel(y, arrange_rules)) %>% 
+  ungroup() %>%
+  left_join(targets, by = join_by("x" == "CpdNoWrap")) %>%
+  rename(Target_x = Target) %>%
+  left_join(targets, by = join_by("y" == "CpdNoWrap")) %>%
+  rename(Target_y = Target)
+
+ggplot(corr_diff_cpds_no_shave, aes(fct_relevel(x, arrange_rules), interaction(str_wrap(y, width = 20, whitespace_only = F), str_wrap(Target_y, width = 20)), fill = r, label = round(r, digits = 2))) +
+  geom_tile()+
+  theme_bw() +
+  facet_nested(~Method) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "right") +
+  labs(x = "", y = "", fill = "\u03C1") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA)+
+  scale_x_discrete(guide = "axis_nested")+
+  scale_y_discrete(guide = "axis_nested")
+
+ggsave("output/plots/corr_cpds_all_bw.png", width = 10.8, height = 4)
+```
+
+```{r corr-plots-cpd-calc-all-no-shave-bw-wider}
+#| fig-height: 4
+#| fig-width: 12.15
+
+ggplot(corr_diff_cpds_no_shave, aes(fct_relevel(x, arrange_rules), interaction(y, Target_y), fill = r, label = round(r, digits = 2))) +
+  geom_tile()+
+  theme_bw() +
+  facet_nested(~Method) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "right") +
+  labs(x = "", y = "", fill = "\u03C1") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA)+
+  scale_x_discrete(guide = "axis_nested")+
+  scale_y_discrete(guide = "axis_nested")
+
+ggsave("output/plots/corr_cpds_all_bw_wide.png", width = 12.15, height = 4)
+```
+
+```{r corr-plots-cpd-calc-all-no-shave}
+#| fig-height: 6.8
+#| fig-width: 12.5
+ggplot(corr_diff_cpds_no_shave, aes(interaction(str_wrap(x, width = 20, whitespace_only = F), str_wrap(Target_x, width = 20)), interaction(str_wrap(y, width = 20, whitespace_only = F), str_wrap(Target_y, width = 20)), fill = r, label = round(r, digits = 2))) +
+  geom_tile()+
+  geom_text(size = 3, color = "yellow") +
+  facet_nested(~Method) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        legend.position = "bottom",
+        ggh4x.axis.nesttext.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(x = "", y = "", fill = "\u03C1") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA)+
+  scale_x_discrete(guide = "axis_nested")+
+  scale_y_discrete(guide = "axis_nested")
+
+ggsave("output/plots/corr_cpds_all.png", width = 12.5, height = 6.8, dpi = 600)
+```
+
+
+
+```{r corr-plots-cpd-calc-all-shave}
+#| fig-height: 7
+#| fig-width: 12
+corr_diff_cpds <- combined_tbl %>%
+  arrange(toupper(Target), CpdNoWrap) %>%
+  select(-EnrichRatio, -Target, -Compound) %>%
+  pivot_wider(names_from = "CpdNoWrap", values_from =  "nlogp") %>%
+  group_by(Method) %>%
+  nest() %>%
+  mutate(corrs = map(data, correlate, method = "spearman")) %>%
+  mutate(corrs = map(corrs, shave)) %>%
+  mutate(corrs = map(corrs, stretch)) %>%
+  unnest(corrs) %>%
+  mutate(x = fct_relevel(x, arrange_rules),
+         y = fct_relevel(y, arrange_rules)) %>% 
+  ungroup() %>%
+  left_join(targets, by = join_by("x" == "CpdNoWrap")) %>%
+  rename(Target_x = Target) %>%
+  left_join(targets, by = join_by("y" == "CpdNoWrap")) %>%
+  rename(Target_y = Target)
+
+
+ggplot(corr_diff_cpds, aes(interaction(x, str_wrap(Target_x, width = 20)), interaction(y, str_wrap(Target_y, width = 20)), fill = r, label = round(r, digits = 2))) +
+  geom_tile() +
+  geom_text(size = 3, color = "yellow") +
+  facet_nested(~Method) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        legend.position = "bottom",
+        ggh4x.axis.nesttext.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(x = "", y = "") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA)+
+  scale_x_discrete(guide = "axis_nested")+
+  scale_y_discrete(guide = "axis_nested")
+
+```
+
+How are the correlations for compounds with the same MOA? How are the correlations for compounds with different MOAs? Both are calculated and plotted
+
+NA values are removed.
+
+```{r diff-cpds-corr-summary-plot}
+corr_diff_cpds_corr_summary <- corr_diff_cpds %>%
+  filter(!is.na(r)) %>%
+  mutate(Similar_Mech = case_when(Target_x == Target_y ~ TRUE,
+                                  .default = FALSE)) %>%
+  tidyr::unite(Compounds, x, y, sep = "/")
+
+ggplot(corr_diff_cpds_corr_summary, aes(Similar_Mech, r)) +
+  geom_beeswarm(cex = 3)+
+  stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "orange") +
+  facet_wrap(~Method)
+```
+
+Are these differences significant?
+
+```{r diff-cpds-corr-summary-signif}
+mummi_signif <- t.test(filter(corr_diff_cpds_corr_summary, Method == "Mummichog" & Similar_Mech == TRUE) %>% pull(r),  filter(corr_diff_cpds_corr_summary, Method == "Mummichog" & Similar_Mech == FALSE) %>% pull(r), alternative = "greater")
+
+mummi_signif <- mummi_signif$p.value
+
+msea_signif <- t.test(filter(corr_diff_cpds_corr_summary, Method == "MSEA" & Similar_Mech == TRUE) %>% pull(r),  filter(corr_diff_cpds_corr_summary, Method == "MSEA" & Similar_Mech == FALSE) %>% pull(r), alternative = "greater")
+
+msea_signif <- msea_signif$p.value
+
+
+ora_signif <- t.test(filter(corr_diff_cpds_corr_summary, Method == "ORA" & Similar_Mech == TRUE) %>% pull(r),  filter(corr_diff_cpds_corr_summary, Method == "ORA" & Similar_Mech == FALSE) %>% pull(r), alternative = "greater")
+
+ora_signif <- ora_signif$p.value
+```
+
+
+```{r diff-cpds-corr-summary-plot-signiflabel-bw}
+#| fig-width: 3.3
+#| fig-height: 2.2
+meths_signif_all <- c("Mummichog" = as.character(round(mummi_signif, digits = 3)),
+                      "MSEA" = as.character(round(msea_signif, digits = 3)),
+                      "ORA" = as.character(round(ora_signif, digits = 3)))
+
+corr_diff_cpds_corr_summary %>%
+  mutate(Method_signif = str_replace_all(Method, meths_signif_all)) %>%
+  mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(Similar_Mech == TRUE ~ "similar",
+                         Similar_Mech == FALSE ~ "different",
+                         .default = NA)) %>%
+    ggplot(aes(MOA, r)) +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
+      geom_beeswarm(cex = 3, size = 1) +
+      xlab("Mechanism of Action") +
+      ylab("\u03C1") +
+      stat_summary(
+              fun = mean, 
+              fun.args = list(na.rm = TRUE),
+              geom = "errorbar", 
+              aes(ymax = ..y.., ymin = ..y..), 
+              position = position_dodge(width = 0.3), 
+              width = 0.2,
+              color = "orange") +
+      facet_wrap(~Method + Method_signif, labeller = label_parsed)
+
+ggsave("output/plots/rho_dot_plot_meths.png", width = 3.3, height = 2.2)
+```
+
+```{r diff-cpds-corr-summary-plot-signiflabel}
+#| fig-width: 3.1
+#| fig-height: 3.1
+corr_diff_cpds_corr_summary %>%
+  mutate(Method_signif = str_replace_all(Method, meths_signif_all)) %>%
+  mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(Similar_Mech == TRUE ~ "similar",
+                         Similar_Mech == FALSE ~ "different",
+                         .default = NA)) %>%
+    ggplot(aes(MOA, r)) +
+      theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
+      geom_beeswarm(cex = 3, size = 1) +
+      xlab("Mechanism of Action") +
+      ylab("\u03C1") +
+      stat_summary(
+              fun = mean, 
+              fun.args = list(na.rm = TRUE),
+              geom = "errorbar", 
+              aes(ymax = ..y.., ymin = ..y..), 
+              position = position_dodge(width = 0.3), 
+              width = 0.2,
+              color = "orange") +
+      facet_wrap(~Method + Method_signif, labeller = label_parsed)
+
+ggsave("output/plots/rho_dot_plot_meths_grey.png", width = 3.1, height = 3.1, dpi = 600)
+```
+
+Which MOAs have a high correlation coefficient?
+
+```{r diff-cpds-corr-summary-plot-signiflabel-moa-color}
+meths_signif_all <- c("Mummichog" = as.character(round(mummi_signif, digits = 3)),
+                      "MSEA" = as.character(round(msea_signif, digits = 3)),
+                      "ORA" = as.character(round(ora_signif, digits = 3)))
+
+corr_diff_cpds_corr_summary %>%
+  mutate(Method_signif = str_replace_all(Method, meths_signif_all)) %>%
+  mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(Similar_Mech == TRUE ~ "similar",
+                         Similar_Mech == FALSE ~ "different",
+                         .default = NA)) %>%
+  mutate(MoA_color = case_when(Similar_Mech == T ~ Target_x,
+                               .default = NA)) %>%
+  ggplot(aes(MOA, r, color = MoA_color)) +
+  geom_beeswarm(cex = 3)+
+  stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "black") +
+  facet_wrap(~Method + Method_signif, labeller = label_parsed)
+
+```
+
+Correlation for compounds with targets in Glycolysis are the lowest for each method. 
+
+
+Same as above repeated for only significant pathways
+
+```{r corr-plots-cpd-calc-signif-no-shave}
+#| fig-height: 7
+#| fig-width: 12
+
+corr_diff_cpds_signif_no_shave <- combined_tbl %>% 
+  filter(nlogp >= -log10(0.05)) %>%
+  select(-EnrichRatio, -Target, -Compound) %>%
+  pivot_wider(names_from = "CpdNoWrap", values_from =  "nlogp") %>%
+  group_by(Method) %>%
+  nest() %>%
+  mutate(corrs = map(data, correlate, method = "spearman")) %>%
+  mutate(corrs = map(corrs, stretch)) %>%
+  unnest(corrs) %>%
+  mutate(x = fct_relevel(x, arrange_rules),
+         y = fct_relevel(y, arrange_rules)) %>% 
+  ungroup() %>%
+  left_join(targets, by = join_by("x" == "CpdNoWrap")) %>%
+  rename(Target_x = Target) %>%
+  left_join(targets, by = join_by("y" == "CpdNoWrap")) %>%
+  rename(Target_y = Target)
+
+
+ggplot(corr_diff_cpds_signif_no_shave, aes(interaction(x, str_wrap(Target_x, width = 20)), interaction(y, str_wrap(Target_y, width = 20)), fill = r, label = round(r, digits = 2))) +
+  geom_tile() +
+  geom_text(size = 3, color = "#404040") +
+  facet_nested(~Method) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        legend.position = "bottom",
+        ggh4x.axis.nesttext.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(x = "", y = "") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA)+
+  scale_x_discrete(guide = "axis_nested")+
+  scale_y_discrete(guide = "axis_nested")
+
+```
+
+
+
+```{r corr-plots-cpd-calc-signif-shave}
+#| fig-height: 7
+#| fig-width: 12
+corr_diff_cpds_signif <- combined_tbl %>%
+  filter(nlogp >= -log10(0.05)) %>%
+  arrange(toupper(Target), Compound) %>%
+  select(-EnrichRatio, -Target, -Compound) %>%
+  pivot_wider(names_from = "CpdNoWrap", values_from =  "nlogp") %>%
+  group_by(Method) %>%
+  nest() %>%
+  mutate(corrs = map(data, correlate, method = "spearman")) %>%
+  mutate(corrs = map(corrs, shave)) %>%
+  mutate(corrs = map(corrs, stretch)) %>%
+  unnest(corrs) %>%
+  mutate(x = fct_relevel(x, arrange_rules),
+         y = fct_relevel(y, arrange_rules)) %>% 
+  ungroup() %>%
+  left_join(targets, by = join_by("x" == "CpdNoWrap")) %>%
+  rename(Target_x = Target) %>%
+  left_join(targets, by = join_by("y" == "CpdNoWrap")) %>%
+  rename(Target_y = Target)
+
+
+ggplot(corr_diff_cpds_signif, aes(interaction(x, str_wrap(Target_x, width = 20)), interaction(y, str_wrap(Target_y, width = 20)), fill = r, label = round(r, digits = 2))) +
+  geom_tile() +
+  geom_text(size = 3, color = "#404040") +
+  facet_nested(~Method) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        legend.position = "bottom",
+        ggh4x.axis.nesttext.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  labs(x = "", y = "") +
+  scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA)+
+  scale_x_discrete(guide = "axis_nested")+
+  scale_y_discrete(guide = "axis_nested")
+
+```
+
+How are the correlations for compounds with the same MOA? How are the correlations for compounds with different MOAs? Both are calculated and plotted
+
+NA values are removed.
+
+```{r}
+corr_diff_cpds_signif_corr_summary <- corr_diff_cpds_signif %>%
+  filter(!is.na(r)) %>%
+  mutate(Similar_Mech = case_when(Target_x == Target_y ~ TRUE,
+                                  .default = FALSE)) %>%
+  tidyr::unite(Compounds, x, y, sep = "/")
+
+ggplot(corr_diff_cpds_signif_corr_summary, aes(Similar_Mech, r)) +
+  geom_beeswarm(cex = 3)+
+  stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "orange") +
+  facet_wrap(~Method)
+```
+
+Are these differences significant?
+
+```{r}
+mummi_signif_signif <- t.test(filter(corr_diff_cpds_signif_corr_summary, Method == "Mummichog" & Similar_Mech == TRUE) %>% pull(r),  filter(corr_diff_cpds_corr_summary, Method == "Mummichog" & Similar_Mech == FALSE) %>% pull(r), alternative = "greater")
+
+mummi_signif_signif <- mummi_signif_signif$p.value
+
+msea_signif_signif <- t.test(filter(corr_diff_cpds_signif_corr_summary, Method == "MSEA" & Similar_Mech == TRUE) %>% pull(r),  filter(corr_diff_cpds_corr_summary, Method == "MSEA" & Similar_Mech == FALSE) %>% pull(r), alternative = "greater")
+
+msea_signif_signif <- msea_signif_signif$p.value
+
+
+ora_signif_signif <- t.test(filter(corr_diff_cpds_signif_corr_summary, Method == "ORA" & Similar_Mech == TRUE) %>% pull(r),  filter(corr_diff_cpds_corr_summary, Method == "ORA" & Similar_Mech == FALSE) %>% pull(r), alternative = "greater")
+
+ora_signif_signif <- ora_signif_signif$p.value
+```
+
+
+  
+```{r diff-cpds-corr-summary-plot-signif-signiflabel}
+meths_signif_signif <- c("Mummichog" = as.character(round(mummi_signif_signif, digits = 3)),
+                      "MSEA" = as.character(round(msea_signif_signif, digits = 3)),
+                      "ORA" = as.character(round(ora_signif_signif, digits = 3)))
+
+corr_diff_cpds_signif_corr_summary %>%
+  mutate(Method_signif = str_replace_all(Method, meths_signif_signif)) %>%
+  mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(Similar_Mech == TRUE ~ "similar",
+                         Similar_Mech == FALSE ~ "different",
+                         .default = NA)) %>%
+  ggplot(aes(MOA, r)) +
+    geom_beeswarm(cex = 3)+
+    stat_summary(
+            fun = mean, 
+            fun.args = list(na.rm = TRUE),
+            geom = "errorbar", 
+            aes(ymax = ..y.., ymin = ..y..), 
+            position = position_dodge(width = 0.3), 
+            width = 0.2,
+            color = "orange") +
+    facet_wrap(~Method + Method_signif, labeller = label_parsed)
+```
+
+
+Mummichog algorithm is the only method that has a significantly greater correlation for compounds with similar mechanisms compared to compounds with different mechanisms. This holds true for both scenarios: when only significant pathways (p <= 0.05) are considered and when all pathways are considered.
+
+Finally, add some color:
+
+```{r diff-cpds-corr-summary-plot-signif-signiflabel-moa-color}
+meths_signif_signif <- c("Mummichog" = as.character(round(mummi_signif_signif, digits = 3)),
+                      "MSEA" = as.character(round(msea_signif_signif, digits = 3)),
+                      "ORA" = as.character(round(ora_signif_signif, digits = 3)))
+
+corr_diff_cpds_signif_corr_summary %>%
+  mutate(Method_signif = str_replace_all(Method, meths_signif_signif)) %>%
+  mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(Similar_Mech == TRUE ~ "similar",
+                         Similar_Mech == FALSE ~ "different",
+                         .default = NA)) %>%
+  mutate(MoA_color = case_when(Similar_Mech == T ~ Target_x,
+                               .default = NA)) %>%
+  ggplot(aes(MOA, r, color = MoA_color)) +
+  geom_beeswarm(cex = 3)+
+  stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "grey40") +
+  facet_wrap(~Method + Method_signif, labeller = label_parsed)
+
+```
+
+
+For MSEA, compounds with target Glycolysis appear to be problematic.
+
+
+
+
+Calculate pairwise Jaccard similarity for compounds with similar MOA and for compounds with different MOA for each method
+
+```{r jdist-cpds-dot-plot}
+#| fig-width: 3.3
+#| fig-height: 3.3
+cpds_and_targets <- combined_tbl %>%
+  select(CpdNoWrap, Target) %>%
+  distinct()
+
+pairwise_jacc_dist_cpd <- function(df, cpds_and_targets) {
+  all_cpds <- cpds_and_targets$CpdNoWrap
+  
+  all_combs <- combn(all_cpds, m = 2, simplify = F)
+
+  
+  all_dists <- tibble(
+    Compounds = rep(NA, length(all_combs)),
+    jDistance = rep(NA, length(all_combs)),
+    MOA = rep(NA, length(all_combs)),
+    whichMOA = rep(NA, length(all_combs)),
+    Compound_A = rep(NA, length(all_combs)),
+    Compound_B = rep(NA, length(all_combs)),
+    Mech_A = rep(NA, length(all_combs)),
+    Mech_B = rep(NA, length(all_combs)),
+  )
+  
+  for (i in 1:length(all_combs)) {
+    comp1 <- all_combs[[i]][1]
+    comp2 <- all_combs[[i]][2]
+    
+    #get pathways for 2 compounds
+    pws1 <- df %>%
+      filter(CpdNoWrap == comp1) %>%
+      select(Pathway) %>%
+      pull()
+    
+    pws2 <- df %>%
+      filter(CpdNoWrap == comp2) %>%
+      select(Pathway) %>%
+      pull()
+    
+    #jaccard similarity
+    curr_jacc_dist <- length(intersect(pws1, pws2)) / length(union(pws1, pws2))
+    
+    #get targets
+    target1 <- cpds_and_targets %>%
+      filter(CpdNoWrap == comp1) %>%
+      select(Target) %>%
+      pull() %>%
+      unique()
+    
+    target2 <- cpds_and_targets %>%
+      filter(CpdNoWrap == comp2) %>%
+      select(Target) %>%
+      pull() %>%
+      unique()
+    
+      all_dists$Compounds[[i]] <- paste(comp1, comp2, sep = "/")
+      all_dists$jDistance[[i]] <- curr_jacc_dist
+      all_dists$MOA[[i]] <- target1 == target2
+      
+      all_dists$Compound_A[[i]] <- comp1
+      all_dists$Compound_B[[i]] <- comp2
+      
+      all_dists$Mech_A[[i]] <- target1
+      all_dists$Mech_B[[i]] <- target2
+      
+      
+      if(target1 == target2) {
+        all_dists$whichMOA[[i]] <- target1
+      }
+
+  }
+  return(all_dists)
+} 
+
+jacc_diff_cpds_signif_summary <- combined_tbl %>%
+  filter(nlogp >= -log10(0.05)) %>%
+  select(Pathway, Compound, CpdNoWrap, Target, Method) %>%
+  group_by(Method) %>%
+  nest() %>%
+  mutate(jDistance = map(data, pairwise_jacc_dist_cpd, cpds_and_targets)) %>%
+  unnest(jDistance)
+
+jacc_diff_cpds_signif_summary %>%
+  mutate(MOA = case_when(MOA == TRUE ~ "similar",
+                         MOA == FALSE ~ "different",
+                         .default = NA)) %>%
+  ggplot(aes(MOA, jDistance)) +
+    geom_beeswarm(cex = 2) +
+    theme(axis.text.x = element_text(angle = 15, hjust = 1))+
+    ylab(expression(italic(J))) +
+    facet_wrap(~Method) +
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "orange")
+
+
+
+```
+
+Matrix with Jaccard indices
+
+```{r jdist-cpds-matrix}
+#| fig-height: 6.8
+#| fig-width: 12.5
+jacc_diff_cpds_signif_summary_mirrored <- jacc_diff_cpds_signif_summary
+jacc_diff_cpds_signif_summary_mirrored$Mech_A <- jacc_diff_cpds_signif_summary$Mech_B
+jacc_diff_cpds_signif_summary_mirrored$Mech_B <- jacc_diff_cpds_signif_summary$Mech_A
+
+jacc_diff_cpds_signif_summary_mirrored$Compound_A <- jacc_diff_cpds_signif_summary$Compound_B
+jacc_diff_cpds_signif_summary_mirrored$Compound_B <- jacc_diff_cpds_signif_summary$Compound_A
+
+jacc_diff_cpds_signif_summary_mirrored %>%
+  rbind(jacc_diff_cpds_signif_summary) %>%
+  ggplot(aes(interaction(str_wrap(Compound_A, width = 20, whitespace_only = F), str_wrap(Mech_A, width = 20)), interaction(str_wrap(Compound_B, width = 20, whitespace_only = F), str_wrap(Mech_B, width = 20)), fill = jDistance, label = round(jDistance, digits = 2))) +
+    geom_tile() +
+    geom_text(size = 3, color = "yellow") +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+      legend.position = "bottom",
+      ggh4x.axis.nesttext.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    facet_nested(~Method) +
+    scale_x_discrete(guide = "axis_nested") +
+    scale_y_discrete(guide = "axis_nested") +
+    labs(x = "", y = "", fill = expression(italic(J))) +
+    scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
+
+
+ggsave("output/plots/jdist_cpds_matrix.png", width = 12.5, height = 6.8, dpi = 600)
+```
+
+Are differences significant?
+
+```{r}
+mummi_jaccard_signif <- t.test(filter(jacc_diff_cpds_signif_summary, Method == "Mummichog" & MOA == TRUE) %>% pull(jDistance),  filter(jacc_diff_cpds_signif_summary, Method == "Mummichog" & MOA == FALSE) %>% pull(jDistance), alternative = "greater")
+
+mummi_jaccard_signif <- mummi_jaccard_signif$p.value
+
+msea_jaccard_signif <- t.test(filter(jacc_diff_cpds_signif_summary, Method == "MSEA" & MOA == TRUE) %>% pull(jDistance),  filter(jacc_diff_cpds_signif_summary, Method == "MSEA" & MOA == FALSE) %>% pull(jDistance), alternative = "greater")
+
+msea_jaccard_signif <- msea_jaccard_signif$p.value
+
+
+ora_jaccard_signif <- t.test(filter(jacc_diff_cpds_signif_summary, Method == "ORA" & MOA == TRUE) %>% pull(jDistance),  filter(jacc_diff_cpds_signif_summary, Method == "ORA" & MOA == FALSE) %>% pull(jDistance), alternative = "greater")
+
+ora_jaccard_signif <- ora_jaccard_signif$p.value
+```
+
+
+Plot with p values
+
+```{r cpds-j-dotplot}
+#| fig-width: 3.3
+#| fig-height: 3.3
+
+comps_jdist_signif <- c("Mummichog" = as.character(round(mummi_jaccard_signif, digits = 3)),
+                        "MSEA" = as.character(round(msea_jaccard_signif, digits = 3)),
+                        "ORA" = as.character(round(ora_jaccard_signif, digits = 3)))
+
+
+jacc_diff_cpds_signif_summary %>%
+  mutate(Method_signif = str_replace_all(Method, comps_jdist_signif)) %>%
+  mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(MOA == TRUE ~ "similar",
+                         MOA == FALSE ~ "different",
+                         .default = NA)) %>%
+  ggplot(aes(MOA, jDistance)) +
+    geom_beeswarm(cex = 2) +
+    facet_wrap(~Method + Method_signif, labeller = label_parsed)+
+    theme(axis.text.x = element_text(angle = 15, hjust = 1))+
+    ylab(expression(italic(J))) +
+    xlab("Mechanism of Action") +
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "orange")
+
+ggsave("output/plots/jaccard_cpds.png", width = 3.3, height = 3.3, dpi = 600)
+```
+
+```{r cpds-j-dotplot-bw}
+#| fig-width: 3.3
+#| fig-height: 2.2
+jacc_diff_cpds_signif_summary %>%
+  mutate(Method_signif = str_replace_all(Method, comps_jdist_signif)) %>%
+  mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(MOA == TRUE ~ "similar",
+                         MOA == FALSE ~ "different",
+                         .default = NA)) %>%
+  ggplot(aes(MOA, jDistance)) +
+    theme_bw() +
+     theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
+    geom_beeswarm(cex = 2) +
+    facet_wrap(~Method + Method_signif, labeller = label_parsed)+
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "orange") +
+  xlab("Mechanism of Action") +
+  ylab(expression(italic(J)))
+
+ggsave("output/plots/jaccard_cpds_bw.png", width = 3.3, height = 2.2)
+```
+
+
+```{r}
+jacc_diff_cpds_signif_summary %>%
+  mutate(Method_signif = str_replace_all(Method, comps_jdist_signif)) %>%
+  mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(MOA == TRUE ~ "similar",
+                         MOA == FALSE ~ "different",
+                         .default = NA)) %>%
+  ggplot(aes(MOA, jDistance, color = whichMOA)) +
+    geom_beeswarm(cex = 2) +
+    facet_wrap(~Method + Method_signif, labeller = label_parsed)+
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.2,
+          color = "grey40")
+```
+
+
+
+##### Question 3
+
+Perhaps the most important question is *which method produces the most 'correct' results?* To answer this, the pathways associated with each target of each compound were retrieved from kegg.jp. Not all KEGG pathways are present in the dataset for mummichog and ORA/MSEA analysis. For example, higher order pathways like "hsa01100 - Metabolic pathways" or disease pathways (??). Targets are therefore filtered using the pathways available for mummichog or ORA/MSEA: If a pathway is available using either method, it is included.
+
+Pathways available for enrichment analysis are downloaded from metaboanalyst.ca.
+
+
+```{r download-pathway-files, cache=TRUE}
+msea_ora_pw_url <- "https://www.metaboanalyst.ca/resources/libs/msets/kegg_pathway.qs"
+mummichog_pw_url <- "https://www.metaboanalyst.ca/resources/libs/mummichog/hsa_kegg.qs"
+
+
+download.file(url = msea_ora_pw_url, destfile = "output/qs/msea_ora.qs", method="libcurl", mode = "wb")
+download.file(url = mummichog_pw_url, destfile = "output/qs/mummi.qs", method="libcurl", mode = "wb")
+```
+
+Pathways are extracted from the files.
+
+```{r read-and-extract-pathways}
+msea_ora_pathways <- qread("output/qs/msea_ora.qs")
+mummi_pathways <- qread("output/qs/mummi.qs")
+
+msea_ora_pathways <- select(msea_ora_pathways, name, id)
+mummi_pathways <- mummi_pathways$pathways$name
+```
+
+For some reason, "Glycolysis / Gluconeogenesis" is called "Glycolysis or Gluconeogenesis" in the Mummichog pathways. The name is changed and the pathways are combined.
+
+```{r combine-pathway-list}
+length(unique(mummi_pathways))
+mummi_pathways[1] <- "Glycolysis / Gluconeogenesis"
+length(unique(mummi_pathways))
+
+setdiff(msea_ora_pathways$name, mummi_pathways)
+setdiff(mummi_pathways, msea_ora_pathways$name)
+```
+
+All Mummichog pathways are also in the MSEA/ORA data frame. Therefore, this data frame is used for further analysis.
+
+Next, pathways associated with the compound's targets are downloaded from kegg.jp.
+
+```{r download-related-pathways, cache=TRUE}
+kegg_targets <- read_csv("input/targets.csv", show_col_types = FALSE)
+
+kegg_targets <- kegg_targets %>%
+  mutate(KEGG_ID = str_split(KEGG_ID, "_"))
+
+kegg_targets <- kegg_targets %>%
+  mutate(KEGG_entries = map(KEGG_ID, keggGet))
+
+kegg_targets_lists <- kegg_targets %>%
+  group_by(Compound, Target) %>%
+  summarise(KEGG_entries = list(KEGG_entries)) %>%
+  mutate(KEGG_entries = map(KEGG_entries, unlist, recursive = FALSE)) %>%
+  ungroup()
+```
+
+The files are saved to disk so they don't have to be downloaded each time.
+
+```{r save-related-pathways, cache=TRUE}
+write_rds(kegg_targets, "output/rds/kegg_targets.rds")
+write_rds(kegg_targets_lists, "output/rds/kegg_targets_lists.rds")
+```
+
+
+```{r read-related-pathways}
+kegg_targets <- read_rds("output/rds/kegg_targets.rds")
+kegg_targets_lists <- read_rds("output/rds/kegg_targets_lists.rds")
+```
+
+Next, the associated pathways of the targets are extracted.
+
+```{r extract-related-pathways}
+extract_related_pathways <- function(kegg_list) {
+  
+  df <- tibble(
+    Entry = character(),
+    Name = character(),
+    Pathway_Name = character(),
+    Pathway_ID = character()
+  )
+  
+  for (i in 1:length(kegg_list)) {
+    curr_entry <- unname(kegg_list[[i]]$ENTRY)
+    curr_name <- kegg_list[[i]]$NAME[1]
+    curr_pw_id <- names(kegg_list[[i]]$PATHWAY)
+    curr_pw_name <- unname(kegg_list[[i]]$PATHWAY)
+    
+    curr_df <- tibble(
+      Entry = rep(curr_entry, length(curr_pw_name)),
+      Name = rep(curr_name, length(curr_pw_name)),
+      Pathway_Name = curr_pw_name,
+      Pathway_ID = curr_pw_id
+    )
+    
+    df <- rbind(df, curr_df)
+  }
+  
+  return(df)
+}
+
+kegg_targets_lists_extracted <- kegg_targets_lists %>%
+  mutate(PW_dfs = map(KEGG_entries, extract_related_pathways)) %>%
+  select(-KEGG_entries) %>%
+  unnest(PW_dfs) %>%
+  select(Compound, Pathway_Name, Pathway_ID) %>%
+  distinct() %>%
+  mutate(Pathway_ID = str_replace_all(Pathway_ID, "map", "hsa")) %>%
+  filter(Pathway_ID %in% msea_ora_pathways$id)
+```
+
+The targets data frame is combined with the one containing p-values (nlogp). Only the top n most significantly enriched pathways are considered (p <= 0.05)
+
+```{r combine-tbls}
+combined_tbl_top10 <- combined_tbl %>%
+  select(CpdNoWrap, Pathway, Method, nlogp) %>%
+  group_by(CpdNoWrap, Method) %>%
+  nest() %>%
+  mutate(data = map(data, mutate, rank = rank(-nlogp, ties.method = "min"))) %>%
+  unnest(data)
+  
+
+#create a small helper tibble, 
+methods_df <- tibble(
+  Method = c("MSEA", "ORA", "Mummichog")
+)
+
+kegg_targets_nlogp <- kegg_targets_lists_extracted %>%
+  mutate(methods = list(methods_df)) %>%
+  unnest(methods) %>%
+  left_join(combined_tbl_top10, by = join_by(Method == Method, Compound == CpdNoWrap, Pathway_Name == Pathway))
+
+```
+
+Calculate the number of expected and identified pathways.
+
+Top 5 considered.
+
+```{r calc-share-top-5}
+kegg_targets_nlogp %>%
+  #filter(rank <= 10) %>%
+  group_by(Compound, Method) %>%
+  mutate(total = n()) %>%
+  mutate(rank = case_when(rank > 5 ~ NA,
+                          .default = rank)) %>%
+  add_count(nlogp, wt = !is.na(rank), name = "identified") %>%
+  mutate(identified = sum(identified, na.rm = T)) %>%
+  #collapse method and compound
+  group_by(Compound, Method, total, identified) %>%
+  summarise(total = mean(total),
+            identified = mean(identified)) %>%
+  ungroup() %>%
+  mutate(percent_identified = identified / total) %>%
+  group_by(Method) %>%
+  summarise(mean_perc = mean(percent_identified))
+```
+
+
+Top 10 considered.
+
+```{r calc-share-top-10}
+kegg_targets_nlogp %>%
+  #filter(rank <= 10) %>%
+  group_by(Compound, Method) %>%
+  mutate(total = n()) %>%
+  mutate(rank = case_when(rank > 10 ~ NA,
+                          .default = rank)) %>%
+  add_count(nlogp, wt = !is.na(rank), name = "identified") %>%
+  mutate(identified = sum(identified, na.rm = T)) %>%
+  #collapse method and compound
+  group_by(Compound, Method, total, identified) %>%
+  summarise(total = mean(total),
+            identified = mean(identified)) %>%
+  ungroup() %>%
+  mutate(percent_identified = identified / total) %>%
+  group_by(Method) %>%
+  summarise(mean_perc = mean(percent_identified))
+```
+
+Top 15 considered.
+
+```{r calc-share-top-15}
+kegg_targets_nlogp %>%
+  #filter(rank <= 10) %>%
+  group_by(Compound, Method) %>%
+  mutate(total = n()) %>%
+  mutate(rank = case_when(rank > 15 ~ NA,
+                          .default = rank)) %>%
+  add_count(nlogp, wt = !is.na(rank), name = "identified") %>%
+  mutate(identified = sum(identified, na.rm = T)) %>%
+  #collapse method and compound
+  group_by(Compound, Method, total, identified) %>%
+  summarise(total = mean(total),
+            identified = mean(identified)) %>%
+  ungroup() %>%
+  mutate(percent_identified = identified / total) %>%
+  group_by(Method) %>%
+  summarise(mean_perc = mean(percent_identified))
+```
+
+All considered.
+
+
+```{r calc-share-all}
+kegg_targets_nlogp %>%
+  #filter(rank <= 10) %>%
+  group_by(Compound, Method) %>%
+  mutate(total = n()) %>%
+  #mutate(rank = case_when(rank > 10 ~ NA,
+  #                        .default = rank)) %>%
+  add_count(nlogp, wt = !is.na(rank), name = "identified") %>%
+  mutate(identified = sum(identified, na.rm = T)) %>%
+  #collapse method and compound
+  group_by(Compound, Method, total, identified) %>%
+  summarise(total = mean(total),
+            identified = mean(identified)) %>%
+  ungroup() %>%
+  mutate(percent_identified = identified / total) %>%
+  group_by(Method) %>%
+  summarise(mean_perc = mean(percent_identified))
+```
+
+
+Investigate systematically by calculating the share for Top 1 to Top 20
+
+```{r calc-share-systematic-bw}
+#| fig-width: 3.8
+#| fig-height: 3.45
+helper_rank_mutate <- function(df, topn) {
+  df %>%
+    group_by(Method) %>%
+    mutate(rank = case_when(rank > topn ~ NA,
+                            .default = rank)) %>%
+    add_count(nlogp, wt = !is.na(rank), name = "identified") %>%
+    mutate(identified = sum(identified, na.rm = T)) %>%
+    ungroup()
+} 
+
+topn_df <- kegg_targets_nlogp %>%
+  group_by(Compound, Method) %>%
+  mutate(total = n()) %>%
+  group_by(Compound) %>%
+  nest() %>%
+  mutate(topn = list(n = 1:20)) %>%
+  unnest(topn) %>%
+  mutate(data = map2(data, topn, helper_rank_mutate)) %>%
+  unnest(data) %>%
+  group_by(Compound, Method, topn, total, identified) %>%
+  summarise(total = mean(total),
+            identified = mean(identified)) %>%
+  ungroup() %>%
+  mutate(percent_identified = identified / total * 100) %>%
+  group_by(Method, topn) %>%
+  summarise(mean_perc = mean(percent_identified))
+
+  
+ggplot(topn_df, aes(topn, mean_perc, color = Method)) +
+  geom_point() +
+  geom_line() +
+  xlab(str_wrap("Number of enriched pathways considered (Top n)", 35)) +
+  ylab(str_wrap("Share of expected pathways correctly identifed (average) / %", 35))+
+  ylim(c(0, NA)) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+ggsave("output/plots/methods_performance_bw.png", width = 3.8, height = 3.45)
+```
+
+Same graph but wider.
+```{r calc-share-systematic-bw-wider}
+#| fig-width: 6
+#| fig-height: 3.45
+ggplot(topn_df, aes(topn, mean_perc, color = Method)) +
+  geom_point() +
+  geom_line() +
+  xlab("Number of enriched pathways considered (Top n)") +
+  ylab(str_wrap("Share of expected pathways correctly identifed (average) / %", 35))+
+  ylim(c(0, NA)) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+ggsave("output/plots/methods_performance_bw_wider.png", width = 6, height = 3.45)
+```
+
+```{r calc-share-systematic}
+#| fig-width: 6
+#| fig-height: 4
+ggplot(topn_df, aes(topn, mean_perc, color = Method)) +
+  geom_point() +
+  geom_line() +
+  xlab("Number of enriched pathways considered (Top n)") +
+  ylab(str_wrap("Share of expected pathways correctly identifed (average) / %", 35))+
+  ylim(c(0, NA)) +
+  theme(legend.position = "bottom")
+
+ggsave("output/plots/methods_performance.png", width = 6, height = 4, dpi = 600)
+```
+
+
+Performance of MSEA is the best if only the top 5 pathways are considered. Above 5, Mummichog outperforms both, ORA and MSEA.
+
+If only significant pathways (p <= 0.05) are considered.
+
+```{r calc-share-systematic-signif}
+#| fig-width: 6
+#| fig-height: 4
+topn_df_signif <- kegg_targets_nlogp %>%
+  mutate(rank = case_when(nlogp < -log10(0.05) ~ NA,
+                          .default = rank)) %>%
+  group_by(Compound, Method) %>%
+  mutate(total = n()) %>%
+  group_by(Compound) %>%
+  nest() %>%
+  mutate(topn = list(n = 1:20)) %>%
+  unnest(topn) %>%
+  mutate(data = map2(data, topn, helper_rank_mutate)) %>%
+  unnest(data) %>%
+  group_by(Compound, Method, topn, total, identified) %>%
+  summarise(total = mean(total),
+            identified = mean(identified)) %>%
+  ungroup() %>%
+  mutate(percent_identified = identified / total * 100) %>%
+  group_by(Method, topn) %>%
+  summarise(mean_perc = mean(percent_identified))
+  
+  
+ggplot(topn_df_signif, aes(topn, mean_perc, color = Method)) +
+  geom_point() +
+  geom_line() +
+  xlab("Number of enriched pathways considered (Top n)") +
+  ylab(str_wrap("Share of expected pathways correctly identifed (average) / %", 35))
+```
+
+For Which compounds does it work well? Facet by compound.
+
+```{r calc-share-systematic-facet}
+topn_df_facet <- kegg_targets_nlogp %>%
+  group_by(Compound, Method) %>%
+  mutate(total = n()) %>%
+  group_by(Compound) %>%
+  nest() %>%
+  mutate(topn = list(n = 1:20)) %>%
+  unnest(topn) %>%
+  mutate(data = map2(data, topn, helper_rank_mutate)) %>%
+  unnest(data) %>%
+  group_by(Compound, Method, topn, total, identified) %>%
+  summarise(total = mean(total),
+            identified = mean(identified)) %>%
+  ungroup() %>%
+  mutate(percent_identified = identified / total * 100)
+  
+  
+ggplot(topn_df_facet, aes(topn, percent_identified, color = Method)) +
+  geom_point() +
+  geom_line() +
+  xlab("Number of pathways considered") +
+  ylab("% of correct pathways identifed (mean)") +
+  facet_wrap(~Compound)
+```
+
+Extract 2 examples
+```{r calc-share-systematic-facet-2-examples}
+topn_df_facet %>%
+  filter(Compound == "Simvastatin" | Compound == "Trifluorothymidine") %>%
+  ggplot(aes(topn, percent_identified, color = Method)) +
+    geom_point() +
+    geom_line() +
+    xlab("Number of pathways considered") +
+    ylab("% of correct pathways identifed (mean)") +
+    facet_wrap(~Compound, ncol = 1)
+```
+
+
+How are the p-values distributed here?
+
+```{r calc-share-systematic-facet-pval}
+combined_tbl %>%
+  group_by(Method, CpdNoWrap) %>%
+  mutate(rank = rank(-nlogp)) %>%
+  filter(rank <= 20) %>%
+  ggplot(aes(rank, nlogp, color = Method)) +
+    geom_point() +
+    facet_wrap(~str_wrap(CpdNoWrap, width = 20, whitespace_only = F)) +
+    geom_hline(yintercept = -log10(0.05))
+```
+MSEA produces a lot more significantly enriched pathways (p <= 0.05).
+
+
+Same as above but only for significant pathways.
+
+```{r calc-share-systematic-signif-facet}
+topn_df_signif_facet <- kegg_targets_nlogp %>%
+  mutate(rank = case_when(nlogp < -log10(0.05) ~ NA,
+                          .default = rank)) %>%
+  group_by(Compound, Method) %>%
+  mutate(total = n()) %>%
+  group_by(Compound) %>%
+  nest() %>%
+  mutate(topn = list(n = 1:20)) %>%
+  unnest(topn) %>%
+  mutate(data = map2(data, topn, helper_rank_mutate)) %>%
+  unnest(data) %>%
+  group_by(Compound, Method, topn, total, identified) %>%
+  summarise(total = mean(total),
+            identified = mean(identified)) %>%
+  ungroup() %>%
+  mutate(percent_identified = identified / total * 100)
+  
+  
+ggplot(topn_df_signif_facet, aes(topn, percent_identified, color = Method)) +
+  geom_point() +
+  geom_line() +
+  xlab("Number of pathways considered") +
+  ylab("% of correct pathways identifed (mean)") +
+  facet_wrap(~Compound)
+```
+
+Whether the methods return the expected results is strongly dependent on the compound.
+
+
+#### MoA example
+
+Examples for how untargeted metabolomics and enrichment analysis can help with MoA elucidation.
+
+##### Load Data
+
+```{r moa-example-load-data}
+tft_moa_data <- read_csv("input/example_use_cases/TFT_data_processed.csv")
+tft_moa_matched_cpds <- read_csv("input/example_use_cases/TFT_mummichog_matched_compound_all.csv")
+tft_pathway_pyr <- keggGet("hsa00240")
+
+comp_moa_data <- read_csv("input/example_use_cases/Comp_data_processed.csv")
+comp_moa_matched_cpds <- read_csv("input/example_use_cases/Comp_mummichog_matched_compound_all.csv")
+comp_pathway_pyr <- keggGet("hsa00140")
+```
+
+##### Prepare data
+
+Join the data frames and filter for compounds present in the pathway "Pyrimidine metabolism".
+
+```{r moa-example-join-and-filter}
+tft_moa_data <- tft_moa_data %>%
+  left_join(tft_moa_matched_cpds, by = join_by("m.z" == "Query.Mass")) %>%
+  filter(Matched.Compound %in% names(tft_pathway_pyr[[1]]$COMPOUND)) %>%
+  mutate(abs_tscore = abs(t.score)) %>%
+  group_by(Matched.Compound) %>%
+  mutate(max_abs_tscore = max(abs_tscore)) %>%
+  ungroup() %>%
+  mutate(keep = case_when(abs_tscore == max_abs_tscore ~ TRUE,
+                          .default = FALSE)) %>%
+  filter(keep == TRUE) %>%
+  mutate(Matched.Compound = paste0("cpd:", Matched.Compound)) %>%
+  select(Matched.Compound, t.score, p.value)
+
+comp_moa_data <- comp_moa_data %>%
+  left_join(tft_moa_matched_cpds, by = join_by("m.z" == "Query.Mass")) %>%
+  filter(Matched.Compound %in% names(comp_pathway_pyr[[1]]$COMPOUND)) %>%
+  mutate(abs_tscore = abs(t.score)) %>%
+  group_by(Matched.Compound) %>%
+  mutate(max_abs_tscore = max(abs_tscore)) %>%
+  ungroup() %>%
+  mutate(keep = case_when(abs_tscore == max_abs_tscore ~ TRUE,
+                          .default = FALSE)) %>%
+  filter(keep == TRUE) %>%
+  mutate(Matched.Compound = paste0("cpd:", Matched.Compound)) %>%
+  select(Matched.Compound, t.score, p.value)
+```
+
+##### Visualize pathway
+
+Download the pathway files from KEGG
+
+```{r moa-example-download-pathways, cache=TRUE}
+tft_pyrimidine_pathway <- ggkegg::pathway("hsa00240")
+comp_steroid_pathway <- ggkegg::pathway("hsa00140")
+```
+
+```{r}
+#| fig-width: 11
+#| fig-height: 8
+tft_pyrimidine_pathway <- tft_pyrimidine_pathway %>%
+  left_join(tft_moa_data, by = join_by(name == Matched.Compound))
+
+ggraph(tft_pyrimidine_pathway, layout = "manual", x = x, y = y) +
+  geom_node_rect(aes(fill = t.score)) +
+  overlay_raw_map() +
+  scale_fill_gradientn(colours = c("#001260", "white", "#590007"),
+                       values = scales::rescale(c(-40,0,5)),
+                       limits=c(-40, 5),
+                       na.value = NA) +
+  theme_void()
+
+#ggraph(tft_pyrimidine_pathway, layout = "manual", x = x, y = y) +
+#  geom_node_rect(aes(fill = -log10(p.value))) +
+#  overlay_raw_map() +
+#  #scale_fill_gradientn(colours = c("#001260", "white", "#590007"),
+#  #                     values = scales::rescale(c(-40,0,5)),
+#  #                     limits=c(-40, 5),
+#  #                     na.value = NA) +
+#  scale_fill_scico(palette = "lajolla", na.value = NA, direction = -1)+
+#  theme_void()
+
+ggsave("output/plots/tft_moa_example.png", width = 11, height = 8, dpi = 600)
+```
+
+```{r}
+
+comp_steroid_pathway <- comp_steroid_pathway %>%
+  left_join(comp_moa_data, by = join_by(name == Matched.Compound))
+
+ggraph(comp_steroid_pathway, layout = "manual", x = x, y = y) +
+  geom_node_rect(aes(fill = t.score)) +
+  overlay_raw_map() +
+  scale_fill_gradientn(colours = c("#001260", "white", "white"),
+                       values = scales::rescale(c(-15,0,0.1)),
+                       limits=c(-15, 0),
+                       na.value = NA) +
+  theme_void()
+
+ggraph(comp_steroid_pathway, layout = "manual", x = x, y = y) +
+  geom_node_rect(aes(fill = !is.na(p.value))) +
+  overlay_raw_map() +
+  #scale_fill_gradientn(colours = c("#001260", "white", "white"),
+  #                     values = scales::rescale(c(-15,0,0.1)),
+  #                     limits=c(-15, 0),
+  #                     na.value = NA) +
+  theme_void()
+
+ggsave("output/plots/comp_moa_example.png", width = 11, height = 8, dpi = 600)
+```
+
+
+##### Visualize Chromatograms
+
+```{r}
+#| fig-width: 2.8
+#| fig-height: 2.4
+rbind(
+  mutate(read_delim("input/example_use_cases/chromatograms/dmso-dtmp-1.xy", delim = " ", col_names = F, show_col_types = F), treatment = "DMSO", analyte = "dTMP"),
+  mutate(read_delim("input/example_use_cases/chromatograms/dmso-dump-1.xy", delim = " ", col_names = F, show_col_types = F), treatment = "DMSO", analyte = "dUMP"),
+  mutate(read_delim("input/example_use_cases/chromatograms/tft-dtmp-1.xy", delim = " ", col_names = F, show_col_types = F), treatment = "Trifluoro-thymidine", analyte = "dTMP"),
+  mutate(read_delim("input/example_use_cases/chromatograms/tft-dump-1.xy", delim = " ", col_names = F, show_col_types = F), treatment = "Trifluoro-thymidine", analyte = "dUMP")
+) %>%
+  rename("t" = "X1",
+         "Intensity" = "X2") %>%
+  filter(t < 300) %>%
+  ggplot(aes(t, Intensity)) +
+    geom_line() +
+    facet_grid(str_wrap(treatment, 10, whitespace_only = F) ~ analyte) +
+    theme_bw() +
+    xlab(expression(italic(t)~"/"~s))
+
+ggsave("output/plots/tft_moa_example_chromatograms.png", width = 2.8, height = 2.4)
+```
+
+
+
+```{r}
+pyr_pathway <- parseKGML("output/moa_example/pyrimidine_pathway")
+KEGGpathway2reactionGraph(pyr_pathway) %>%
+  plot()
+```

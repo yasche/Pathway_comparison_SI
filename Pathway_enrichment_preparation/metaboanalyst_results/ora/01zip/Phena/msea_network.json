@@ -1,0 +1,170 @@
+{
+ "nodes": [
+ {
+ "id": "Purine metabolism",
+"label": "Purine metabolism",
+"size": 5.348993,
+"color": "#FF0000",
+"x": -1.879548,
+"y":  1.27866 
+},
+{
+ "id": "Pentose and glucuronate interconversions",
+"label": "Pentose and glucuronate interconversions",
+"size": 6.690037,
+"color": "#FF1200",
+"x": 0.9723156,
+"y": -3.618903 
+},
+{
+ "id": "Pyrimidine metabolism",
+"label": "Pyrimidine metabolism",
+"size": 5.962963,
+"color": "#FF2400",
+"x": -1.717666,
+"y": -1.889345 
+},
+{
+ "id": "Amino sugar and nucleotide sugar metabolism",
+"label": "Amino sugar and nucleotide sugar metabolism",
+"size": 5.777778,
+"color": "#FF3700",
+"x": -0.5394027,
+"y": -3.055986 
+},
+{
+ "id": "Galactose metabolism",
+"label": "Galactose metabolism",
+"size": 6.690037,
+"color": "#FF4900",
+"x": 1.054682,
+"y":  1.62516 
+},
+{
+ "id": "Ascorbate and aldarate metabolism",
+"label": "Ascorbate and aldarate metabolism",
+"size": 6.690037,
+"color": "#FF5B00",
+"x": 4.441983,
+"y": 0.8135401 
+},
+{
+ "id": "Alanine, aspartate and glutamate metabolism",
+"label": "Alanine, aspartate and glutamate metabolism",
+"size": 6.690037,
+"color": "#FF6D00",
+"x": 2.851581,
+"y": -1.032158 
+},
+{
+ "id": "Sphingolipid metabolism",
+"label": "Sphingolipid metabolism",
+"size": 6.690037,
+"color": "#FF8000",
+"x": 1.202412,
+"y": -0.1805518 
+},
+{
+ "id": "Arginine and proline metabolism",
+"label": "Arginine and proline metabolism",
+"size": 5.460025,
+"color": "#FF9200",
+"x": 2.677875,
+"y": -3.239647 
+},
+{
+ "id": "Citrate cycle (TCA cycle)",
+"label": "Citrate cycle (TCA cycle)",
+"size": 6.690037,
+"color": "#FFA400",
+"x": 2.806195,
+"y": 0.8578194 
+},
+{
+ "id": "Fatty acid degradation",
+"label": "Fatty acid degradation",
+"size": 6.690037,
+"color": "#FFB600",
+"x": 1.434868,
+"y": -2.165814 
+},
+{
+ "id": "Arginine biosynthesis",
+"label": "Arginine biosynthesis",
+"size": 6.690037,
+"color": "#FFC800",
+"x": -0.747093,
+"y": 2.358098 
+},
+{
+ "id": "Starch and sucrose metabolism",
+"label": "Starch and sucrose metabolism",
+"size": 6.690037,
+"color": "#FFDB00",
+"x": -2.109822,
+"y": -0.3706531 
+},
+{
+ "id": "Inositol phosphate metabolism",
+"label": "Inositol phosphate metabolism",
+"size": 6.690037,
+"color": "#FFED00",
+"x": 0.5704851,
+"y":  3.14647 
+},
+{
+ "id": "Glyoxylate and dicarboxylate metabolism",
+"label": "Glyoxylate and dicarboxylate metabolism",
+"size": 6.690037,
+"color": "#FFFF00",
+"x": -0.5592573,
+"y": 0.4638891 
+},
+{
+ "id": "Nicotinate and nicotinamide metabolism",
+"label": "Nicotinate and nicotinamide metabolism",
+"size": 6.690037,
+"color": "#FFFF19",
+"x": 3.554634,
+"y": 2.249843 
+},
+{
+ "id": "Pantothenate and CoA biosynthesis",
+"label": "Pantothenate and CoA biosynthesis",
+"size": 6.690037,
+"color": "#FFFF4D",
+"x": -0.22555,
+"y": -1.376521 
+},
+{
+ "id": "Glycerophospholipid metabolism",
+"label": "Glycerophospholipid metabolism",
+"size": 4.481481,
+"color": "#FFFF80",
+"x": 4.491416,
+"y": -0.7223853 
+},
+{
+ "id": "Pentose phosphate pathway",
+"label": "Pentose phosphate pathway",
+"size": 4.845018,
+"color": "#FFFFB3",
+"x": 3.925224,
+"y": -2.249821 
+},
+{
+ "id": "Glutathione metabolism",
+"label": "Glutathione metabolism",
+"size": 4.845018,
+"color": "#FFFFE6",
+"x":  2.18138,
+"y": 2.961488 
+} 
+],
+"edges": [ {
+ "id": "1" 
+},
+{
+ "id": "0" 
+} ] 
+}

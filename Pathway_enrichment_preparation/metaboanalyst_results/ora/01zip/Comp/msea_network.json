@@ -1,0 +1,58 @@
+{
+ "nodes": [
+ {
+ "id": "Steroid hormone biosynthesis",
+"label": "Steroid hormone biosynthesis",
+"size": 12.66184,
+"color": "#FF0000",
+"x": -1.43832,
+"y": -0.5290136 
+},
+{
+ "id": "Glutathione metabolism",
+"label": "Glutathione metabolism",
+"size": 9.430868,
+"color": "#FF4000",
+"x": -1.305693,
+"y": 1.427405 
+},
+{
+ "id": "Glycerophospholipid metabolism",
+"label": "Glycerophospholipid metabolism",
+"size": 6.861004,
+"color": "#FF8000",
+"x": 1.638612,
+"y": 0.2451044 
+},
+{
+ "id": "Fatty acid degradation",
+"label": "Fatty acid degradation",
+"size": 12.61538,
+"color": "#FFBF00",
+"x": 0.381361,
+"y": -1.259716 
+},
+{
+ "id": "Cysteine and methionine metabolism",
+"label": "Cysteine and methionine metabolism",
+"size": 6.215434,
+"color": "#FFFF00",
+"x": 0.5959553,
+"y": 1.905836 
+},
+{
+ "id": "Purine metabolism",
+"label": "Purine metabolism",
+"size": 3.877193,
+"color": "#FFFF80",
+"x": -0.02561692,
+"y": 0.3579233 
+} 
+],
+"edges": [ {
+ "id": "1" 
+},
+{
+ "id": "0" 
+} ] 
+}

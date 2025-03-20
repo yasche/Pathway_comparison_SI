@@ -1,0 +1,13 @@
+Compound,Target,KEGG_ID
+2-Deoxyglucose,Hexokinase,hsa:3098_hsa:3099_hsa:3101
+3-Bromopyruvic acid,Hexokinase,hsa:3098_hsa:3099_hsa:3101
+5-Fluorouracil,Thymidylate Synthase,hsa:7298
+Antimycin A,Complex III,hsa:7386
+FCCP,Mitochondrial decoupler (ATP-Synthase),hsa:498_hsa:506_hsa:509_hsa:513_hsa:514_hsa:539_hsa:4508_hsa:515_hsa:516_hsa:517
+FCCP,Mitochondrial decoupler (ATP-Synthase),hsa:518_hsa:10476_hsa:521_hsa:124901481_hsa:9551_hsa:10632_hsa:267020_hsa:522_hsa:4509
+Menadione,ROS formation,C00051
+Metrizamide,Hexokinase,hsa:3098_hsa:3099_hsa:3101
+Mevastatin,HMG-CoA Reductase,hsa:3156
+"Phenanthrene-9,10-dione",ROS formation,C00051
+Simvastatin,HMG-CoA Reductase,hsa:3156
+Trifluorothymidine,Thymidylate Synthase,hsa:7298
