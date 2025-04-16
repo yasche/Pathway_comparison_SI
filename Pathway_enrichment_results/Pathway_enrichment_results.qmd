@@ -353,7 +353,7 @@ ggsave("output/plots/corr_methods_all_bw.png", width = 12, height = 3)
 ```{r corr-plots-calc-all-no-shave}
 #| fig-width: 11
 #| fig-height: 3.8
-ggplot(corr_diff_meths_no_shave, aes(x, y, fill = r, label = round(r, digits = 2))) +
+fig2_plota <- ggplot(corr_diff_meths_no_shave, aes(x, y, fill = r, label = round(r, digits = 2))) +
   geom_tile() +
   geom_text(size = 3, color = "yellow") +
   facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
@@ -362,7 +362,9 @@ ggplot(corr_diff_meths_no_shave, aes(x, y, fill = r, label = round(r, digits = 2
   labs(x = "", y = "", fill = "\u03C1") +
   scale_fill_scico(palette = "vik", aesthetic = c("fill", "color"), na.value = NA, limits = c(-1, 1))
 
-ggsave("output/plots/corr_methods_all.png", width = 11, height = 3.8)
+fig2_plota
+
+ggsave("output/plots/corr_methods_all.png", fig2_plota, width = 11, height = 3.8)
 ```
 
 This is an example plot for correlation
@@ -475,14 +477,25 @@ corr_diff_meths %>%
 ggsave("output/plots/rho_dot_plot_mean_bw.png", width = 3.1, height = 3.1)
 ```
 
-```{r corr-distrib-all-dot-mean}
-#| fig-height: 3.1
-#| fig-width: 3.1
+Mean as a summary table:
+
+```{r corr-distrib-all-tbl}
 corr_diff_meths %>%
   select(CpdNoWrap, Target, x, y, r) %>%
   tidyr::unite(Methods, x, y, sep = "/") %>%
+  group_by(Methods) %>%
+  summarise(Mean_r = mean(r, na.rm = T))
+```
+
+
+```{r corr-distrib-all-dot-mean}
+#| fig-height: 3
+#| fig-width: 3.7
+fig2_plotc <- corr_diff_meths %>%
+  select(CpdNoWrap, Target, x, y, r) %>%
+  tidyr::unite(Methods, x, y, sep = "/") %>%
   ggplot(aes(Methods, r)) +
-    geom_beeswarm(cex = 3) +
+    geom_beeswarm(cex = 3, alpha = 0.4) +
     theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
     ylab("\u03C1") +
     stat_summary(
@@ -491,10 +504,13 @@ corr_diff_meths %>%
           geom = "errorbar", 
           aes(ymax = ..y.., ymin = ..y..), 
           position = position_dodge(width = 0.3), 
-          width = 0.2,
-          color = "orange")
+          width = 0.15,
+          color = "black", 
+          size = 1.3)
 
-ggsave("output/plots/rho_dot_plot_mean.png", width = 3.1, height = 3.1, dpi = 600)
+fig2_plotc
+
+ggsave("output/plots/rho_dot_plot_mean_grey.png", fig2_plotc, width = 3.7, height = 3, dpi = 600)
 ```
 
 
@@ -815,7 +831,7 @@ jac_diff_meths_matrix_mirrored$Method_A <- jac_diff_meths_matrix$Method_B
 jac_diff_meths_matrix_mirrored$Method_B <- jac_diff_meths_matrix$Method_A
 
 
-jac_diff_meths_matrix %>%
+fig2_plotb <- jac_diff_meths_matrix %>%
   rbind(jac_diff_meths_matrix_mirrored) %>%
   ggplot(aes(Method_A, Method_B, fill = jDistance, label = round(jDistance, digits = 2))) +
     facet_nested(~str_wrap(Target, width = 20) + str_wrap(Compound, width = 8, whitespace_only = FALSE)) +
@@ -826,7 +842,9 @@ jac_diff_meths_matrix %>%
     labs(x = "", y = "", fill = expression(italic(J))) +
   scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
 
-ggsave("output/plots/jdist_methods_matrix.png", width = 11, height = 3.8, dpi = 600)
+fig2_plotb
+
+ggsave("output/plots/jdist_methods_matrix.png", fig2_plotb, width = 11, height = 3.8, dpi = 600)
 ```
 
 ```{r viz-jacc-methods-dot-bw}
@@ -850,26 +868,62 @@ jac_diff_meths %>%
 ggsave("output/plots/jaccard_methods_bw.png", width = 3.5, height = 2.3)
 ```
 
-```{r viz-jacc-methods-dot}
-#| fig-width: 3.3
-#| fig-height: 3.3
+```{r viz-jacc-methods-tbl}
 jac_diff_meths %>%
+  unnest(jacc_dists) %>%
+  group_by(Methods) %>%
+  summarise(Mean_J = mean(jDistance, na.rm = T))
+```
+
+
+```{r viz-jacc-methods-dot}
+#| fig-width: 3.7
+#| fig-height: 3
+
+fig2_plotd <- jac_diff_meths %>%
   unnest(jacc_dists) %>% 
   ggplot(aes(Methods, jDistance)) +
-    geom_beeswarm(cex = 3) +
+    geom_beeswarm(cex = 3, alpha = 0.4) +
     theme(axis.text.x = element_text(angle = 15, hjust = 1))+
     ylab(expression(italic(J))) +
     stat_summary(
-          fun = mean, 
-          fun.args = list(na.rm = TRUE),
-          geom = "errorbar", 
-          aes(ymax = ..y.., ymin = ..y..), 
-          position = position_dodge(width = 0.3), 
-          width = 0.2,
-          color = "orange")
+        fun = mean, 
+        fun.args = list(na.rm = TRUE),
+        geom = "errorbar", 
+        aes(ymax = ..y.., ymin = ..y..), 
+        position = position_dodge(width = 0.3), 
+        width = 0.15,
+        color = "black", 
+        size = 1.3)
 
-ggsave("output/plots/jaccard_methods.png", width = 3.3, height = 3.3, dpi = 600)
+fig2_plotd
+
+ggsave("output/plots/jaccard_methods_grey.png", fig2_plotd, width = 3.7, height = 3, dpi = 600)
 ```
+
+
+Create figure for publication
+
+```{r fig2-publication}
+#| fig-height: 11
+#| fig-width: 11
+
+fig23_design <- "AAAAA
+                 BBBBB
+                 CC#DD"
+
+wrap_plots(fig2_plota, 
+           fig2_plotb,
+           fig2_plotc,
+           fig2_plotd,
+           design = fig23_design,
+           axes = "keep",
+           heights = c(0.5,0.5,1)) +
+  plot_annotation(tag_levels = "a")
+
+ggsave("output/plots/publ_fig2.png", width = 11, height = 11, dpi = 600)
+```
+
 
 Summary table for Jaccard distance/similarity and correlation (both mean and median), only looking at the correlation for significant pathways.
 
@@ -980,8 +1034,10 @@ ggsave("output/plots/corr_cpds_all_bw_wide.png", width = 12.15, height = 4)
 
 ```{r corr-plots-cpd-calc-all-no-shave}
 #| fig-height: 6.8
-#| fig-width: 12.5
-ggplot(corr_diff_cpds_no_shave, aes(interaction(str_wrap(x, width = 20, whitespace_only = F), str_wrap(Target_x, width = 20)), interaction(str_wrap(y, width = 20, whitespace_only = F), str_wrap(Target_y, width = 20)), fill = r, label = round(r, digits = 2))) +
+#| fig-width: 12
+
+
+fig3_plota <- ggplot(corr_diff_cpds_no_shave, aes(interaction(str_wrap(x, width = 20, whitespace_only = F), str_wrap(Target_x, width = 20)), interaction(str_wrap(y, width = 20, whitespace_only = F), str_wrap(Target_y, width = 20)), fill = r, label = round(r, digits = 2))) +
   geom_tile()+
   geom_text(size = 3, color = "yellow") +
   facet_nested(~Method) +
@@ -993,7 +1049,9 @@ ggplot(corr_diff_cpds_no_shave, aes(interaction(str_wrap(x, width = 20, whitespa
   scale_x_discrete(guide = "axis_nested")+
   scale_y_discrete(guide = "axis_nested")
 
-ggsave("output/plots/corr_cpds_all.png", width = 12.5, height = 6.8, dpi = 600)
+fig3_plota
+
+ggsave("output/plots/corr_cpds_all.png", fig3_plota, width = 12, height = 6.8, dpi = 600)
 ```
 
 
@@ -1058,6 +1116,12 @@ ggplot(corr_diff_cpds_corr_summary, aes(Similar_Mech, r)) +
   facet_wrap(~Method)
 ```
 
+```{r diff-cpds-corr-tbl}
+corr_diff_cpds_corr_summary %>%
+  group_by(Method, Similar_Mech) %>%
+  summarise(Mean_r = round(mean(r, na.rm = T), digits = 2))
+```
+
 Are these differences significant?
 
 ```{r diff-cpds-corr-summary-signif}
@@ -1109,8 +1173,9 @@ ggsave("output/plots/rho_dot_plot_meths.png", width = 3.3, height = 2.2)
 ```
 
 ```{r diff-cpds-corr-summary-plot-signiflabel}
-#| fig-width: 3.1
-#| fig-height: 3.1
+#| fig-height: 3
+#| fig-width: 3.7
+
 corr_diff_cpds_corr_summary %>%
   mutate(Method_signif = str_replace_all(Method, meths_signif_all)) %>%
   mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
@@ -1119,7 +1184,7 @@ corr_diff_cpds_corr_summary %>%
                          .default = NA)) %>%
     ggplot(aes(MOA, r)) +
       theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
-      geom_beeswarm(cex = 3, size = 1) +
+      geom_beeswarm(cex = 4, alpha = 0.4) +
       xlab("Mechanism of Action") +
       ylab("\u03C1") +
       stat_summary(
@@ -1128,11 +1193,46 @@ corr_diff_cpds_corr_summary %>%
               geom = "errorbar", 
               aes(ymax = ..y.., ymin = ..y..), 
               position = position_dodge(width = 0.3), 
-              width = 0.2,
-              color = "orange") +
+              width = 0.3,
+              color = "black", 
+              size = 1.3) +
       facet_wrap(~Method + Method_signif, labeller = label_parsed)
 
-ggsave("output/plots/rho_dot_plot_meths_grey.png", width = 3.1, height = 3.1, dpi = 600)
+
+ggsave("output/plots/rho_dot_plot_meths_grey.png", width = 3.7, height = 3, dpi = 600)
+```
+
+The fact that one compound is compared to several others for "different" MOA probably violates the t test's independence criterion. Therefore, a version without p values is created:
+
+```{r diff-cpds-corr-summary-plot-wo-signiflabel}
+#| fig-height: 3
+#| fig-width: 3.7
+
+fig3_plotc <- corr_diff_cpds_corr_summary %>%
+  #mutate(Method_signif = str_replace_all(Method, meths_signif_all)) %>%
+  #mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(Similar_Mech == TRUE ~ "similar",
+                         Similar_Mech == FALSE ~ "different",
+                         .default = NA)) %>%
+    ggplot(aes(MOA, r)) +
+      theme(axis.text.x = element_text(angle = 15, hjust = 1)) +
+      geom_beeswarm(cex = 4, alpha = 0.4) +
+      xlab("Mechanism of Action") +
+      ylab("\u03C1") +
+      stat_summary(
+              fun = mean, 
+              fun.args = list(na.rm = TRUE),
+              geom = "errorbar", 
+              aes(ymax = ..y.., ymin = ..y..), 
+              position = position_dodge(width = 0.3), 
+              width = 0.3,
+              color = "black", 
+              size = 1.3) +
+      facet_wrap(~Method)
+
+fig3_plotc
+
+ggsave("output/plots/rho_dot_plot_meths_grey_wo_p.png", fig3_plotc, width = 3.7, height = 3, dpi = 600)
 ```
 
 Which MOAs have a high correlation coefficient?
@@ -1455,11 +1555,19 @@ jacc_diff_cpds_signif_summary %>%
 
 ```
 
+```{r jdist-cpds-tbl}
+jacc_diff_cpds_signif_summary %>%
+  group_by(Method, MOA) %>%
+  summarise(mean_J = round(mean(jDistance, na.rm = T), digits = 2))
+```
+
+
 Matrix with Jaccard indices
 
 ```{r jdist-cpds-matrix}
 #| fig-height: 6.8
-#| fig-width: 12.5
+#| fig-width: 12
+
 jacc_diff_cpds_signif_summary_mirrored <- jacc_diff_cpds_signif_summary
 jacc_diff_cpds_signif_summary_mirrored$Mech_A <- jacc_diff_cpds_signif_summary$Mech_B
 jacc_diff_cpds_signif_summary_mirrored$Mech_B <- jacc_diff_cpds_signif_summary$Mech_A
@@ -1467,7 +1575,7 @@ jacc_diff_cpds_signif_summary_mirrored$Mech_B <- jacc_diff_cpds_signif_summary$M
 jacc_diff_cpds_signif_summary_mirrored$Compound_A <- jacc_diff_cpds_signif_summary$Compound_B
 jacc_diff_cpds_signif_summary_mirrored$Compound_B <- jacc_diff_cpds_signif_summary$Compound_A
 
-jacc_diff_cpds_signif_summary_mirrored %>%
+fig3_plotb <- jacc_diff_cpds_signif_summary_mirrored %>%
   rbind(jacc_diff_cpds_signif_summary) %>%
   ggplot(aes(interaction(str_wrap(Compound_A, width = 20, whitespace_only = F), str_wrap(Mech_A, width = 20)), interaction(str_wrap(Compound_B, width = 20, whitespace_only = F), str_wrap(Mech_B, width = 20)), fill = jDistance, label = round(jDistance, digits = 2))) +
     geom_tile() +
@@ -1481,8 +1589,9 @@ jacc_diff_cpds_signif_summary_mirrored %>%
     labs(x = "", y = "", fill = expression(italic(J))) +
     scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
 
+fig3_plotb
 
-ggsave("output/plots/jdist_cpds_matrix.png", width = 12.5, height = 6.8, dpi = 600)
+ggsave("output/plots/jdist_cpds_matrix.png", fig3_plotb, width = 12, height = 6.8, dpi = 600)
 ```
 
 Are differences significant?
@@ -1506,8 +1615,8 @@ ora_jaccard_signif <- ora_jaccard_signif$p.value
 Plot with p values
 
 ```{r cpds-j-dotplot}
-#| fig-width: 3.3
-#| fig-height: 3.3
+#| fig-width: 3.7
+#| fig-height: 3
 
 comps_jdist_signif <- c("Mummichog" = as.character(round(mummi_jaccard_signif, digits = 3)),
                         "MSEA" = as.character(round(msea_jaccard_signif, digits = 3)),
@@ -1521,7 +1630,7 @@ jacc_diff_cpds_signif_summary %>%
                          MOA == FALSE ~ "different",
                          .default = NA)) %>%
   ggplot(aes(MOA, jDistance)) +
-    geom_beeswarm(cex = 2) +
+    geom_beeswarm(cex = 2, alpha = 0.3) +
     facet_wrap(~Method + Method_signif, labeller = label_parsed)+
     theme(axis.text.x = element_text(angle = 15, hjust = 1))+
     ylab(expression(italic(J))) +
@@ -1532,11 +1641,89 @@ jacc_diff_cpds_signif_summary %>%
           geom = "errorbar", 
           aes(ymax = ..y.., ymin = ..y..), 
           position = position_dodge(width = 0.3), 
-          width = 0.2,
-          color = "orange")
+          width = 0.3,
+          color = "black",
+          size = 1.3)
 
-ggsave("output/plots/jaccard_cpds.png", width = 3.3, height = 3.3, dpi = 600)
+
+ggsave("output/plots/jaccard_cpds_grey.png", width = 3.7, height = 3, dpi = 600)
 ```
+As above, it is not clear, wheter the criteria for t tests are met. Therefore, a version without p values is created.
+
+```{r cpds-j-dotplot-wo-p}
+#| fig-width: 3.7
+#| fig-height: 3
+
+
+fig3_plotd <- jacc_diff_cpds_signif_summary %>%
+  #mutate(Method_signif = str_replace_all(Method, comps_jdist_signif)) %>%
+  #mutate(Method_signif = paste0('italic(p)~"="~', Method_signif)) %>%
+  mutate(MOA = case_when(MOA == TRUE ~ "similar",
+                         MOA == FALSE ~ "different",
+                         .default = NA)) %>%
+  ggplot(aes(MOA, jDistance)) +
+    geom_beeswarm(cex = 2, alpha = 0.3) +
+    facet_wrap(~Method, labeller = label_parsed)+
+    theme(axis.text.x = element_text(angle = 15, hjust = 1))+
+    ylab(expression(italic(J))) +
+    xlab("Mechanism of Action") +
+    stat_summary(
+          fun = mean, 
+          fun.args = list(na.rm = TRUE),
+          geom = "errorbar", 
+          aes(ymax = ..y.., ymin = ..y..), 
+          position = position_dodge(width = 0.3), 
+          width = 0.3,
+          color = "black",
+          size = 1.3)
+
+fig3_plotd
+
+ggsave("output/plots/jaccard_cpds_grey.png", fig3_plotd, width = 3.7, height = 3, dpi = 600)
+```
+
+Create figure 3 for publication
+
+```{r fig3-publication}
+#| fig-height: 16
+#| fig-width: 11
+
+fig23_design <- "AAAAA
+                 BBBBB
+                 CCDEE"
+
+wrap_plots(fig3_plota, 
+           fig3_plotb,
+           patchwork::free(fig3_plotc),
+           plot_spacer(),
+           patchwork::free(fig3_plotd),
+           design = fig23_design,
+           axes = "keep",
+           heights = c(1, 1, 0.7, 0.7, 0.7),
+           widths = c(1, 1, 0.1, 3.5)) +
+  plot_annotation(tag_levels = "a")
+
+
+fig23_design <- "AAAA
+                 BBBB
+                 CCEE"
+
+wrap_plots(fig3_plota, 
+           fig3_plotb,
+           patchwork::free(fig3_plotc, type = "label"),
+           #plot_spacer(),
+           patchwork::free(fig3_plotd, type = "label"),
+           design = fig23_design,
+           axes = "keep",
+           heights = c(1, 1, 1, 1)#,
+           #widths = c(1, 1, 0.1, 3.5)
+           ) +
+  plot_annotation(tag_levels = "a")
+
+
+ggsave("output/plots/publ_fig3.png", width = 11, height = 16, dpi = 600)
+```
+
 
 ```{r cpds-j-dotplot-bw}
 #| fig-width: 3.3
