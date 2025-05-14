@@ -267,7 +267,7 @@ ggplot(combined_tbl, aes(Method, str_wrap(Pathway, width = 70), size = EnrichRat
   labs(x = "Enrichment Method", y = "Pathway", size = str_wrap("Enrichment Ratio", width = 10), color = expression(-log[10]~(italic(p)))) +
   scale_fill_scico(palette = "devon", aesthetic = c("fill", "color"), na.value = NA)
 
-ggsave("output/plots/heat_v3_portrait.png", width = 11, height = 14, dpi = 600)
+ggsave("output/plots/Fig1.png", width = 12, height = 15, dpi = 1200)
 ```
 
 ```{r plot-heat-v3-landscape}
@@ -921,7 +921,7 @@ wrap_plots(fig2_plota,
            heights = c(0.5,0.5,1)) +
   plot_annotation(tag_levels = "a")
 
-ggsave("output/plots/publ_fig2.png", width = 11, height = 11, dpi = 600)
+ggsave("output/plots/Fig2.png", width = 11, height = 11, dpi = 1200)
 ```
 
 
@@ -1685,8 +1685,8 @@ ggsave("output/plots/jaccard_cpds_grey.png", fig3_plotd, width = 3.7, height = 3
 Create figure 3 for publication
 
 ```{r fig3-publication}
-#| fig-height: 16
-#| fig-width: 11
+#| fig-height: 15
+#| fig-width: 11.5
 
 fig23_design <- "AAAAA
                  BBBBB
@@ -1721,7 +1721,7 @@ wrap_plots(fig3_plota,
   plot_annotation(tag_levels = "a")
 
 
-ggsave("output/plots/publ_fig3.png", width = 11, height = 16, dpi = 600)
+ggsave("output/plots/Fig3.png", width = 11.5, height = 15, dpi = 1200)
 ```
 
 
@@ -2061,7 +2061,7 @@ ggsave("output/plots/methods_performance_bw_wider.png", width = 6, height = 3.45
 ```
 
 ```{r calc-share-systematic}
-#| fig-width: 6
+#| fig-width: 6.85
 #| fig-height: 4
 ggplot(topn_df, aes(topn, mean_perc, color = Method)) +
   geom_point() +
@@ -2071,7 +2071,7 @@ ggplot(topn_df, aes(topn, mean_perc, color = Method)) +
   ylim(c(0, NA)) +
   theme(legend.position = "bottom")
 
-ggsave("output/plots/methods_performance.png", width = 6, height = 4, dpi = 600)
+ggsave("output/plots/Fig4.png", width = 6.85, height = 4, dpi = 1200)
 ```
 
 
