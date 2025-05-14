@@ -9,7 +9,7 @@ To reproduce part of the work simply open the respective .qmd file in RStudio an
 ### Dose-finding
 
 ```
-R version 4.4.1 (2024-06-14 ucrt)
+R version 4.4.2 (2024-10-31 ucrt)
 Platform: x86_64-w64-mingw32/x64
 Running under: Windows 10 x64 (build 19044)
 
@@ -30,26 +30,26 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] egg_0.4.5       gridExtra_2.3   scales_1.3.0    lubridate_1.9.3
+ [1] egg_0.4.5       gridExtra_2.3   scales_1.3.0    lubridate_1.9.4
  [5] forcats_1.0.0   stringr_1.5.1   dplyr_1.1.4     purrr_1.0.2    
  [9] readr_2.1.5     tidyr_1.3.1     tibble_3.2.1    ggplot2_3.5.1  
-[13] tidyverse_2.0.0 drc_3.0-1       MASS_7.3-60.2  
+[13] tidyverse_2.0.0 drc_3.0-1       MASS_7.3-61    
 
 loaded via a namespace (and not attached):
- [1] sandwich_3.1-0    utf8_1.2.4        generics_0.1.3    gtools_3.9.5     
- [5] stringi_1.8.4     lattice_0.22-6    hms_1.1.3         digest_0.6.36    
- [9] magrittr_2.0.3    timechange_0.3.0  evaluate_0.24.0   grid_4.4.1       
-[13] mvtnorm_1.2-6     fastmap_1.2.0     jsonlite_1.8.8    Matrix_1.7-0     
-[17] survival_3.6-4    multcomp_1.4-26   fansi_1.0.6       TH.data_1.1-2    
-[21] textshaping_0.4.0 codetools_0.2-20  abind_1.4-5       cli_3.6.3        
-[25] rlang_1.1.4       munsell_0.5.1     splines_4.4.1     withr_3.0.1      
-[29] yaml_2.3.10       plotrix_3.8-4     tools_4.4.1       tzdb_0.4.0       
-[33] colorspace_2.1-1  vctrs_0.6.5       R6_2.5.1          zoo_1.8-12       
-[37] lifecycle_1.0.4   car_3.1-2         htmlwidgets_1.6.4 ragg_1.3.2       
-[41] pkgconfig_2.0.3   pillar_1.9.0      gtable_0.3.5      glue_1.7.0       
-[45] systemfonts_1.1.0 xfun_0.46         tidyselect_1.2.1  rstudioapi_0.16.0
-[49] knitr_1.48        farver_2.1.2      htmltools_0.5.8.1 svglite_2.1.3    
-[53] rmarkdown_2.27    carData_3.0-5     compiler_4.4.1
+ [1] sandwich_3.1-1    generics_0.1.3    gtools_3.9.5      stringi_1.8.4    
+ [5] lattice_0.22-6    hms_1.1.3         digest_0.6.37     magrittr_2.0.3   
+ [9] timechange_0.3.0  evaluate_1.0.1    grid_4.4.2        mvtnorm_1.3-2    
+[13] fastmap_1.2.0     jsonlite_1.8.9    Matrix_1.7-1      Formula_1.2-5    
+[17] survival_3.7-0    multcomp_1.4-26   TH.data_1.1-2     textshaping_0.4.0
+[21] codetools_0.2-20  abind_1.4-8       cli_3.6.3         rlang_1.1.4      
+[25] munsell_0.5.1     splines_4.4.2     withr_3.0.2       yaml_2.3.10      
+[29] plotrix_3.8-4     tools_4.4.2       tzdb_0.4.0        colorspace_2.1-1 
+[33] vctrs_0.6.5       R6_2.5.1          zoo_1.8-12        lifecycle_1.0.4  
+[37] car_3.1-3         htmlwidgets_1.6.4 ragg_1.3.3        pkgconfig_2.0.3  
+[41] pillar_1.10.0     gtable_0.3.6      glue_1.8.0        systemfonts_1.1.0
+[45] xfun_0.49         tidyselect_1.2.1  rstudioapi_0.17.1 knitr_1.49       
+[49] farver_2.1.2      htmltools_0.5.8.1 svglite_2.1.3     rmarkdown_2.29   
+[53] carData_3.0-5     compiler_4.4.2   
 ```
 ### Data Preparation for Enrichment Analysis
 
@@ -153,17 +153,17 @@ loaded via a namespace (and not attached):
  [55] glue_1.8.0              grid_4.4.2              shadowtext_0.1.4       
  [58] generics_0.1.3          gtable_0.3.6            tzdb_0.4.0             
  [61] data.table_1.16.4       RApiSerialize_0.1.4     hms_1.1.3              
- [64] utf8_1.2.4              stringfish_0.16.0       car_3.1-3              
+ [64] stringfish_0.16.0       car_3.1-3               utf8_1.2.4             
  [67] XVector_0.44.0          BiocGenerics_0.50.0     ggrepel_0.9.6          
  [70] pillar_1.10.0           vroom_1.6.5             tweenr_2.0.3           
  [73] BiocFileCache_2.12.0    bit_4.5.0.1             tidyselect_1.2.1       
  [76] Biostrings_2.72.1       knitr_1.49              IRanges_2.38.1         
  [79] stats4_4.4.2            xfun_0.49               graphlayouts_1.2.2     
  [82] Biobase_2.64.0          stringi_1.8.4           UCSC.utils_1.0.0       
- [85] yaml_2.3.10             evaluate_1.0.1          codetools_0.2-20       
- [88] cli_3.6.3               RcppParallel_5.1.9      systemfonts_1.1.0      
- [91] munsell_0.5.1           Rcpp_1.0.13-1           GenomeInfoDb_1.40.1    
- [94] dbplyr_2.5.0            png_0.1-8               parallel_4.4.2         
- [97] blob_1.2.4              bitops_1.0-9            viridisLite_0.4.2      
-[100] crayon_1.5.3            GetoptLong_1.0.5        rlang_1.1.4            
+ [85] yaml_2.3.10             evaluate_1.0.1          cli_3.6.3              
+ [88] RcppParallel_5.1.9      systemfonts_1.1.0       munsell_0.5.1          
+ [91] Rcpp_1.0.13-1           GenomeInfoDb_1.40.1     dbplyr_2.5.0           
+ [94] png_0.1-8               parallel_4.4.2          blob_1.2.4             
+ [97] bitops_1.0-9            viridisLite_0.4.2       crayon_1.5.3           
+[100] GetoptLong_1.0.5        rlang_1.1.4            
 ```
